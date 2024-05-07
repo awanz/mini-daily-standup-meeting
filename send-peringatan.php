@@ -48,7 +48,6 @@
         // $mail->SMTPAuth   = true;
         // $mail->Username   = 'kawankerja.id';
         // $mail->Password   = 'jCI11i8DIlwQ4GQm';
-
         $mail->Host       = 'mail.kawankerja.id';
         $mail->Port       = 587;
         $mail->SMTPAuth   = true;
@@ -62,13 +61,33 @@
 
         //Content
         $mail->isHTML(true);
-        $mail->Subject = 'Token Daily Kawan Kerja';
+        $mail->Subject = 'Peringatan Ketidakaktifan Magang';
         $mail->Body    = '
-        Hello, '.$target->fullname.'<br>
-        Berikut kode token yang bisa digunakan untuk mengakses <i><a href="https://kawankerja.id/daily">standup meeting</a></i>:
-        <h3 style="text-align: center; padding: 50px 50px 50px 50px; color: white; background-color: black; font-size: 30px;"> <strong>'.$target->token.'</strong> </h3>
-        Pastikan kode token tidak diberikan kepada orang lain dan dijaga kerahasiaannya!<br><br>
-        <b>Kawan Kerja</b>
+        <h2>Peringatan Ketidakaktifan Magang</h2>
+        <p>
+            <strong>Kepada Yth.</strong><br>
+            '.$target->fullname.'<br>
+        </p>
+        <p>
+            <strong>Perihal: Peringatan Ketidakaktifan Magang</strong>
+        </p>
+        <p>
+            Dengan hormat,<br><br>
+            Melalui surat elektronik ini, kami ingin menyampaikan peringatan terkait ketidakaktifan magang berdasarkan daily standup meeting Anda selama 10 hari (akumulasi).<br><br>
+            Berdasarkan informasi dari meeting sebelumnya, ketidakaktifan tanpa alasan yang sah dan pemberitahuan terlebih dahulu merupakan pelanggaran disiplin yang serius.
+        </p>
+        <p>
+            Oleh karena itu, kami mohon Anda untuk mengisi daily standup meeting selambat-lambatnya <b>07 Mei 2024</b>.
+        </p>
+        <p>
+            Jika Anda tidak mengisi daily standup meeting dalam waktu yang ditentukan, perusahaan berhak untuk mengambil tindakan disiplin selanjutnya, sesuai dengan peraturan yang berlaku.
+        </p>
+        <p>
+            Kami harap Anda dapat memahami dan mematuhi peraturan perusahaan dengan baik.
+        </p>
+        <p>
+            Hormat kami,<br>
+        </p>
         ';
 
         $mail->send();

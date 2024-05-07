@@ -43,6 +43,7 @@
         //Server settings
         $mail->SMTPDebug = 2;
         $mail->isSMTP();
+
         // $mail->Host       = 'mail.smtp2go.com';
         // $mail->Port       = 2525;
         // $mail->SMTPAuth   = true;
@@ -54,6 +55,7 @@
         $mail->SMTPAuth   = true;
         $mail->Username   = 'daily@kawankerja.id';
         $mail->Password   = 'bandung1234!';
+
         $mail->SMTPSecure = 'tls';
         $mail->IsHTML(true);
         
@@ -62,13 +64,26 @@
 
         //Content
         $mail->isHTML(true);
-        $mail->Subject = 'Token Daily Kawan Kerja';
+        $mail->Subject = 'Pemutusan Hubungan Kerja (Magang)';
         $mail->Body    = '
-        Hello, '.$target->fullname.'<br>
-        Berikut kode token yang bisa digunakan untuk mengakses <i><a href="https://kawankerja.id/daily">standup meeting</a></i>:
-        <h3 style="text-align: center; padding: 50px 50px 50px 50px; color: white; background-color: black; font-size: 30px;"> <strong>'.$target->token.'</strong> </h3>
-        Pastikan kode token tidak diberikan kepada orang lain dan dijaga kerahasiaannya!<br><br>
-        <b>Kawan Kerja</b>
+        <p>
+            <strong>Kepada Yth.</strong><br>
+            '.$target->fullname.'<br>
+        </p>
+        <p>
+            Dengan hormat,<br><br>
+            Melalui surat ini, kami sampaikan bahwa Anda akan menerima Surat Peringatan (SP) Kedua terkait dengan ketidakaktifan Anda dalam kegiatan magang di PT Kawan Kerja Indonesia yang sebelumnya Anda telah menerima SP Pertama.
+        </p>
+        <p>
+            SP Kedua ini merupakan peringatan terakhir yang kami berikan. Oleh karena itu, dengan berat hati kami terpaksa mengambil tindakan tegas berupa pemutusan hubungan kerja (PHK) sebagai peserta magang di PT Kawan Kerja Indonesia
+        </p>
+        <p>
+            Kami harap Anda dapat memahami keputusan ini.
+        </p>
+        <p>
+            Hormat kami,<br>
+            <b> PT Kawan Kerja Indonesia </b>
+        </p>
         ';
 
         $mail->send();

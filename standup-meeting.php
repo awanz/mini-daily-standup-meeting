@@ -4,7 +4,7 @@
   $dateGet = null;
   if (isset($_GET['tanggal'])) {
     $dateGet = $_GET['tanggal'];
-    if (strtotime($dateGet) <= strtotime(date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d')))))) {
+    if (strtotime($dateGet) <= strtotime(date('Y-m-d', strtotime('-5 day', strtotime(date('Y-m-d')))))) {
       header("Location: standup-meeting.php", false, 301);
     }
   }
@@ -111,7 +111,7 @@
     <div class="card mt-2">
       <div class="card-body">
         <form action="" method="GET">
-          <input type="date" id="tanggal" name="tanggal" value="<?= $dateGet ? $dateGet : date('Y-m-d') ?>" max="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d')))) ?>">
+          <input type="date" id="tanggal" name="tanggal" value="<?= $dateGet ? $dateGet : date('Y-m-d') ?>" max="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d', strtotime('-5 day', strtotime(date('Y-m-d')))) ?>">
           <input type="submit" value="Ubah">
         </form>
         <h5 class="card-title">Daily stand-up meetings - (<?= $dateGet ? $dateGet : date('Y-m-d') ?>) [<a href="history.php">Histori</a>]</h5>

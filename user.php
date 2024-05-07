@@ -26,7 +26,7 @@
     exit();
   }
 
-  $resultUser = $db->getAll("users")->fetch_all();
+  $resultUser = $db->getAll("view_user_daily")->fetch_all();
 ?>
 
 <!doctype html>
@@ -73,15 +73,21 @@
                       <th>Fullname</th>
                       <th>Email</th>
                       <th>Action</th>
+                      <th>Total Daily</th>
+                      <th>Surat Peringatan</th>
+                      <th>Surat Pemecatan</th>
                   </tr>
               </thead>
               <tbody>
                   <?php foreach ($resultUser as $key => $value) { ?>
                   <tr>
                       <td><?= $value[0] ?></td>
+                      <td><?= $value[1] ?></td>
                       <td><?= $value[2] ?></td>
+                      <td><a target="_BLANK" href="send.php?email=<?= $value[2] ?>">Send</a></td>
                       <td><?= $value[3] ?></td>
-                      <td><a target="_BLANK" href="send.php?email=<?= $value[3] ?>">Send</a></td>
+                      <td><a target="_BLANK" href="send-peringatan.php?email=<?= $value[2] ?>">Send</a></td>
+                      <td><a target="_BLANK" href="send-dikeluarkan.php?email=<?= $value[2] ?>">Send</a></td>
                   </tr>
                   <?php } ?>
               </tbody>
@@ -93,7 +99,9 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script>
-      new DataTable('#history');
+      $('#history').dataTable({
+        paging: false
+      });
     </script>
   </body>
 </html>
