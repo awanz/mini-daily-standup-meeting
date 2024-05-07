@@ -48,6 +48,10 @@ AUTO_INCREMENT=2
 ;
 ```
 
+```Table Views
+select `u`.`id` AS `id`,`u`.`fullname` AS `fullname`,`u`.`email` AS `email`,coalesce(sum(case when month(`a`.`date_activity`) = month(curdate()) then 1 else 0 end),0) AS `total_daily` from (`kawp4581_daily`.`users` `u` left join `kawp4581_daily`.`dailys` `a` on(`u`.`id` = `a`.`user_id`)) group by `u`.`id`,`u`.`fullname`,`u`.`email`
+```
+
 ## Data Seed (DML)
 
 ```
