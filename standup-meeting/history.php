@@ -1,31 +1,33 @@
 <?php
   session_start();
-  $token = $_SESSION['token'];
+  $token = null;
+  if (isset($_SESSION['token'])) {
+    $token = $_SESSION['token'];
+  }
   $isAdmin = false;
   
   if (!$token) {
-    header("Location: index.php", false, 301);
+    header("Location: ../index.php", false, 301);
     exit();
   }
 
-  include_once('mysql.php');      
+  include_once('../mysql.php');      
   $db = new MySQLBase();
   $result = $db->getBy("users", "token", $token)->fetch_object();
   
   if (is_null($result)) {
-    header("Location: logout.php", false, 301);
+    header("Location: ../logout.php", false, 301);
     exit();
   }
 
-  if ($result->fullname == "awan") {
+  $admin = array("awan", "opik", "shasa", "angga", "teguh");
+  if (in_array($result->fullname, $admin)) {
     $isAdmin = true;
   }
 
   if ($isAdmin) {
-    // $resultDaily = $db->getAll("dailys", "date_activity DESC")->fetch_all();
-    $query = "SELECT * From dailys inner join users on dailys.user_id = users.id order by dailys.date_activity desc";
+    $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, d.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1;';
     $resultDaily = $db->raw($query)->fetch_all();
-    // print_r($resultDaily);
   }else{
     $resultDaily = $db->getBy("dailys", "user_id", $result->id, "date_activity DESC")->fetch_all();
   }
@@ -55,18 +57,19 @@
       <div class="d-flex justify-content-between">
         <div>
           <?php if ($isAdmin) { ?>
-          <a href="user.php">User</a>
+          <a href="../users">User</a>
           <?php } ?>
         </div>
         <div>
-          <a href="logout.php">Keluar</a>
+          <a href="../logout.php">Keluar</a>
         </div>
       </div>
       <div class="card mt-2">
         <div class="card-body">
-          <h5 class="card-title">Daily stand-up meetings - (<?= date('d M Y') ?>) [<a href="standup-meeting.php">Lapor</a>]</h5>
+          <h5 class="card-title">Daily stand-up meetings - (<?= date('d M Y') ?>) [<a href="../standup-meeting">Lapor</a>]</h5>
           <div>
             <p>Hello, <b><?= $_SESSION['fullname'] ?></b></p>
+            <h6>Pastikan setiap bulan minimal mengisi 15 kali daily standup meeting, meskipun SAKIT, IZIN wajib isi.</h6>
           </div>
           <div class="table-responsive">
             <table id="history">
@@ -79,18 +82,25 @@
                       <th>Aktifitas Kemarin</th>
                       <th>Hari ini</th>
                       <th>Permasalahan</th>
+                      <?php if ($isAdmin) { ?>
+                      <th>Delete</th>
+                      <?php } ?>
                   </tr>
               </thead>
               <tbody>
-                  <?php foreach ($resultDaily as $key => $value) { ?>
+                  <?php foreach ($resultDaily as $value) { ?>
+                    
                   <tr>
                       <td><?= $value[2] ?></td>
                       <?php if ($isAdmin) { ?>
-                      <th><?= $value[9] ?></th>
+                      <th><?= $value[8] ?></th>
                       <?php } ?>
                       <td><?= $value[3] ?></td>
                       <td><?= $value[4] ?></td>
                       <td><?= $value[5] ?></td>
+                      <?php if ($isAdmin) { ?>
+                      <td><a href="delete.php?id=<?= $value[0] ?>">Delete</a></td>
+                      <?php } ?>
                   </tr>
                   <?php } ?>
               </tbody>
@@ -101,8 +111,22 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
     <script>
-      new DataTable('#history');
+        new DataTable('#history', {
+            layout: {
+                topStart: {
+                    buttons: ['excel']
+                }
+            },
+            order: [[0, 'desc']]
+        });
     </script>
   </body>
 </html>

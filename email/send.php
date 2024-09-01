@@ -2,25 +2,28 @@
   use PHPMailer\PHPMailer\PHPMailer;
   use PHPMailer\PHPMailer\Exception;
   
-  require 'PHPMailer/Exception.php';
-  require 'PHPMailer/PHPMailer.php';
-  require 'PHPMailer/SMTP.php';
+  require '../PHPMailer/Exception.php';
+  require '../PHPMailer/PHPMailer.php';
+  require '../PHPMailer/SMTP.php';
 
   session_start();
-  $token = $_SESSION['token'];
+  $token = null;
+  if (isset($_SESSION['token'])) {
+    $token = $_SESSION['token'];
+  }
   $isAdmin = false;
   
   if (!$token || is_null($_GET['email'])) {
-    header("Location: index.php", false, 301);
+    header("Location: ../index.php", false, 301);
     exit();
   }
 
-  include_once('mysql.php');      
+  include_once('../mysql.php');      
   $db = new MySQLBase();
   $result = $db->getBy("users", "token", $token)->fetch_object();
   
   if (is_null($result)) {
-    header("Location: logout.php", false, 301);
+    header("Location: ../logout.php", false, 301);
     exit();
   }
 
@@ -29,7 +32,7 @@
   }
 
   if (!$isAdmin) {
-    header("Location: index.php", false, 301);
+    header("Location: ../index.php", false, 301);
     exit();
   }
 
@@ -43,12 +46,19 @@
         //Server settings
         $mail->SMTPDebug = 2;
         $mail->isSMTP();
-        $mail->Host       = 'mail.smtp2go.com';
-        $mail->Port       = 2525;
+        // $mail->Host       = 'mail.smtp2go.com';
+        // $mail->Port       = 2525;
+        // $mail->SMTPAuth   = true;
+        // $mail->Username   = 'kawankerja.id';
+        // $mail->Password   = 'jCI11i8DIlwQ4GQm';
+        
+        $mail->Host       = 'mail.kawankerja.id';
+        $mail->Port       = 587;
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'kawankerja.id';
-        $mail->Password   = 'jCI11i8DIlwQ4GQm';
-        $mail->SMTPSecure = 'tls';
+        $mail->Username   = 'daily@kawankerja.id';
+        $mail->Password   = 'bandung1234!';
+
+        // $mail->SMTPSecure = 'tls';
         $mail->IsHTML(true);
         
         $mail->setFrom('daily@kawankerja.id', 'Kawan Kerja');
@@ -61,9 +71,13 @@
         Hello, '.$target->fullname.'<br>
         Berikut kode token yang bisa digunakan untuk mengakses <i><a href="https://kawankerja.id/daily">standup meeting</a></i>:
         <h3 style="text-align: center; padding: 50px 50px 50px 50px; color: white; background-color: black; font-size: 30px;"> <strong>'.$target->token.'</strong> </h3>
-        Pastikan kode token tidak diberikan kepada orang lain dan dijaga kerahasiaannya!<br><br>
-        <b>Kawan Kerja</b>
+        <b>Pastikan kode token tidak diberikan kepada orang lain dan dijaga kerahasiaannya!</b><br><br>
+        <p>
+          Hormat kami,<br>
+          <b> PT Kawan Kerja Indonesia </b>
+        </p>
         ';
+        print_r($mail);
 
         $mail->send();
         echo 'Message has been sent';
@@ -83,6 +97,6 @@
   <title>Send email</title>
 </head>
 <body>
-  <script>//window.close();</script>
+  <script>window.close();</script>
 </body>
 </html>

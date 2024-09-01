@@ -9,7 +9,7 @@
         protected $connection;
         public $hostinfo;
 
-        public function __construct($hostname = "localhost", $database = "standup-meeting", $username = "root", $password = null) {
+        public function __construct($hostname = "localhost", $database = "kawp4581_daily", $username = "root", $password = null) {
             $this->connection = new mysqli($hostname, $username, $password, $database);
             if ($this->connection->connect_errno) {
                 echo "Failed to connect to MySQL: (" . $this->connection->connect_errno . ") " . $this->connection->connect_error;
@@ -43,6 +43,7 @@
         }
         
         public function raw($raw) {
+            // die($raw);
             $result = $this->connection->query($raw);
             
             return $result;
@@ -76,6 +77,7 @@
             $where = substr($where, 0, -5);
             
             $query = "SELECT * FROM " . $tableName . " WHERE " . $where;
+            // die($query);
             $result = $this->connection->query($query);
             
             return $result;
@@ -173,6 +175,24 @@
                 $result['message'] = "Edit successful!";
             }
             
+            return $result;
+        }
+
+        public function delete($tableName, $keyWhere, $valueWhere) {
+            /*
+                DELETE FROM $tableName
+                WHERE $keyWhere = $valueWhere;
+            */
+            $query = "DELETE FROM " . $tableName . " WHERE " . $keyWhere . " = " . $valueWhere;
+            $queryact = $this->connection->query($query);
+
+            if (!$this->connection->affected_rows) {
+                $result['status'] = 0;
+                $result['message'] = "Query failed: (" . $this->connection->errno . ") " . $this->connection->error;
+            }else{
+                $result['status'] = 1;
+                $result['message'] = "Delete successful!";
+            }
             return $result;
         }
     }
