@@ -56,6 +56,7 @@
             "code_id" => $code_id,
           ];
           $insertDevice = $db->insert("device_locks", $data);
+          header("Location: index.php", false, 301);
         }
       }else{
         $_SESSION['token'] = $result->token;
@@ -64,7 +65,7 @@
         $_SESSION['login_attempts'] = 0;
         
         if ($_SESSION['token']) {
-          header("Location: standup-meeting", false, 301); // 301 for permanent redirect
+          header("Location: standup-meeting", false, 301);
           exit();
         }
       }
