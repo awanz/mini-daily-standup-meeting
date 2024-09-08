@@ -40,7 +40,7 @@
       $data = [
         "email" => $email,
         "fullname" => $fullname,
-        "token" => $token,
+        // "token" => $token,
         "projects" => $projects,
         "notes" => $notes,
       ];
