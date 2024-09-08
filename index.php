@@ -24,7 +24,7 @@
 
   $ip_address = getClientIp();
 
-  if (isset($_SESSION['token'])) {
+  if (isset($_SESSION['email'])) {
     header("Location: standup-meeting", false, 301); // 301 for permanent redirect
     exit();
   }
@@ -35,43 +35,68 @@
 
   $alert = null;
   if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    if ($_POST['token']) {
-      $token = preg_replace('/[^a-zA-Z0-9]/', '', $_POST['token']);
-      
-      $db = new MySQLBase();
-      $param = [
-        'token' => $token,
-        'is_active' => 1
-      ];
-      $result = $db->getByArray("users", $param)->fetch_object();
-      if (is_null($result)) {
-        $_SESSION['login_attempts']++;
-        $alert = 'Token tidak valid, Anda memiliki ' . ($max_attempts - $_SESSION['login_attempts']) . ' percobaan lagi.';
-        if (($max_attempts - $_SESSION['login_attempts']) <= 0) {
-          file_put_contents('.htaccess', "Deny from $ip_address\n", FILE_APPEND);
-          $_SESSION['login_attempts'] = 0;
-          $alert = 'Anda telah diblokir karena terlalu banyak percobaan login yang gagal, silahkan hubungi administrator dengan memberikan info IP berikut: '. $ip_address;
-          $data = [
-            "device_id" => $device_id,
-            "code_id" => $code_id,
-          ];
-          $insertDevice = $db->insert("device_locks", $data);
-          header("Location: index.php", false, 301);
-        }
-      }else{
-        $_SESSION['token'] = $result->token;
-        $_SESSION['fullname'] = $result->fullname;
-        $_SESSION['email'] = $result->email;
-        $_SESSION['login_attempts'] = 0;
+    $secretKey = '0x4AAAAAAAircL6Hp4KH3VpAvQx0duDTJ7U';
+    $turnstileResponse = $_POST['cf-turnstile-response'];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+      'secret' => $secretKey,
+      'response' => $turnstileResponse,
+      'remoteip' => $_SERVER['REMOTE_ADDR'],
+    ]));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $responseData = json_decode($response, true);
+
+    if ($responseData['success']) {
+      if (isset($_POST['email']) && isset($_POST['password'])) {
+        $email = preg_replace('/[^a-zA-Z0-9.@]/', '', $_POST['email']);
+        $password = md5(md5(preg_replace('/[^a-zA-Z0-9]/', '', $_POST['password'])));
         
-        if ($_SESSION['token']) {
-          header("Location: standup-meeting", false, 301);
-          exit();
+        $db = new MySQLBase();
+        $param = [
+          'email' => $email,
+          'password' => $password,
+          'is_active' => 1
+        ];
+        $result = $db->getByArray("users", $param)->fetch_object();
+        if (is_null($result)) {
+          $_SESSION['login_attempts']++;
+          $alert = 'Email atau password salah, Anda memiliki ' . ($max_attempts - $_SESSION['login_attempts']) . ' percobaan lagi.';
+          if (($max_attempts - $_SESSION['login_attempts']) <= 0) {
+            file_put_contents('.htaccess', "Deny from $ip_address\n", FILE_APPEND);
+            $_SESSION['login_attempts'] = 0;
+            $alert = 'Anda telah diblokir karena terlalu banyak percobaan login yang gagal, silahkan hubungi administrator dengan memberikan info IP berikut: '. $ip_address;
+            $data = [
+              "device_id" => $device_id,
+              "code_id" => $code_id,
+            ];
+            $insertDevice = $db->insert("device_locks", $data);
+            header("Location: index.php", false, 301);
+          }
+        }else{
+          $_SESSION['fullname'] = $result->fullname;
+          $_SESSION['email'] = $result->email;
+          $_SESSION['login_attempts'] = 0;
+          
+          if ($_SESSION['email']) {
+            header("Location: standup-meeting", false, 301);
+            exit();
+          }
         }
+      }else {
+        $alert = "Email atau password yang dikirim kosong";
       }
-    }else {
-      $alert = "Token yang dikirim kosong";
+    } else {
+      $alert = "Captcha gagal, coba lagi";
     }
+
+    
   }
 ?>
 
@@ -105,13 +130,20 @@
                 <div id="login-box" class="col-md-12">
                     <form id="login-form" class="form" action="" method="POST">
                         <h3 class="text-center text-primary">Daily stand-up meetings</h3>
-                        <p>Your IP: <?= $ip_address ?></p>
+                        <p><center><u>Ada perubahaan login, silahkan check email, atau hubungi koordinator</u></center></p>
                         <div class="form-group">
-                            <label for="token" class="text-primary">Token:</label><br>
-                            <input type="password" name="token" id="token" class="form-control">
+                          <label for="email" class="text-primary">Email:</label><br>
+                          <input type="email" name="email" id="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                          <label for="password" class="text-primary">Password:</label><br>
+                          <input type="password" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="form-group mt-4">
+                          <div class="cf-turnstile" data-sitekey="0x4AAAAAAAircNL7y3k9G2c4"></div>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary mt-2">Access</button>
+                            <button class="btn btn-primary mt-2">Login</button>
                         </div>
                     </form>
                 </div>
@@ -119,5 +151,6 @@
         </div>
       </div>
     </div>  
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </body>
 </html>

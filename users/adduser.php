@@ -1,26 +1,26 @@
 <?php
   session_start();
-  $token = null;
-  if (isset($_SESSION['token'])) {
-    $token = $_SESSION['token'];
+  $email = null;
+  if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
   }
   $isAdmin = false;
   
-  if (!$token) {
+  if (!$email) {
     header("Location: ../index.php", false, 301);
     exit();
   }
 
   include_once('../mysql.php');      
   $db = new MySQLBase();
-  $result = $db->getBy("users", "token", $token)->fetch_object();
+  $result = $db->getBy("users", "email", $email)->fetch_object();
   
   if (is_null($result)) {
     header("Location: ../logout.php", false, 301);
     exit();
   }
 
-  if ($result->fullname == "awan") {
+  if ($result->email == "me@awn.web.id") {
     $isAdmin = true;
   }
 
@@ -44,7 +44,8 @@
         "projects" => $projects,
         "notes" => $notes,
       ];
-      $db->insert("users", $data);
+      
+      $insertData = $db->insert("users", $data);
     } catch (\Throwable $th) {
       $alert = $th->getMessage();
     }
@@ -108,11 +109,11 @@
                 <input name="token" type="text" class="form-control" id="token" placeholder="Masukan token">
             </div>
             <div class="form-group">
-                <label for="token">Projects</label>
-                <input name="projects" type="text" class="form-control" id="token" placeholder="Masukan projects">
+                <label for="Project">Projects</label>
+                <input name="projects" type="text" class="form-control" id="project" placeholder="Masukan projects">
             </div>
             <div class="form-group">
-                <label for="token">Notes</label>
+                <label for="Notes">Notes</label>
                 <textarea name="notes" class="form-control"></textarea>
             </div>
             <button type="submit" class="btn btn-primary my-2">Daftar</button>

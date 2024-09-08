@@ -1,19 +1,26 @@
 <?php
   session_start();
-  $token = null;
-  if (isset($_SESSION['token'])) {
-    $token = $_SESSION['token'];
+  include_once('../mysql.php');      
+  $db = new MySQLBase();
+
+  $getEmail = null;
+  if (isset($_GET['email'])) {
+    $getEmail = $db->escape($_GET['email']);
+  }
+
+
+  $email = null;
+  if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
   }
   $isAdmin = false;
   
-  if (!$token) {
+  if (!$email) {
     header("Location: ../index.php", false, 301);
     exit();
   }
 
-  include_once('../mysql.php');      
-  $db = new MySQLBase();
-  $result = $db->getBy("users", "token", $token)->fetch_object();
+  $result = $db->getBy("users", "email", $email)->fetch_object();
   
   if (is_null($result)) {
     header("Location: ../logout.php", false, 301);
@@ -26,7 +33,12 @@
   }
 
   if ($isAdmin) {
-    $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, d.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1;';
+    if ($getEmail) {
+      $query = "SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 and d.email = '".$getEmail."';";
+    }else{
+      $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1;';
+    }
+    // die($query);
     $resultDaily = $db->raw($query)->fetch_all();
   }else{
     $resultDaily = $db->getBy("dailys", "user_id", $result->id, "date_activity DESC")->fetch_all();
@@ -93,7 +105,7 @@
                   <tr>
                       <td><?= $value[2] ?></td>
                       <?php if ($isAdmin) { ?>
-                      <th><?= $value[8] ?></th>
+                      <th><a href="history.php?email=<?= $value[7] ?>"><?= $value[8] ?></a></th>
                       <?php } ?>
                       <td><?= $value[3] ?></td>
                       <td><?= $value[4] ?></td>

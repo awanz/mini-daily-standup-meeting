@@ -1,17 +1,20 @@
 <?php
   session_start();
   
+  include_once('../mysql.php');
+  $db = new MySQLBase();   
+  
   $dateGet = null;
   if (isset($_GET['tanggal'])) {
-    $dateGet = $_GET['tanggal'];
+    $dateGet = $db->escape($_GET['tanggal']);
     if (strtotime($dateGet) < strtotime(date('Y-m-d', strtotime('-30 day', strtotime(date('Y-m-d')))))) {
       header("Location: standup-meeting.php", false, 301);
     }
   }
 
-  $token = null;
-  if (isset($_SESSION['token'])) {
-    $token = $_SESSION['token'];
+  $email = null;
+  if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
   }
   $email = $_SESSION['email'];
   $yesterday = null;
@@ -22,14 +25,12 @@
   $isAlready = false;
   $isAdmin = false;
 
-  if (!$token) {
+  if (!$email) {
     header("Location: ../index.php", false, 301); // 301 for permanent redirect
     exit();
   }
-
-  include_once('../mysql.php');      
-  $db = new MySQLBase();
-  $result = $db->getBy("users", "token", $token)->fetch_object();
+ 
+  $result = $db->getBy("users", "email", $email)->fetch_object();
   
   if (is_null($result)) {
     $alert = 'Session kamu telah expired, coba <a href="logout.php">re-login</a>';
@@ -60,12 +61,12 @@
       try {
         if (is_null($resultDaily)) {
           $data = [
-            "user_id" => $result->id,
-            "yesterday" => $yesterday,
-            "today" => $today,
-            "problem" => $problem,
-            "date_activity" => $dateGet ? $dateGet : date('Y-m-d'),
-            "email" => $email,
+            "user_id" => $db->escape($result->id),
+            "yesterday" => $db->escape($yesterday),
+            "today" => $db->escape($today),
+            "problem" => $db->escape($problem),
+            "date_activity" => $db->escape($dateGet ? $dateGet : date('Y-m-d')),
+            "email" => $db->escape($email),
           ];
           $insert = $db->insert("dailys", $data);
           $insertData = $insert;

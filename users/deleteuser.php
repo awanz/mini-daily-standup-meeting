@@ -1,19 +1,19 @@
 <?php
   session_start();
-  $token = null;
-  if (isset($_SESSION['token'])) {
-    $token = $_SESSION['token'];
+  $email = null;
+  if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
   }
   $isAdmin = false;
   
-  if (!$token) {
+  if (!$email) {
     header("Location: ../index.php", false, 301);
     exit();
   }
 
   include_once('../mysql.php');      
   $db = new MySQLBase();
-  $result = $db->getBy("users", "token", $token)->fetch_object();
+  $result = $db->getBy("users", "email", $email)->fetch_object();
   
   if (is_null($result)) {
     header("Location: ../logout.php", false, 301);

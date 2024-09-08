@@ -21,6 +21,10 @@
             $this->connection->close();
         }
 
+        public function escape($text) {
+            return $this->connection->real_escape_string($text);
+        }
+        
         public function query($query) {
             /*
                 YOUR QUERY
@@ -124,18 +128,21 @@
             $column = rtrim($column, ", ");
             
             $query = "INSERT INTO " . $tableName . " (" . $column . ") VALUES (" . $entry . ")";
+            // print_r($query);
 
-            $queryact = $this->connection->query($query);
-          
             $result = null;
-            
-            if (!$queryact) {
-                $result['status'] = 0;
-                $result['message'] = "Query failed: (" . $this->connection->errno . ") " . $this->connection->error;
-            }else{
+            try {
+                $queryact = $this->connection->query($query);
+                if ($this->connection->error) {
+                    throw new Exception($this->connection->error);
+                }
                 $result['status'] = 1;
                 $result['message'] = "Add successful!";
                 $result['last_id'] = $this->connection->insert_id;
+            } catch (\Throwable $th) {
+                throw new Exception($this->connection->error);
+                // $result['status'] = 0;
+                // $result['message'] = "Query failed: (" . $this->connection->errno . ") " . $this->connection->error;
             }
             
             return $result;

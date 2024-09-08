@@ -5,7 +5,7 @@
     $code_id = null;
 
     if (isset($_COOKIE[$key])) {
-        $device_id = $_COOKIE[$key];
+        $device_id = preg_replace('/[^a-zA-Z0-9]/', '', $_COOKIE[$key]);
         $dbs = new MySQLBase();
         $result = $dbs->getBy("device_locks", 'device_id', $device_id)->fetch_object();
         if (isset($result)) {
