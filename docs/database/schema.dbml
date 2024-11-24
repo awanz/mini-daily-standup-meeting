@@ -1,0 +1,92 @@
+Enum Access {
+    ADMIN
+    HR
+    USER
+}
+
+Table users {
+    id int [pk, increment]
+    role_id int
+    access Access
+    fullname varchar
+    
+    password varchar
+    email varchar
+    phones varchar
+
+    is_active bool
+    date_start date
+    date_end date
+
+    contribution_point float
+
+    created_at timestamp
+    updated_at timestamp(100)
+    created_by int(12)
+    updated_by int(12)
+}
+
+Table roles {
+    id int [pk, increment]
+    name varchar
+    description text
+    url_group_wa varchar
+    created_at date
+    created_by int
+}
+
+Table dailys {
+    id int [pk, increment]
+    user_id int
+    date_activity date
+    yesterday text
+    today text
+    problem text
+    created_at date
+    email varchar
+}
+
+Table warnings {
+    id int [pk, increment]
+    user_id int
+    email varchar
+    counter int
+    created_at date
+    created_by int
+}
+
+Enum ProjectStatus {
+    NOT_STARTED
+    IN_PROGRESS
+    COMPLETED
+    FIXING
+    PUBLISH
+}
+
+Enum ProjectType {
+    WEB
+    MOBILE
+    MEDSOS
+    GAME
+}
+
+Table projects {
+    id int [pk, increment]
+    pic int
+    name varchar
+    description text
+    status ProjectStatus
+    tipe ProjectType
+    url_drive varchar
+    url_figma varchar
+    url_logo varchar
+    url_repo varchar
+    url_group_wa varchar
+    note text
+    created_at date
+    created_by int
+}
+
+
+// Ref: users.id > dailys.user_id
+// Ref: users.id > warnings.user_id

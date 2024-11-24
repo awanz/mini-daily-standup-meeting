@@ -11,6 +11,21 @@
 6. Send Email
 ```
 
+## Structure Folder
+mini-daily-standup-meeting/
+├── assets/
+│   ├── bootstrap-5.3.3-dist/
+│   └── jquery/
+├── database/
+│   ├── sql/
+│	└── schema.dbml
+├── .env
+├── .gitignore
+├── .htaccess
+├── next.config.js
+├── middleware.php
+└── README.md
+
 
 ## Database Schema (DDL)
 
