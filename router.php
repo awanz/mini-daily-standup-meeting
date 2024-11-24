@@ -17,6 +17,9 @@ function handleRoute($uri)
         '/forgot-password' => [
             'GET' => ['LoginController', 'forgotPassword'],
         ],
+        '/profile' => [
+            'GET' => ['HomeController', 'profile'],
+        ],
         '/home' => [
             'GET' => ['HomeController', 'index'],
             'POST' => ['HomeController', 'submitDaily'],

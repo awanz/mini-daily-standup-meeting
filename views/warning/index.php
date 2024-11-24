@@ -1,13 +1,15 @@
 <?php $this->layout('layouts/base') ?>
 <?php $this->start('footAdditional') ?>
 <script>
-    new DataTable('#usertable', {
+    new DataTable('#warningTable', {
+        pageLength: 50,
+        lengthMenu: [50, 100, 1000],
         layout: {
             topStart: {
-                buttons: ['excel']
+                buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'desc']]
+        order: [[0, 'desc']],
     });
 </script>
 <?php $this->stop() ?>
@@ -26,13 +28,14 @@
                 <?= $alert['message'] ?>
             </div>
             <?php endif ?>
+            <p>Banding hanya bisa di lakukan sekali dan hanya bisa melakukan banding jika dari keluarnya pemecatan kurang dari 20 hari.</p>
             <div class="table-responsive">
-                <table id="usertable">
+                <table id="warningTable">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
                             <th>Email</th>
-                            <th>Jenis Peringatan</th>
+                            <th>Jenis</th>
                             <th>Action</th>
                         </tr>
                     </thead>

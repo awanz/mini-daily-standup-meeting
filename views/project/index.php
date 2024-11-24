@@ -2,12 +2,14 @@
 <?php $this->start('footAdditional') ?>
 <script>
     new DataTable('#usertable', {
+        pageLength: 30,
+        lengthMenu: [10, 30, 50, 1000],
         layout: {
             topStart: {
-                buttons: ['excel']
+                buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'asc']]
+        order: [[0, 'asc']],
     });
 </script>
 <?php $this->stop() ?>

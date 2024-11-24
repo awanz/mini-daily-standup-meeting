@@ -156,4 +156,28 @@ class HomeController extends BaseController
             $this->redirect('history');
         }
     }
+
+    public function profile()
+    {
+        $user = $this->db->getBy("users", 'id', $this->user->id)->fetch_object();
+        unset($user->password);
+        $dailys = $this->db->getBy("dailys", "user_id", $user->id, "date_activity DESC")->fetch_all();
+        $warnings = $this->db->getBy("warnings", "user_id", $user->id)->fetch_all();
+        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $role = null;
+        if (!empty($user->role_id)) {
+            $role = $this->db->getBy("roles", 'id', $user->role_id)->fetch_object();
+        }
+        // echo "<pre>";
+        // print_r($warnings);die();
+        $alert = $this->getMessage();
+        $this->render('profile/index', [
+            'user' => $user,
+            'dailys' => $dailys, 
+            'alert' => $alert,
+            'warnings' => $warnings,
+            'role' => $role,
+            'roles' => $roles,
+        ]);
+    }
 }

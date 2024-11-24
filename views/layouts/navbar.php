@@ -12,7 +12,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?= BASE_URL ?>/history">History</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= BASE_URL ?>/profile">Profile</a>
+                </li>
                 <?php if ($isAdmin): ?>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/warnings">Pelanggaran</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Users
@@ -23,9 +29,6 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/user/nonactive">User Nonactive</a></li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/warnings">Pelanggaran</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
