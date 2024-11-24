@@ -83,12 +83,12 @@ class UserController extends BaseController
             
             try {
                 $data = [
-                    "email" => $email,
-                    "fullname" => $fullname,
-                    "phone" => $phone,
-                    "role_id" => $role_id,
-                    "date_start" => $date_start,
-                    "date_end" => $date_end,
+                    "email" => $this->db->escape($email),
+                    "fullname" => $this->db->escape($fullname),
+                    "phone" => $this->db->escape($phone),
+                    "role_id" => $this->db->escape($role_id),
+                    "date_start" => $this->db->escape($date_start),
+                    "date_end" => $this->db->escape($date_end),
                     "created_by" => $this->user->id,
                 ];
                 
@@ -149,15 +149,17 @@ class UserController extends BaseController
             $date_start = trim($_POST['date_start']);
             $date_end = trim($_POST['date_end']);
             $role_id = trim($_POST['role_id']);
+            $access = trim($_POST['access']);
             
             try {
                 $data = [
-                    "email" => $email,
-                    "fullname" => $fullname,
-                    "phone" => $phone,
-                    "date_start" => $date_start,
-                    "date_end" => $date_end,
-                    "role_id" => $role_id,
+                    "email" => $this->db->escape($email),
+                    "fullname" => $this->db->escape($fullname),
+                    "phone" => $this->db->escape($phone),
+                    "date_start" => $this->db->escape($date_start),
+                    "date_end" => $this->db->escape($date_end),
+                    "role_id" => $this->db->escape($role_id),
+                    "access" => $this->db->escape($access),
                     "updated_by" => $this->user->id,
                 ];
                 

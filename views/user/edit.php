@@ -19,6 +19,15 @@
                     </select>
                 </div>
                 <div class="form-group my-2">
+                    <label for="Role">Access</label>
+                    <select class="form-select" name="access" required>
+                        <option selected>-- Pilih Access --</option>
+                        <option <?php if("USER" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="USER">USER</option>
+                        <option <?php if("ADMIN" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="ADMIN">ADMIN</option>
+                        <option <?php if("HR" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="HR">HR</option>
+                    </select>
+                </div>
+                <div class="form-group my-2">
                     <label for="fullname">Fullname</label>
                     <input name="fullname" type="text" class="form-control" id="fullname" placeholder="Masukan fullname" value="<?=$this->e($user->fullname ?? "")?>" required>
                 </div>

@@ -48,7 +48,7 @@
                             <td><a href="<?= BASE_URL ?>/email/peringatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td><a href="<?= BASE_URL ?>/email/pemecatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td>
-                                <?php if (isset($value[4])) { ?>
+                                <?php if (!empty($value[4])) { ?>
                                 <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success">WA</a>
                                 <?php } ?>
                                 <a href="<?= BASE_URL ?>/user/edit/<?= $value[1] ?>" class="btn btn-warning">Edit</a>
