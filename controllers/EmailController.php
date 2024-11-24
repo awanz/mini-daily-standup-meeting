@@ -49,6 +49,11 @@ class EmailController extends BaseController
         ';
         $result = $this->sendEmail($receiver, $fullname, $subject, $body);
         if ($result['status']) {
+            $dataUser = [
+                "password" => md5(md5($newPasswordRaw)),
+                "updated_by" => $this->user->id,
+            ];
+            $updateUser = $this->db->update("users", $dataUser, 'id', $id);
             $this->setMessage($result['message'], 'SUCCESS');
             $this->redirect('user');
         }

@@ -146,6 +146,9 @@ function handleRoute($uri)
         }
     }
 
-    http_response_code(404);
-    echo "Page Not Found";
+    // http_response_code(404);
+    // echo "Page Not Found";
+
+    header("Location: ". BASE_URL, false, 301);
+    exit();
 }

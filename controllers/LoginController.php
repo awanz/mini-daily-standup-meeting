@@ -39,6 +39,7 @@ class LoginController extends BaseController
             $result = $this->db->getByArray("users", $param)->fetch_object();
             if (is_null($result)) {
                 $this->setMessage('Email atau password salah coba lagi.');
+                $this->redirect('login');
             }
             unset($result->password);
             $_SESSION['user'] = $result;
