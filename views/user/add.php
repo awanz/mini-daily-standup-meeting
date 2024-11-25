@@ -27,8 +27,8 @@
                     <input name="email" type="email" class="form-control" id="email" placeholder="Masukan email" required>
                 </div>
                 <div class="form-group my-2">
-                    <label for="phone">No Whatsapp</label>
-                    <input name="phone" type="text" class="form-control" id="phone" placeholder="Masukan phone">
+                    <label for="phone">No Whatsapp (Mulai dengan 62 tanpa simbol +)</label>
+                    <input name="phone" type="text" class="form-control" id="phone" placeholder="6285000000000">
                 </div>
                 <div class="form-group my-2">
                     <label for="date_start">Tanggal Mulai</label>

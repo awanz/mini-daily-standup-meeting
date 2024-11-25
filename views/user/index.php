@@ -31,6 +31,7 @@
                         <tr>
                             <th>No</th>
                             <th>Fullname</th>
+                            <th>Role</th>
                             <th>Email</th>
                             <th>Total Daily</th>
                             <th>Send Password</th>
@@ -43,9 +44,10 @@
                         <?php foreach ($users as $key => $value) { ?>
                         <tr>
                             <td><?= $value[0] ?></td>
-                            <td><?= $value[2] ?></td>
+                            <td <?php if ($value[9] == 1) { ?> style="background-color: yellow;" <?php } ?>><?= $value[2] ?></td>
+                            <td><?= $value[8] ?></td>
                             <td><?= $value[3] ?></td>
-                            <td><?= $value[7] ?></td>
+                            <td><?php if ($value[7] == 99) { ?><?= $value[7] ?><?php }else{ ?><a href="<?= BASE_URL ?>/history/<?= $value[3] ?>"><?= $value[7] ?></a><?php } ?></td>
                             <td><a href="<?= BASE_URL ?>/email/credential/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td><a href="<?= BASE_URL ?>/email/peringatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td><a href="<?= BASE_URL ?>/email/pemecatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>

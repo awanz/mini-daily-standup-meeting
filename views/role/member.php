@@ -20,10 +20,9 @@
             <div class="card-body">
                 <h5 class="card-title"><?= $value[3] ?></h5>
                 <p class="card-text">
-                    email: <?= $value[5] ?>
-                </p>
-                <p class="card-text">
-                    handphone: <?= $value[6] ?>
+                    email: <?= $value[5] ?><br>
+                    handphone: <?= $value[6] ?><br>
+                    waktu: <?= $value[8] ?> - <?= $value[9] ?>
                 </p>
             </div>
             <div class="card-footer">

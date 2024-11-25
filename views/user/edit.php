@@ -32,12 +32,12 @@
                     <input name="fullname" type="text" class="form-control" id="fullname" placeholder="Masukan fullname" value="<?=$this->e($user->fullname ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
-                    <label for="email">Email address</label>
+                    <label for="email">Email</label>
                     <input name="email" type="email" class="form-control" id="email" placeholder="Masukan email" value="<?=$this->e($user->email ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
-                    <label for="phone">No Whatsapp</label>
-                    <input name="phone" type="text" class="form-control" id="phone" placeholder="Masukan phone" value="<?=$this->e($user->phone ?? "")?>">
+                    <label for="phone">No Whatsapp (Mulai dengan 62 tanpa simbol +)</label>
+                    <input name="phone" type="text" class="form-control" id="phone" placeholder="6285000000000" value="<?=$this->e($user->phone ?? "")?>">
                 </div>
                 <div class="form-group my-2">
                     <label for="date_start">Tanggal Mulai</label>
