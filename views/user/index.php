@@ -11,6 +11,24 @@
         },
         order: [[0, 'asc']],
     });
+
+    $(document).on('click', '.delete-btn', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        Swal.fire({
+            title: "Yakin untuk melakukan delete?",
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -56,7 +74,9 @@
                                 <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success">WA</a>
                                 <?php } ?>
                                 <a href="<?= BASE_URL ?>/user/edit/<?= $value[1] ?>" class="btn btn-warning">Edit</a>
-                                <a href="<?= BASE_URL ?>/user/delete/<?= $value[1] ?>" class="btn btn-danger">Delete</a>
+                                <a href="#" class="btn btn-danger delete-btn" data-url="<?= BASE_URL ?>/user/delete/<?= $value[1] ?>">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                         <?php } ?>

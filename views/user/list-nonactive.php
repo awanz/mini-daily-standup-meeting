@@ -9,6 +9,24 @@
         },
         order: [[0, 'asc']]
     });
+
+    $(document).on('click', '.btn-actived', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        Swal.fire({
+            title: "Yakin untuk mengaktifkan kembali akun?",
+            text: "Data akan dikembalikan menjadi user aktif!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Aktivasi",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -40,7 +58,7 @@
                       <td><?= $value[3] ?></td>
                       <td><?= $value[5] ?></td>
                       <td>
-                        <a href="<?= BASE_URL ?>/user/actived/<?= $value[0] ?>" class="btn btn-dark">Actived</a>
+                        <a href="#" data-url="<?= BASE_URL ?>/user/actived/<?= $value[0] ?>" class="btn btn-dark btn-actived">Actived</a>
                       </td>
                   </tr>
                   <?php } ?>

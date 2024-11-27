@@ -11,6 +11,24 @@
         },
         order: [[0, 'asc']],
     });
+
+    $(document).on('click', '.delete-btn', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        Swal.fire({
+            title: "Yakin untuk melakukan delete?",
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -49,7 +67,9 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>" class="btn btn-danger">Delete</a>
+                                <a href="#" class="btn btn-danger delete-btn" data-url="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>">
+                                    Delete
+                                </a>
                                 <a href="<?= BASE_URL ?>/role/member/<?= $value[0] ?>" class="btn btn-dark">Member</a>
                             </td>
                         </tr>

@@ -11,6 +11,23 @@
         },
         order: [[0, 'desc']],
     });
+    $(document).on('click', '.btn-delete', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        Swal.fire({
+            title: "Yakin untuk menghapus daily?",
+            text: "Data akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -60,7 +77,11 @@
                         <td><?= $daily[4] ?></td>
                         <td><?= $daily[5] ?></td>
                         <?php if ($isAdmin): ?>
-                        <td><a href="<?= BASE_URL ?>/history/delete/<?= $daily[0] ?>" class="btn btn-dark">Delete</a></td>
+                        <td>
+                            <a href="#" class="btn btn-danger btn-delete" data-url="<?= BASE_URL ?>/history/delete/<?= $daily[0] ?>">
+                                Delete
+                            </a>
+                        </td>
                         <?php endif ?>
                     </tr>
                     <?php endforeach ?>
