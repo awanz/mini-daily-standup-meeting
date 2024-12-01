@@ -20,6 +20,10 @@ function handleRoute($uri)
         '/profile' => [
             'GET' => ['HomeController', 'profile'],
         ],
+        '/profile/change-password' => [
+            'GET' => ['HomeController', 'changePassword'],
+            'POST' => ['HomeController', 'changePasswordProcess'],
+        ],
         '/home' => [
             'GET' => ['HomeController', 'index'],
             'POST' => ['HomeController', 'submitDaily'],
@@ -150,7 +154,12 @@ function handleRoute($uri)
     }
 
     // http_response_code(404);
-    // echo "Page Not Found";
+    // echo "Page Not Found<br>";die($uri);
+
+    $_SESSION['flash_message_alert'] = [
+        'status' => 'FAILED',
+        'message' => 'Halaman ' . $uri . ' tidak ditemukan.',
+    ];
 
     header("Location: ". BASE_URL, false, 301);
     exit();

@@ -30,7 +30,7 @@
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>Profile</h4>
-                    <span><a href="#" class="btn btn-dark disabled">Ganti Password</a></span>
+                    <span><a href="<?= BASE_URL ?>/profile/change-password" class="btn btn-dark">Ganti Password</a></span>
                 </div>
             </h5>
             <form>
@@ -61,13 +61,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group my-2">
-                            <label for="Role">Access</label>
-                            <select class="form-select" name="access" disabled>
-                                <option selected>-- Pilih Access --</option>
-                                <option <?php if ("USER" == $this->e($user->access ?? "")) { echo 'selected'; } ?> value="USER">USER</option>
-                                <option <?php if ("ADMIN" == $this->e($user->access ?? "")) { echo 'selected'; } ?> value="ADMIN">ADMIN</option>
-                                <option <?php if ("HR" == $this->e($user->access ?? "")) { echo 'selected'; } ?> value="HR">HR</option>
-                            </select>
+                            <label for="Role">Hak Akses</label>
+                            <input type="text" class="form-control" value="<?= $this->e($user->access ?? "") ?>" disabled>
                         </div>
                         <div class="form-group my-2">
                             <label for="email">Email address</label>
@@ -97,7 +92,7 @@ if (count($warnings) > 0) {
                 </div>
             </h5>
             <div class="table-responsive">
-                <table id="warningTable">
+                <table id="warningTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
@@ -134,10 +129,11 @@ if (count($dailys) > 0) {
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>History Daily</h4>
+                    <span><a href="<?= BASE_URL ?>/home" class="btn btn-dark">Lapor</a></span>
                 </div>
             </h5>
             <div class="table-responsive">
-                <table id="history">
+                <table id="history" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Tanggal</th>

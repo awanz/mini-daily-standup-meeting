@@ -80,21 +80,21 @@ class ProjectController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
-        $user = $this->db->getBy("users", "id", $id)->fetch_object();
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
         
-        if (empty($user)) {
+        if (empty($project)) {
             $this->setMessage('Data tidak ada!');
-            $this->redirect('user');
+            $this->redirect('project');
         }
         
         $alert = $this->getMessage();
-        $this->render('user/edit', [
+        $this->render('project/edit', [
             'alert' => $alert,
-            'user' => $user
+            'project' => $project
         ]);
         
     }
@@ -106,34 +106,30 @@ class ProjectController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
 
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            $fullname = trim($_POST['fullname']);
-            $email = trim($_POST['email']);
-            $phone = trim($_POST['phone']);
-            $date_start = trim($_POST['date_start']);
-            $date_end = trim($_POST['date_end']);
+            $name = trim($_POST['name']);
+            $status = trim($_POST['status']);
+            $type = trim($_POST['type']);
             
             try {
                 $data = [
-                    "email" => $email,
-                    "fullname" => $fullname,
-                    "phone" => $phone,
-                    "date_start" => $date_start,
-                    "date_end" => $date_end,
+                    "name" => $name,
+                    "status" => $status,
+                    "type" => $type,
                     "updated_by" => $this->user->id,
                 ];
                 
-                $update = $this->db->update("users", $data, 'id', $id);
-                $this->setMessage('Simpan user berhasil!', 'SUCCESS');
-                $this->redirect('user/edit/'.$id);
+                $update = $this->db->update("projects", $data, 'id', $id);
+                $this->setMessage('Update project berhasil!', 'SUCCESS');
+                $this->redirect('project/edit/'.$id);
             } catch (\Throwable $th) {
                 $this->setMessage($th->getMessage());
-                $this->redirect('user/edit/'.$id);
+                $this->redirect('project/edit/'.$id);
             }
         }
         

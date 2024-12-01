@@ -8,18 +8,18 @@
                     <?= $alert['message'] ?>
                 </div>
             <?php endif ?>
-            <form method="POST" action="<?= BASE_URL ?>/role/add">
+            <form method="POST" action="<?= BASE_URL ?>/role/edit/<?=$this->e($role->id ?? "")?>">
                 <div class="form-group my-2">
                     <label for="name">Name</label>
-                    <input name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" required>
+                    <input name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" value="<?=$this->e($role->name ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="url_group_wa">URL Whatsapp</label>
-                    <input name="url_group_wa" type="text" class="form-control" id="url_group_wa" placeholder="Masukan Link Grup WA" required>
+                    <input name="url_group_wa" type="text" class="form-control" id="url_group_wa" placeholder="Masukan Link Grup WA" value="<?=$this->e($role->url_group_wa ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="description">Description</label>
-                    <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                    <textarea class="form-control" name="description" id="description" rows="4"><?=$this->e($role->description ?? "")?></textarea>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
                 <a href="<?= BASE_URL ?>/role" class="btn btn-light my-2">Kembali</a>

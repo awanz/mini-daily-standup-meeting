@@ -58,13 +58,17 @@
             return $result;
         }
 
-        public function getAllClean($tableName, $clean = true) {
+        public function getAllClean($tableName, $clean = true, $orderBy = null) {
             /*
                 SELECT * FROM $tableName
             */
             $query = "SELECT * FROM " . $tableName;
             if ($clean) {
                 $query = $query . " WHERE deleted_at is null";
+            }
+
+            if ($orderBy) {
+                $query = $query . " ORDER BY " . $orderBy;
             }
             // print_r($query);
             // die();

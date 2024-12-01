@@ -69,6 +69,68 @@ class RoleController extends BaseController
         }
         
     }
+
+    public function edit($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+
+        if (!$isAdmin) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $id = $this->db->escape($data['id']);
+        $role = $this->db->getBy("roles", "id", $id)->fetch_object();
+        
+        if (empty($role)) {
+            $this->setMessage('Data tidak ada!');
+            $this->redirect('role');
+        }
+        
+        $alert = $this->getMessage();
+        $this->render('role/edit', [
+            'alert' => $alert,
+            'role' => $role,
+        ]);
+        
+    }
+    
+    public function update($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+        // $this->dd($isAdmin);
+
+        if (!$isAdmin) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $id = $this->db->escape($data['id']);
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $name = trim($_POST['name']);
+            $description = trim($_POST['description']);
+            $url_group_wa = trim($_POST['url_group_wa']);
+            
+            try {
+                $data = [
+                    "name" => $name,
+                    "description" => $description,
+                    "url_group_wa" => $url_group_wa,
+                ];
+                
+                $update = $this->db->update("roles", $data, 'id', $id);
+                $this->setMessage('Simpan user berhasil!', 'SUCCESS');
+                $this->redirect('role/edit/'.$id);
+            } catch (\Throwable $th) {
+                $this->setMessage($th->getMessage());
+                $this->redirect('role/edit/'.$id);
+            }
+        }
+        
+    }
     
     public function delete($data)
     {
@@ -109,14 +171,16 @@ class RoleController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
-        $users = $this->db->getBy("users", "role_id", $id)->fetch_all();
-        
+        // $users = $this->db->getBy("users", "role_id", $id)->fetch_all();
+        $query = 'SELECT * FROM users u WHERE u.is_active = 1 and role_id = ' .$id. ' ORDER BY created_at DESC limit 200;';
+        // $this->dd($query);
+        $users = $this->db->raw($query)->fetch_all();
         if (empty($users)) {
-            $this->setMessage('Data tidak ada!');
+            $this->setMessage('Role belum memiliki anggota, silahkan tambah terlebih dahulu.');
             $this->redirect('role');
         }
         

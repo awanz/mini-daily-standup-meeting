@@ -48,6 +48,7 @@
                     <input type="date" class="form-control" id="date_end" name="date_end" value="<?=$this->e($user->date_end ?? "")?>" required>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
+                <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>

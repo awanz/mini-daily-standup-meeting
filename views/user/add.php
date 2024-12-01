@@ -3,6 +3,14 @@
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Tambah User</h4>
+                    <div>
+                        <?= date('d M Y') ?>
+                    </div>
+                </div>
+            </h5>
             <?php if ($alert): ?>
                 <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                     <?= $alert['message'] ?>
@@ -39,6 +47,7 @@
                     <input type="date" class="form-control" id="date_end" name="date_end" required>
                 </div> -->
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
+                <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>

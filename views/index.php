@@ -21,6 +21,11 @@
                     <div><?= $this->e($date) ?></div>
                 </div>
             </h5>
+            <?php if (empty($user->role_id) || empty($user->date_end)): ?>
+            <h4 style="background-color: red; text-align: center;">
+                SILAHKAN HUBUNGI KOORDINATOR/TEAM LEADER/PROJECT MANAGER UNTUK MEMPERBARUI PROFILE ANDA, KARNA AKUN BELUM LENGKAP!
+            </h4>
+            <?php endif ?>
             <p class="card-text">Hello, <b><?=$this->e($dataUser->fullname)?></b> <u>(<?=$this->e($dataUser->email)?>)</u></p>
             <h4 class="text-dark">[Bisa baca?]</h4>
             <h6 class="card-text">Pastikan email yang tercantum benar, karna info maupun teguran akan dikirim melalui e-mail.</h6>
@@ -61,7 +66,7 @@
                 </div>
                 <input type="hidden" name="date_activity" value="<?= $this->e($date) ?>">
                 <h6 class="card-subtitle mb-4 text-danger"><small><i>*Mohon isi semua bagian, jika lupa isi atau salah isi bisa info ke <u>Project Manager/Koordinator</u></i></small></h6>
-                <?php if (is_null($daily)): ?>
+                <?php if (is_null($daily) && (isset($user->role_id) && isset($user->date_end))): ?>
                 <div class="form-group">
                     <div class="text-center">
                         <button class="btn btn-dark mt-2">Lapor!</button>

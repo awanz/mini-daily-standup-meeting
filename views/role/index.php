@@ -47,7 +47,7 @@
             </div>
             <?php endif ?>
             <div class="table-responsive">
-                <table id="usertable">
+                <table id="usertable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -63,14 +63,15 @@
                             <td><?= $value[1] ?></td>
                             <td>
                                 <?php if (isset($value[3])) { ?>
-                                <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-dark">LINK</a>
+                                <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-success">Group WA</a>
                                 <?php } ?>
                             </td>
-                            <td>
-                                <a href="#" class="btn btn-danger delete-btn" data-url="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>">
+                            <td>    
+                                <a href="<?= BASE_URL ?>/role/member/<?= $value[0] ?>" class="btn btn-dark my-1">Member</a>
+                                <a href="<?= BASE_URL ?>/role/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
+                                <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>">
                                     Delete
                                 </a>
-                                <a href="<?= BASE_URL ?>/role/member/<?= $value[0] ?>" class="btn btn-dark">Member</a>
                             </td>
                         </tr>
                         <?php } ?>

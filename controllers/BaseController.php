@@ -73,6 +73,12 @@ class BaseController
 
         return $isHR;
     }
+    
+    public function dd($data = null){
+        echo "<pre>";
+        print_r($data);
+        die();
+    }
 
     public function redirect(string $path)
     {

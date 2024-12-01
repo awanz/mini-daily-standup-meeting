@@ -42,27 +42,28 @@
                 </div>
             <?php endif ?>
           <div class="table-responsive">
-            <table id="usertable">
-              <thead>
-                  <tr>
-                      <th>ID</th>
-                      <th>Fullname</th>
-                      <th>Email</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <?php foreach ($users as $key => $value) { ?>
-                  <tr>
-                      <td><?= $value[0] ?></td>
-                      <td><?= $value[3] ?></td>
-                      <td><?= $value[5] ?></td>
-                      <td>
-                        <a href="#" data-url="<?= BASE_URL ?>/user/actived/<?= $value[0] ?>" class="btn btn-dark btn-actived">Actived</a>
-                      </td>
-                  </tr>
-                  <?php } ?>
-              </tbody>
+            <table id="usertable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <?php foreach ($users as $key => $value) { ?>
+                        <tr>
+                            <td><?= $value[0] ?></td>
+                            <td><?= $value[3] ?></td>
+                            <td><?= $value[5] ?></td>
+                            <td>
+                            <a href="<?= BASE_URL ?>/user/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
+                            <a href="#" data-url="<?= BASE_URL ?>/user/actived/<?= $value[0] ?>" class="btn btn-dark btn-actived">Actived</a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                </tbody>
             </table>
           </div>
         </div>

@@ -49,7 +49,7 @@ class UserController extends BaseController
             $this->redirect('home');
         }
 
-        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $roles = $this->db->getAllClean("roles", true, "name asc")->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('user/add', [
@@ -110,7 +110,7 @@ class UserController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
@@ -120,7 +120,7 @@ class UserController extends BaseController
             $this->setMessage('Data tidak ada!');
             $this->redirect('user');
         }
-        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $roles = $this->db->getAllClean("roles", true, "name asc")->fetch_all();
         $alert = $this->getMessage();
         $this->render('user/edit', [
             'alert' => $alert,
@@ -137,7 +137,7 @@ class UserController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
@@ -181,7 +181,7 @@ class UserController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);

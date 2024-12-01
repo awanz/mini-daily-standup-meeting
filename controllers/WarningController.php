@@ -12,7 +12,7 @@ class WarningController extends BaseController
             $this->redirect('home');
         }
         
-        $warnings = $this->db->getAll("warnings")->fetch_all();
+        $warnings = $this->db->getAll("view_user_warnings")->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('warning/index', [
@@ -28,11 +28,14 @@ class WarningController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
-        $warning = $this->db->getBy("warnings", "id", $id)->fetch_object();
+        $warning = $this->db->getBy("view_user_warnings", "id", $id)->fetch_object();
+        $user = $this->db->getBy("users", "id", $warning->user_id)->fetch_object();
+
+        // $this->dd($user);
         
         if (empty($warning)) {
             $this->setMessage('Data tidak ada!');
@@ -43,6 +46,7 @@ class WarningController extends BaseController
         $this->render('warning/appeal', [
             'alert' => $alert,
             'warning' => $warning,
+            'user' => $user,
         ]);
         
     }
@@ -54,7 +58,7 @@ class WarningController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);

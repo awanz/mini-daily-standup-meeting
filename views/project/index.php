@@ -2,7 +2,7 @@
 <?php $this->start('footAdditional') ?>
 <script>
     new DataTable('#usertable', {
-        pageLength: 30,
+        pageLength: 50,
         lengthMenu: [10, 30, 50, 1000],
         layout: {
             topStart: {
@@ -36,8 +36,10 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Projects</h4>
-                    <div><?= date('d M Y') ?></div>
+                    <h4>Project List</h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/project/add" class="btn btn-dark my-2">Tambah Project</a>
+                    </div>
                 </div>
             </h5>
             <?php if ($alert): ?>
@@ -46,7 +48,7 @@
             </div>
             <?php endif ?>
             <div class="table-responsive">
-                <table id="usertable">
+                <table id="usertable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Project</th>
@@ -65,7 +67,19 @@
                         <tr>
                             <td><?= $value[2] ?></td>
                             <td><?= $value[1] ?></td>
-                            <td><span class="badge bg-primary"><?= $value[4] ?></span></td>
+                            <td>
+                                <?php if (isset($value[4]) && $value[4] == 'NOT_STARTED') { ?>
+                                <span class="badge bg-light text-dark"><?= $value[4] ?></span>
+                                <?php }elseif (isset($value[4]) && $value[4] == 'IN_PROGRESS') { ?>
+                                <span class="badge bg-warning"><?= $value[4] ?></span>
+                                <?php }elseif (isset($value[4]) && $value[4] == 'COMPLETED') { ?>
+                                <span class="badge bg-success"><?= $value[4] ?></span>
+                                <?php }elseif (isset($value[4]) && $value[4] == 'FIXING') { ?>
+                                <span class="badge bg-danger"><?= $value[4] ?></span>
+                                <?php }elseif (isset($value[4]) && $value[4] == 'PUBLISH') { ?>
+                                <span class="badge bg-primary"><?= $value[4] ?></span>
+                                <?php } ?>
+                            </td>
                             <td>
                                 <?php if (isset($value[6])) { ?>
                                 <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-dark">LINK</a>
@@ -92,7 +106,8 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-danger delete-btn" data-url="<?= BASE_URL ?>/project/delete/<?= $value[0] ?>">
+                                <a href="<?= BASE_URL ?>/project/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
+                                <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/project/delete/<?= $value[0] ?>">
                                     Delete
                                 </a>
                             </td>

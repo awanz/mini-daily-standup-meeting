@@ -18,7 +18,7 @@
 
         Swal.fire({
             title: "Yakin untuk melakukan delete?",
-            text: "Data yang dihapus tidak dapat dikembalikan!",
+            text: "Data yang dihapus akan menjadi user nonactive.",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Delete",
@@ -35,16 +35,21 @@
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
-            <div>
-                <p>Hello, <b><?= $dataUser->fullname ?></b></p>
-            </div>
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>User List</h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/user/add" class="btn btn-dark my-2">Tambah User</a>
+                    </div>
+                </div>
+            </h5>
             <?php if ($alert): ?>
             <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                 <?= $alert['message'] ?>
             </div>
             <?php endif ?>
             <div class="table-responsive">
-                <table id="usertable">
+                <table id="usertable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -62,7 +67,17 @@
                         <?php foreach ($users as $key => $value) { ?>
                         <tr>
                             <td><?= $value[0] ?></td>
-                            <td <?php if ($value[9] == 1) { ?> style="background-color: yellow;" <?php } ?>><?= $value[2] ?></td>
+                            <td 
+                                <?php 
+                                    $today = new DateTime(); 
+                                    $dateEnd = $value[6] ? new DateTime($value[6]) : null;
+                                ?>
+                                <?php if ($value[9] == 1 && $today <= $dateEnd) { ?> style="background-color: yellow;" <?php } ?>
+                                <?php if ($value[9] == 1 && $today >= $dateEnd) { ?> style="background-color: green;" <?php } ?>
+                                <?php if (empty($value[5]) || empty($value[6]) || empty($value[8])) { ?> style="background-color: purple;" <?php } ?>
+                                >
+                                <?= $value[2] ?>
+                            </td>
                             <td><?= $value[8] ?></td>
                             <td><?= $value[3] ?></td>
                             <td><?php if ($value[7] == 99) { ?><?= $value[7] ?><?php }else{ ?><a href="<?= BASE_URL ?>/history/<?= $value[3] ?>"><?= $value[7] ?></a><?php } ?></td>
@@ -71,10 +86,10 @@
                             <td><a href="<?= BASE_URL ?>/email/pemecatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td>
                                 <?php if (!empty($value[4])) { ?>
-                                <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success">WA</a>
+                                <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success my-1">WA</a>
                                 <?php } ?>
-                                <a href="<?= BASE_URL ?>/user/edit/<?= $value[1] ?>" class="btn btn-warning">Edit</a>
-                                <a href="#" class="btn btn-danger delete-btn" data-url="<?= BASE_URL ?>/user/delete/<?= $value[1] ?>">
+                                <a href="<?= BASE_URL ?>/user/edit/<?= $value[1] ?>" class="btn btn-warning my-1">Edit</a>
+                                <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/user/delete/<?= $value[1] ?>">
                                     Delete
                                 </a>
                             </td>

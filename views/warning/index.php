@@ -30,11 +30,12 @@
             <?php endif ?>
             <p>Banding hanya bisa di lakukan sekali dan hanya bisa melakukan banding jika dari keluarnya pemecatan kurang dari 20 hari.</p>
             <div class="table-responsive">
-                <table id="warningTable">
+                <table id="warningTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
-                            <th>Email</th>
+                            <th>Fullname</th>
+                            <th>Role</th>
                             <th>Jenis</th>
                             <th>Action</th>
                         </tr>
@@ -42,13 +43,14 @@
                     <tbody>
                         <?php foreach ($warnings as $key => $value) { ?>
                         <tr>
+                            <td><?= $value[5] ?></td>
                             <td><?= $value[6] ?></td>
-                            <td><?= $value[2] ?></td>
+                            <td><?= $value[7] ?></td>
                             <td>
                                 <?= $value[3] == 2 ? '<span class="badge bg-danger">PEMECATAN</span>' : '<span class="badge bg-warning">PERINGATAN</span>' ?>
                             </td>
                             <td>
-                                <?php if(strtotime($value[6]) >= strtotime('-20 days') && $value[3] == 2 && empty($value[4])) { ?>
+                                <?php if(strtotime($value[5]) >= strtotime('-20 days') && $value[3] == 2 && empty($value[4])) { ?>
                                 <a href="<?= BASE_URL ?>/warnings/appeal/<?= $value[0] ?>" class="btn btn-dark">Banding</a>
                                 <?php } ?>
                             </td>

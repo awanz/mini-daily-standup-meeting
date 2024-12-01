@@ -52,7 +52,7 @@
                 
             </ul>
             <div class="d-flex">
-                <a href="keluar" class="btn btn-outline-light">Keluar</a>
+                <a href="<?= BASE_URL ?>/keluar" class="btn btn-outline-light">Keluar</a>
             </div>
         </div>
     </div>

@@ -11,7 +11,6 @@ class HomeController extends BaseController
             $dateGet = $data['date'];
         }
         
-        $alert = $this->getMessage();
         if (isset($data['date'])) {
             $dateGet = $this->db->escape($data['date']);
             $today = date('Y-m-d');
@@ -26,11 +25,14 @@ class HomeController extends BaseController
         ];
 
         $resultDaily = $this->db->getByArray("dailys", $paramDailyFInd)->fetch_object();
+        $user = $this->db->getBy("users", 'id', $this->user->id)->fetch_object();
+
+        $alert = $this->getMessage();
         $this->render('index', [
-            'siteKey' => TURNSTILE_SITE_KEY, 
             'date' => $dateGet,
             'alert' => $alert,
-            'daily' => $resultDaily
+            'user' => $user,
+            'daily' => $resultDaily,
         ]);
     }
     
@@ -109,7 +111,7 @@ class HomeController extends BaseController
             if ($getEmail) {
               $query = "SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 and d.email = '".$getEmail."';";
             }else{
-              $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1;';
+              $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 ORDER BY created_at DESC limit 200;';
             }
             $resultDailys = $this->db->raw($query)->fetch_all();
         }else{
@@ -136,7 +138,7 @@ class HomeController extends BaseController
 
         if (!$isAdmin) {
             $this->setMessage('Kamu tidak punya hak akses untuk melakukan delete');
-            $this->redirect('history');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
@@ -179,5 +181,69 @@ class HomeController extends BaseController
             'role' => $role,
             'roles' => $roles,
         ]);
+    }
+    
+    public function changePassword()
+    {
+        $user = $this->db->getBy("users", 'id', $this->user->id)->fetch_object();
+        unset($user->password);
+        $dailys = $this->db->getBy("dailys", "user_id", $user->id, "date_activity DESC")->fetch_all();
+        $warnings = $this->db->getBy("warnings", "user_id", $user->id)->fetch_all();
+        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $role = null;
+        if (!empty($user->role_id)) {
+            $role = $this->db->getBy("roles", 'id', $user->role_id)->fetch_object();
+        }
+        // echo "<pre>";
+        // print_r($warnings);die();
+        $alert = $this->getMessage();
+        $this->render('profile/change-password', [
+            'user' => $user,
+            'dailys' => $dailys, 
+            'alert' => $alert,
+            'warnings' => $warnings,
+            'role' => $role,
+            'roles' => $roles,
+        ]);
+    }
+    
+    public function changePasswordProcess()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $user = $this->db->getBy("users", 'id', $this->user->id)->fetch_object();
+
+            $password = md5(md5($_POST['password']));
+            $new_password = md5(md5($_POST['new_password']));
+            
+            try {
+                if ($password != $user->password) {
+                    throw new Exception("Password lama tidak sama!", 1);
+                }
+
+                if ($password == $new_password) {
+                    throw new Exception("Password lama dan baru sama!", 1);
+                }
+
+                $pattern = '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/';
+
+                if (!preg_match($pattern, $_POST['new_password'])) {
+                    throw new Exception("Password harus minimal 6 karakter dan mengandung huruf serta angka.", 1);
+                }
+
+                $data = [
+                    "password" => $this->db->escape($new_password),
+                ];
+                
+                $update = $this->db->update("users", $data, 'id', $user->id);
+                $this->setMessage('Ganti password user berhasil!', 'SUCCESS');
+                $this->redirect('profile/change-password');
+            } catch (\Throwable $th) {
+                $this->setMessage($th->getMessage());
+                $this->redirect('profile/change-password');
+            }
+        }
+       
+        $this->setMessage('Ganti password user gagal!', 'FAILED');
+        $this->redirect('profile/change-password');
     }
 }

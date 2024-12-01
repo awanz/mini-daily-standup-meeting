@@ -2,8 +2,9 @@
 <?php $this->start('footAdditional') ?>
 <script>
     new DataTable('#history', {
+        responsive: true,
         pageLength: 31,
-        lengthMenu: [5, 10, 25, 50, 1000],
+        lengthMenu: [5, 10, 25, 28, 29, 30, 31, 50, 1000],
         layout: {
             topStart: {
                 buttons: ['pageLength','excel']
@@ -51,7 +52,7 @@
             </div>
             <?php endif ?>
             <div class="table-responsive">
-                <table id="history">
+                <table id="history" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Tanggal</th>
