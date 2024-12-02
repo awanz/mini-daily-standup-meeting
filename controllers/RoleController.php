@@ -12,7 +12,31 @@ class RoleController extends BaseController
             $this->redirect('home');
         }
         // echo "sadsa";die();
-        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $query = '
+            SELECT 
+                r.id, 
+                r.name,
+                r.description,
+                r.url_group_wa,
+                (
+                    SELECT 
+                        COUNT(u.id) 
+                    FROM 
+                        users u
+                    WHERE 
+                        u.role_id = r.id 
+                        AND u.is_active = 1
+                ) AS total_users,
+                ROW_NUMBER() OVER (ORDER BY `r`.`name`) AS `no`
+            FROM 
+                roles r
+            WHERE 
+                r.deleted_at IS NULL
+            ORDER BY r.name asc;
+        ';
+        // $roles = $this->db->getAllClean("roles")->fetch_all();
+        // $this->dd($query);
+        $roles = $this->db->raw($query)->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('role/index', [
@@ -176,7 +200,7 @@ class RoleController extends BaseController
 
         $id = $this->db->escape($data['id']);
         // $users = $this->db->getBy("users", "role_id", $id)->fetch_all();
-        $query = 'SELECT * FROM users u WHERE u.is_active = 1 and role_id = ' .$id. ' ORDER BY created_at DESC limit 200;';
+        $query = 'SELECT * FROM users u WHERE u.is_active = 1 and role_id = ' .$id. ' ORDER BY fullname asc limit 200;';
         // $this->dd($query);
         $users = $this->db->raw($query)->fetch_all();
         if (empty($users)) {

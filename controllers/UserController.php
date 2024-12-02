@@ -12,7 +12,14 @@ class UserController extends BaseController
             $this->redirect('home');
         }
         // echo "sadsa";die();
-        $users = $this->db->getAll("view_user_daily")->fetch_all();
+        // $users = $this->db->getAll("view_user_daily")->fetch_all();
+        $query = '
+            SELECT 
+                *
+            FROM 
+                view_user_daily vud;
+        ';
+        $users = $this->db->raw($query)->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('user/index', [

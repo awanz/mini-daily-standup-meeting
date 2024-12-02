@@ -24,7 +24,8 @@
                         <option selected>-- Pilih Access --</option>
                         <option <?php if("USER" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="USER">USER</option>
                         <option <?php if("ADMIN" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="ADMIN">ADMIN</option>
-                        <option <?php if("HR" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="HR">HR</option>
+                        <option <?php if("VOLUNTEER" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="VOLUNTEER">VOLUNTEER</option>
+                        <option <?php if("MITRA" == $this->e($user->access ?? "")){ echo 'selected'; } ?> value="MITRA">MITRA</option>
                     </select>
                 </div>
                 <div class="form-group my-2">
@@ -47,9 +48,22 @@
                     <label for="date_end">Tanggal Berakhir</label>
                     <input type="date" class="form-control" id="date_end" name="date_end" value="<?=$this->e($user->date_end ?? "")?>" required>
                 </div>
+                <div class="form-group my-2">
+                    <label for="notes">Catatan</label>
+                    <textarea class="form-control" name="notes" id="notes" rows="4"><?=$this->e($user->notes ?? "")?></textarea>
+                </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
                 <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
             </form>
+        </div>
+    </div>
+    <div class="card my-2">
+        <div class="card-body">
+            <p>Last login: <?=$this->e($user->last_login_at ?? "")?></p>
+            <p>Created by: <?=$this->e($user->created_by ?? "-")?></p>
+            <p>Created at: <?=$this->e($user->created_at ?? "-")?></p>
+            <p>Updated by: <?=$this->e($user->updated_by ?? "-")?></p>
+            <p>Updated at: <?=$this->e($user->updated_at ?? "-")?></p>
         </div>
     </div>
 </div>

@@ -67,6 +67,60 @@ AUTO_INCREMENT=2
 select `u`.`id` AS `id`,`u`.`fullname` AS `fullname`,`u`.`email` AS `email`,coalesce(sum(case when month(`a`.`date_activity`) = month(curdate()) then 1 else 0 end),0) AS `total_daily` from (`kawp4581_daily`.`users` `u` left join `kawp4581_daily`.`dailys` `a` on(`u`.`id` = `a`.`user_id`)) group by `u`.`id`,`u`.`fullname`,`u`.`email`
 ```
 
+```Table view_user_daily
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY `u`.`id`) AS `no`,
+    `u`.`id` AS `id`,
+    `u`.`fullname` AS `fullname`,
+    `u`.`email` AS `email`,
+    `u`.`phone` AS `phone`,
+    `u`.`date_start` AS `date_start`,
+    `u`.`date_end` AS `date_end`,
+    COALESCE(
+        CASE 
+            WHEN `u`.`access` = 'ADMIN' THEN 99 
+            ELSE SUM(
+                CASE 
+                    WHEN MONTH(`a`.`date_activity`) = MONTH(CURDATE()) THEN 1 
+                    ELSE 0 
+                END
+            ) 
+        END, 
+    0) AS `total_daily`,
+    `r`.`name` AS `role`,
+	CASE 
+        WHEN `u`.`date_end` IS NOT NULL 
+             AND (TO_DAYS(`u`.`date_start`) - TO_DAYS(CURDATE())) <= -15 
+        THEN 1 
+        ELSE 0 
+    END AS `is_start`,
+    CASE 
+        WHEN `u`.`date_end` IS NOT NULL 
+             AND (TO_DAYS(`u`.`date_end`) - TO_DAYS(CURDATE())) <= 15 
+        THEN 1 
+        ELSE 0 
+    END AS `is_finish`
+FROM 
+    `users` `u`
+LEFT JOIN 
+    `dailys` `a` ON `u`.`id` = `a`.`user_id`
+LEFT JOIN 
+    `roles` `r` ON `u`.`role_id` = `r`.`id`
+WHERE 
+    `u`.`is_active` = 1
+	AND
+	`u`.`access` = "USER"
+GROUP BY 
+    `u`.`id`,
+    `u`.`fullname`,
+    `u`.`email`,
+    `u`.`phone`,
+    `u`.`date_start`,
+    `u`.`date_end`,
+    `r`.`name`,
+    `u`.`access`;
+```
+
 ## Data Seed (DML)
 
 ```

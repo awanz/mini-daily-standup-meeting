@@ -2,14 +2,14 @@
 <?php $this->start('footAdditional') ?>
 <script>
     new DataTable('#usertable', {
-        pageLength: 30,
+        pageLength: 50,
         lengthMenu: [10, 30, 50, 1000],
         layout: {
             topStart: {
                 buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'asc']],
+        // order: [[1, 'asc']],
     });
 
     $(document).on('click', '.delete-btn', function (e) {
@@ -52,6 +52,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Total Anggota</th>
                             <th>Whatsapp</th>
                             <th>Action</th>
                         </tr>
@@ -59,8 +60,9 @@
                     <tbody>
                         <?php foreach ($roles as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[0] ?></td>
+                            <td><?= $value[5] ?></td>
                             <td><?= $value[1] ?></td>
+                            <td><?= $value[4] ?></td>
                             <td>
                                 <?php if (isset($value[3])) { ?>
                                 <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-success">Group WA</a>
