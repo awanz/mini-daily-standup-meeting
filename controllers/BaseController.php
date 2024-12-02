@@ -48,7 +48,9 @@ class BaseController
 
     public function checkLogged(){
         // print_r($_SESSION);die();
-        $this->user = $_SESSION['user'];
+        if (isset($_SESSION['user'])) {
+            $this->user = $_SESSION['user'];
+        }
         if (!$this->user) {
             $this->redirect('login');
         }
