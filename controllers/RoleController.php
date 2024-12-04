@@ -208,21 +208,38 @@ class RoleController extends BaseController
 
         $query = "
         SELECT 
-            u.*,
+            vud.id,
+            vud.fullname,
+            vud.email,
+            vud.phone,
+            vud.date_start,
+            vud.date_end,
+            vud.total_daily,
+            vud.role,
+            vud.is_finish,
+            vud.last_login_at,
             GROUP_CONCAT(p.name SEPARATOR ', ') AS join_project
         FROM 
-            users u
+            view_user_daily vud
         LEFT JOIN 
-            project_users pu ON u.id = pu.user_id
+            project_users pu ON vud.id = pu.user_id
         LEFT JOIN 
             projects p ON pu.project_id = p.id
         WHERE 
-            u.is_active = 1 
-            AND u.role_id = " .$id. "
+            vud.role = '" .$role->name. "'
         GROUP BY 
-            u.id, u.fullname, u.email, u.role_id, u.is_active
+            vud.id,
+            vud.fullname,
+            vud.email,
+            vud.phone,
+            vud.date_start,
+            vud.date_end,
+            vud.total_daily,
+            vud.role,
+            vud.is_finish,
+            vud.last_login_at
         ORDER BY 
-            u.fullname ASC
+            vud.fullname ASC
         LIMIT 200;
         ";
         // $this->dd($query);

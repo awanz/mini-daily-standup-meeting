@@ -29,16 +29,17 @@
                 <div class="col">
                     <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $value[3] ?></h5>
+                        <h5 class="card-title"><?= $value[1] ?></h5>
                         <p class="card-text">
-                            e-mail: <?= $value[5] ?><br>
-                            No HP: <?= $value[6] ?><br>
-                            Kontrak: <?= $value[8] ?> - <?= $value[9] ?><br>
-                            Projects: <?= $value[20] ?>
+                            e-mail: <?= $value[2] ?><br>
+                            No HP: <?= $value[3] ?><br>
+                            Kontrak: <?= $value[4] ?> - <?= $value[5] ?><br>
+                            Total Daily Bulan ini: <?= $value[6] ?><br>
+                            Projects: <?= $value[10] ?>
                         </p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Last login <?= $value[11] ?></small>
+                        <small class="text-muted">Last login <?= $value[9] ?></small>
                     </div>
                     </div>
                 </div>
