@@ -137,6 +137,54 @@ class UserController extends BaseController
         
     }
     
+    public function detail($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+
+        if (!$isAdmin) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $id = $this->db->escape($data['id']);
+        $user = $this->db->getBy("users", 'id', $id)->fetch_object();
+        unset($user->password);
+        $dailys = $this->db->getBy("dailys", "user_id", $user->id, "date_activity DESC")->fetch_all();
+        $warnings = $this->db->getBy("warnings", "user_id", $user->id)->fetch_all();
+        $roles = $this->db->getAllClean("roles")->fetch_all();
+        $role = null;
+        if (!empty($user->role_id)) {
+            $role = $this->db->getBy("roles", 'id', $user->role_id)->fetch_object();
+        }
+
+        $projectQuery = '
+                    SELECT 
+                        p.name, pu.status, p.status, p.type, p.url_group_wa
+                    FROM 
+                        project_users pu
+                    LEFT JOIN users u
+                    ON pu.user_id = u.id
+                    LEFT JOIN projects p
+                    ON pu.project_id = p.id
+                    WHERE pu.user_id = '.$user->id.'
+                    ;
+                ';
+        $projects = $this->db->raw($projectQuery)->fetch_all();
+
+        $alert = $this->getMessage();
+        $this->render('user/detail', [
+            'user' => $user,
+            'dailys' => $dailys, 
+            'alert' => $alert,
+            'warnings' => $warnings,
+            'role' => $role,
+            'roles' => $roles,
+            'projects' => $projects,
+        ]);
+        
+    }
+    
     public function update($data)
     {
         

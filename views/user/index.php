@@ -88,6 +88,7 @@
                                 <?php if (!empty($value[4])) { ?>
                                 <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success my-1">WA</a>
                                 <?php } ?>
+                                <a href="<?= BASE_URL ?>/user/detail/<?= $value[1] ?>" class="btn btn-primary my-1">Detail</a>
                                 <a href="<?= BASE_URL ?>/user/edit/<?= $value[1] ?>" class="btn btn-warning my-1">Edit</a>
                                 
                                 <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/user/delete/<?= $value[1] ?>">

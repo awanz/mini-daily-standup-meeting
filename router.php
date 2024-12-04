@@ -61,6 +61,9 @@ function handleRoute($uri)
             'GET' => ['UserController', 'edit'],
             'POST' => ['UserController', 'update'],
         ],
+        '/user/detail/:id' => [
+            'GET' => ['UserController', 'detail'],
+        ],
         '/user/delete/:id' => [
             'GET' => ['UserController', 'delete'],
         ],
