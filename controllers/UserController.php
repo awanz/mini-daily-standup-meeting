@@ -79,7 +79,7 @@ class UserController extends BaseController
         
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $fullname = trim($_POST['fullname']);
-            $email = trim($_POST['email']);
+            $email = strtolower(trim($_POST['email']));
             $phone = trim($_POST['phone']);
             $role_id = trim($_POST['role_id']);
             $date_start = trim($_POST['date_start']);
@@ -151,7 +151,7 @@ class UserController extends BaseController
 
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $fullname = trim($_POST['fullname']);
-            $email = trim($_POST['email']);
+            $email = strtolower(trim($_POST['email']));
             $phone = trim($_POST['phone']);
             $date_start = trim($_POST['date_start']);
             $date_end = trim($_POST['date_end']);
@@ -193,6 +193,23 @@ class UserController extends BaseController
 
         $id = $this->db->escape($data['id']);
         try {
+
+            $warningQuery = '
+                    SELECT 
+                        *
+                    FROM 
+                        warnings
+                    WHERE user_id = '.$id.'
+                    AND counter = 2
+                    AND is_appeal is NULL
+                    LIMIT 1;
+                ';
+            $warning = $this->db->raw($warningQuery)->fetch_object();
+            if ($warning) {
+                throw new Exception("Error: User sudah dikeluarkan, harus lewat proses banding", 1);
+            }
+
+
             $data = [
                 "is_active" => 1,
                 "updated_by" => $this->user->id,

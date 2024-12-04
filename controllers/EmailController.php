@@ -28,6 +28,12 @@ class EmailController extends BaseController
         $randomLetter = $letters[mt_rand(0, strlen($letters) - 1)];
         $randomLetter2 = $letters[mt_rand(0, strlen($letters) - 1)];
         $newPasswordRaw = $randomLetter . $randomLetterss . $randomNumber . $randomLetter2;
+        $newPasswordRaw = preg_replace_callback('/\./', function () use ($letters) {
+            return $letters[rand(0, strlen($letters) - 1)];
+        }, $newPasswordRaw);
+
+        // print_r($newPasswordRaw);
+        // die();
 
         $receiver   = $user->email;
         $fullname   = $user->fullname;

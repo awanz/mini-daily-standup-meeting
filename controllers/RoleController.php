@@ -199,8 +199,32 @@ class RoleController extends BaseController
         }
 
         $id = $this->db->escape($data['id']);
-        // $users = $this->db->getBy("users", "role_id", $id)->fetch_all();
-        $query = 'SELECT * FROM users u WHERE u.is_active = 1 and role_id = ' .$id. ' ORDER BY fullname asc limit 200;';
+        $role = $this->db->getBy("roles", "id", $id)->fetch_object();
+        
+        if (empty($role)) {
+            $this->setMessage('Role yang dipilih tidak ada');
+            $this->redirect('role');
+        }
+
+        $query = "
+        SELECT 
+            u.*,
+            GROUP_CONCAT(p.name SEPARATOR ', ') AS join_project
+        FROM 
+            users u
+        LEFT JOIN 
+            project_users pu ON u.id = pu.user_id
+        LEFT JOIN 
+            projects p ON pu.project_id = p.id
+        WHERE 
+            u.is_active = 1 
+            AND u.role_id = " .$id. "
+        GROUP BY 
+            u.id, u.fullname, u.email, u.role_id, u.is_active
+        ORDER BY 
+            u.fullname ASC
+        LIMIT 200;
+        ";
         // $this->dd($query);
         $users = $this->db->raw($query)->fetch_all();
         if (empty($users)) {
@@ -211,7 +235,8 @@ class RoleController extends BaseController
         $alert = $this->getMessage();
         $this->render('role/member', [
             'alert' => $alert,
-            'users' => $users
+            'users' => $users,
+            'role' => $role,
         ]);
         
     }

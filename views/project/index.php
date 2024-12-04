@@ -81,31 +81,32 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (isset($value[6])) { ?>
-                                <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-dark">LINK</a>
+                                <?php if (!empty($value[6])) { ?>
+                                <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (isset($value[7])) { ?>
-                                <a target="_BLANK" href="<?= $value[7] ?>" class="btn btn-dark">LINK</a>
+                                <?php if (!empty($value[7])) { ?>
+                                <a target="_BLANK" href="<?= $value[7] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (isset($value[8])) { ?>
-                                <a target="_BLANK" href="<?= $value[8] ?>" class="btn btn-dark">LINK</a>
+                                <?php if (!empty($value[8])) { ?>
+                                <a target="_BLANK" href="<?= $value[8] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (isset($value[9])) { ?>
-                                <a target="_BLANK" href="<?= $value[9] ?>" class="btn btn-dark">LINK</a>
+                                <?php if (!empty($value[9])) { ?>
+                                <a target="_BLANK" href="<?= $value[9] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (isset($value[10])) { ?>
-                                <a target="_BLANK" href="<?= $value[10] ?>" class="btn btn-dark">LINK</a>
+                                <?php if (!empty($value[10])) { ?>
+                                <a target="_BLANK" href="<?= $value[10] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
+                                <a href="<?= BASE_URL ?>/project/member/<?= $value[0] ?>" class="btn btn-dark my-1">Member</a>
                                 <a href="<?= BASE_URL ?>/project/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
                                 <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/project/delete/<?= $value[0] ?>">
                                     Delete

@@ -4,11 +4,6 @@
     new DataTable('#warningTable', {
         pageLength: 50,
         lengthMenu: [50, 100, 1000],
-        layout: {
-            topStart: {
-                buttons: ['pageLength','excel']
-            }
-        },
         order: [[0, 'desc']],
     });
     new DataTable('#history', {
@@ -17,6 +12,16 @@
         layout: {
             topStart: {
                 buttons: ['pageLength','excel']
+            }
+        },
+        order: [[0, 'desc']],
+    });
+    new DataTable('#projectTable', {
+        pageLength: 31,
+        lengthMenu: [5, 10, 25, 50, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength']
             }
         },
         order: [[0, 'desc']],
@@ -80,15 +85,74 @@
     </div>
 </div>
 
-<?php
-if (count($warnings) > 0) {
-?>
+<?php if (count($projects) > 0) { ?>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Pelanggaran</h4>
+                    <h4>Projects</h4>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="projectTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nama Project</th>
+                            <th>Status Keikutsertaan</th>
+                            <th>Status Project</th>
+                            <th>Type</th>
+                            <th>Grup WA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($projects as $key => $value) { ?>
+                        <tr>
+                            <td><?= $value[0] ?></td>
+                            <td>
+                                <?php if (isset($value[1]) && $value[1] == 'ACTIVED') { ?>
+                                <span class="badge bg-success">Aktif</span>
+                                <?php }elseif (isset($value[1]) && $value[1] == 'NONACTIVED') { ?>
+                                <span class="badge bg-danger">Tidak Aktif</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php if (isset($value[2]) && $value[2] == 'NOT_STARTED') { ?>
+                                <span class="badge bg-light text-dark"><?= $value[2] ?></span>
+                                <?php }elseif (isset($value[2]) && $value[2] == 'IN_PROGRESS') { ?>
+                                <span class="badge bg-warning"><?= $value[2] ?></span>
+                                <?php }elseif (isset($value[2]) && $value[2] == 'COMPLETED') { ?>
+                                <span class="badge bg-success"><?= $value[2] ?></span>
+                                <?php }elseif (isset($value[2]) && $value[2] == 'FIXING') { ?>
+                                <span class="badge bg-danger"><?= $value[2] ?></span>
+                                <?php }elseif (isset($value[2]) && $value[2] == 'PUBLISH') { ?>
+                                <span class="badge bg-primary"><?= $value[2] ?></span>
+                                <?php } ?>
+                            </td>
+                            <td><?= $value[3] ?></td>
+                            <td>
+                                <?php if (!empty($value[4])) { ?>
+                                <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+
+<?php if (count($warnings) > 0) { ?>
+<div class="container">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4 class="bg-danger text-white p-2">Pelanggaran</h4>
                 </div>
             </h5>
             <div class="table-responsive">
@@ -116,9 +180,7 @@ if (count($warnings) > 0) {
         </div>
     </div>
 </div>
-<?php
-}
-?>
+<?php } ?>
 
 <?php
 if (count($dailys) > 0) {

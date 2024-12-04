@@ -80,6 +80,7 @@ class HomeController extends BaseController
                             "date_activity" => $this->db->escape($dateGet),
                             "email" => $this->db->escape($email),
                         ];
+                        // $this->dd($data);
                         $insert = $this->db->insert("dailys", $data);
                         $this->setMessage('Lapor daily berhasil dilakukan.', 'SUCCESS');
                         $this->redirect('home/'.$dateGet);
@@ -170,6 +171,21 @@ class HomeController extends BaseController
         if (!empty($user->role_id)) {
             $role = $this->db->getBy("roles", 'id', $user->role_id)->fetch_object();
         }
+
+        $projectQuery = '
+                    SELECT 
+                        p.name, pu.status, p.status, p.type, p.url_group_wa
+                    FROM 
+                        project_users pu
+                    LEFT JOIN users u
+                    ON pu.user_id = u.id
+                    LEFT JOIN projects p
+                    ON pu.project_id = p.id
+                    WHERE pu.user_id = '.$user->id.'
+                    ;
+                ';
+        $projects = $this->db->raw($projectQuery)->fetch_all();
+
         // echo "<pre>";
         // print_r($warnings);die();
         $alert = $this->getMessage();
@@ -180,6 +196,7 @@ class HomeController extends BaseController
             'warnings' => $warnings,
             'role' => $role,
             'roles' => $roles,
+            'projects' => $projects,
         ]);
     }
     
