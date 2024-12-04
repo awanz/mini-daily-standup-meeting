@@ -50,7 +50,7 @@
                                 <?= $value[3] == 2 ? '<span class="badge bg-danger">PEMECATAN</span>' : '<span class="badge bg-warning">PERINGATAN</span>' ?>
                             </td>
                             <td>
-                                <?php if(strtotime($value[5]) >= strtotime('-20 days') && $value[3] == 2 && empty($value[4])) { ?>
+                                <?php if(strtotime($value[5]) >= strtotime('-15 days') && $value[3] == 2 && empty($value[4])) { ?>
                                 <a href="<?= BASE_URL ?>/warnings/appeal/<?= $value[0] ?>" class="btn btn-dark">Banding</a>
                                 <?php } ?>
                             </td>
