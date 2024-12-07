@@ -42,9 +42,9 @@
                 </div>
             </h5>
             <p class="card-text">Hello, <b><?=$this->e($dataUser->fullname)?></b> <u>(<?=$this->e($dataUser->email)?>)</u></p>
-            <h4 class="text-dark">[Bisa baca?]</h4>
-            <h6 class="card-text">Pastikan email yang tercantum benar, karna info maupun teguran akan dikirim melalui e-mail.</h6>
-            <h6 class="card-text">Setiap bulan minimal mengisi 15 kali daily standup meeting, meskipun SAKIT, IZIN wajib isi.</h6>
+            <h4 class="text-dark">[MOHON BACA]</h4>
+            <h6 class="card-text">[x] Pastikan email yang tercantum benar, karna info maupun teguran akan dikirim melalui e-mail.</h6>
+            <h6 class="card-text">[x] Setiap bulan minimal mengisi 15 kali daily standup meeting, meskipun SAKIT, IZIN wajib isi.</h6>
             <hr>
             <?php if ($alert): ?>
             <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">

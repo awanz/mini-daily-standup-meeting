@@ -1,5 +1,21 @@
 <?php $this->layout('layouts/base', ['title' => $siteTitle]) ?>
 
+<?php $this->start('headAdditional') ?>
+<style>
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1050;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+</style>
+<?php $this->stop() ?>
 <?php $this->start('footAdditional') ?>
 <script>
     function changeUrl() {
@@ -8,9 +24,24 @@
         
         window.location.href = `<?= BASE_URL ?>` + '/home/' + dateInput;
     }
+
+    $(document).ready(function () {
+        $('.loading-screen').hide();
+        $('#tanggal').on('change', function () {
+            $('.loading-screen').show();
+            var url = "<?= BASE_URL ?>" + '/home/' + $(this).val();            
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
 </script>
 <?php $this->stop() ?>
-
+<div class="loading-screen">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
@@ -27,9 +58,10 @@
             </h4>
             <?php endif ?>
             <p class="card-text">Hello, <b><?=$this->e($dataUser->fullname)?></b> <u>(<?=$this->e($dataUser->email)?>)</u></p>
-            <h4 class="text-dark">[Bisa baca?]</h4>
-            <h6 class="card-text">Pastikan email yang tercantum benar, karna info maupun teguran akan dikirim melalui e-mail.</h6>
-            <h6 class="card-text">Setiap bulan minimal mengisi 15 kali daily standup meeting, meskipun SAKIT, IZIN wajib isi.</h6>
+            <h4 class="text-dark">[MOHON DIBACA]</h4>
+            <h6 class="card-text">[x] Pastikan email yang tercantum benar, karna info maupun teguran akan dikirim melalui e-mail.</h6>
+            <h6 class="card-text">[x] Setiap bulan minimal mengisi 15 kali daily standup meeting, meskipun SAKIT, IZIN wajib isi.</h6>
+            <h6 class="card-text">[x] Daily hanya bisa diisi 30 hari sebelum.</h6>
             <hr>
             <?php if ($alert): ?>
             <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
@@ -41,12 +73,12 @@
                     value="<?= isset($date) ? $date : date('Y-m-d') ?>" 
                     max="<?= date('Y-m-d') ?>" 
                     min="<?= date('Y-m-d', strtotime('-30 day')) ?>">
-                <input type="button" class="btn btn-dark mx-2" value="Ubah" onclick="changeUrl()">
+                <input type="button" class="btn btn-primary mx-2" value="Refresh" onclick="changeUrl()">
             </form>
             <p>
                 <small>
                     <i>
-                        *tanggal hanya bisa dirubah <u>30 Hari</u> sebelum. Pastikan tanggal disamping kanan berubah, jika tidak berubah klik tombol <u>ubah</u>
+                        Sebelum isi Pilih tanggal terlebih dahulu. Pastikan tanggal disamping kanan juga berubah, jika tidak berubah klik refresh. Lalu isi daily, klik lapor.
                     </i>
                 </small>
                 

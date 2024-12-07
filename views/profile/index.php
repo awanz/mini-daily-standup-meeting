@@ -102,6 +102,7 @@
                             <th>Status Keikutsertaan</th>
                             <th>Status Project</th>
                             <th>Type</th>
+                            <th>Perlengkapan</th>
                             <th>Grup WA</th>
                         </tr>
                     </thead>
@@ -130,6 +131,14 @@
                                 <?php } ?>
                             </td>
                             <td><?= $value[3] ?></td>
+                            <td>
+                                <?php if (!empty($value[5])) { ?>
+                                <a target="_BLANK" href="<?= $value[5] ?>" class="btn btn-primary my-1">Google Drive</a>
+                                <?php } ?>
+                                <?php if (!empty($value[6])) { ?>
+                                <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-danger my-1">Figma</a>
+                                <?php } ?>
+                            </td>
                             <td>
                                 <?php if (!empty($value[4])) { ?>
                                 <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>

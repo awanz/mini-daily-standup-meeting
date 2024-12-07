@@ -7,6 +7,7 @@
             'siteTitle' => $siteTitle,
         ]) 
     ?>
+    <?=$this->section('headAdditional')?>
 </head>
 <body>
     <?php 
