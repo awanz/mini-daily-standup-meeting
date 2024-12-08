@@ -37,70 +37,6 @@ class HomeController extends BaseController
                 ;
             ')->fetch_all();
             // $this->dd($projects);
-            /*
-            Array
-(
-    [0] => Array
-        (
-            [0] => 34
-            [1] => Ayo Diet
-            [2] => Idan
-            [3] => NOT_STARTED
-            [4] => MEDSOS
-            [5] => 2
-            [6] => 3
-            [7] => 4
-            [8] => 2
-            [9] => 1
-            [10] => 1
-            [11] => 
-            [12] => 
-        )
-
-    [1] => Array
-        (
-            [0] => 19
-            [1] => Barcherry
-            [2] => Idan
-            [3] => IN_PROGRESS
-            [4] => MOBILE
-            [5] => 
-            [6] => 
-            [7] => 
-            [8] => 
-            [9] => https://chat.whatsapp.com/FzBORnSJ5AjCfsW2epn0Dp
-            [10] => 1
-            [11] => 
-            [12] => 
-        )
-
-    [2] => Array
-        (
-            [0] => 45
-            [1] => Belajar Shalat
-            [2] => Sahira Dhiyaulhaq
-            [3] => NOT_STARTED
-            [4] => MOBILE
-            [5] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
-            [6] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
-            [7] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
-            [8] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
-            [9] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
-            [10] => 1
-            [11] => 
-            [12] => 
-        )
-
-)
-
-English
-[7] =>
-INDONESIAN
-[7] =>
-
-EXTENSION OPTIONSMORE »
-
-            */
             $this->render('profile/home', [
                 'projects' => $projects,
             ]);
@@ -279,18 +215,31 @@ EXTENSION OPTIONSMORE »
         }
 
         $projectQuery = '
-                    SELECT 
-                        p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma
-                    FROM 
-                        project_users pu
-                    LEFT JOIN users u
-                    ON pu.user_id = u.id
-                    LEFT JOIN projects p
-                    ON pu.project_id = p.id
-                    WHERE pu.user_id = '.$user->id.'
-                    ;
-                ';
+            SELECT 
+                p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma
+            FROM 
+                project_users pu
+            LEFT JOIN users u
+                ON pu.user_id = u.id
+            LEFT JOIN projects p
+                ON pu.project_id = p.id
+            WHERE pu.user_id = '.$user->id.'
+            ;
+        ';
         $projects = $this->db->raw($projectQuery)->fetch_all();
+
+        $meetings = $this->db->raw('
+            SELECT 
+                m.title, ma.status, m.date, m.time_start, m.time_end, ma.note
+            FROM 
+                meeting_attendances ma
+            LEFT JOIN 
+                meetings m ON m.id = ma.meeting_id
+            WHERE ma.user_id = '.$this->user->id.'
+            ORDER BY 
+                m.date desc
+            ;
+        ')->fetch_all();
 
         // echo "<pre>";
         // print_r($warnings);die();
@@ -303,6 +252,7 @@ EXTENSION OPTIONSMORE »
             'role' => $role,
             'roles' => $roles,
             'projects' => $projects,
+            'meetings' => $meetings,
         ]);
     }
     

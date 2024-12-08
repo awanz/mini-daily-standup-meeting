@@ -1,6 +1,6 @@
 <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary sticky-top" data-bs-theme="dark">
     <div class="container px-4">
-        <a class="navbar-brand" href="home">Daily</a>
+        <a class="navbar-brand" href="<?= BASE_URL ?>/home">Daily</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,9 +9,11 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/home">Home</a>
                 </li>
+                <?php if ($dataUser->access != 'VOLUNTEER'): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= BASE_URL ?>/history">History</a>
                 </li>
+                <?php endif ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= BASE_URL ?>/profile">Profile</a>
                 </li>

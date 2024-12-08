@@ -193,7 +193,7 @@
 </div>
 <?php } ?>
 
-<?php if (count($dailys) > 0) { ?>
+<?php if (count($meetings) > 0) { ?>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
@@ -206,19 +206,23 @@
                 <table id="tableDaily" class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>Judul Meeting</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
-                        <th>Aktifitas Kemarin</th>
-                        <th>Hari ini</th>
-                        <th>Permasalahan</th>
+                        <th>Dari Jam</th>
+                        <th>Sampai Jam</th>
+                        <th>Catatan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($dailys as $daily): ?>
+                    <?php foreach($meetings as $meeting): ?>
                     <tr>
-                        <td><?=$this->e($daily[2])?></td>
-                        <td><?= $daily[3] ?></td>
-                        <td><?= $daily[4] ?></td>
-                        <td><?= $daily[5] ?></td>
+                        <td><?=$this->e($meeting[0])?></td>
+                        <td><?= $meeting[1] ?></td>
+                        <td><?= $meeting[2] ?></td>
+                        <td><?= $meeting[3] ?></td>
+                        <td><?= $meeting[4] ?></td>
+                        <td><?= $meeting[5] ?></td>
                     </tr>
                     <?php endforeach ?>
                 </tbody>
