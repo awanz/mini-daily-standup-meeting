@@ -5,6 +5,112 @@ class HomeController extends BaseController
 {
     public function index($data = null)
     {
+        $access = $this->user->access;
+        if ($access == 'ADMIN' || $access == 'VOLUNTEER') {
+            $projects = $this->db->raw('
+                SELECT 
+                    p.id, 
+                    p.name, 
+                    u.fullname, 
+                    p.status, 
+                    p.type, 
+                    p.url_drive, 
+                    p.url_figma, 
+                    p.url_logo, 
+                    p.url_repo, 
+                    p.url_group_wa,
+                    COUNT(pu.user_id) AS total_users,
+                    p.is_priority,
+                    p.is_a1
+                FROM 
+                    projects p
+                LEFT JOIN 
+                    users u ON p.pic = u.id
+                LEFT JOIN 
+                    project_users pu ON p.id = pu.project_id
+                WHERE pu.user_id = '.$this->user->id.'
+                    AND p.deleted_at is NULL
+                GROUP BY 
+                    p.id
+                ORDER BY 
+                    p.name
+                ;
+            ')->fetch_all();
+            // $this->dd($projects);
+            /*
+            Array
+(
+    [0] => Array
+        (
+            [0] => 34
+            [1] => Ayo Diet
+            [2] => Idan
+            [3] => NOT_STARTED
+            [4] => MEDSOS
+            [5] => 2
+            [6] => 3
+            [7] => 4
+            [8] => 2
+            [9] => 1
+            [10] => 1
+            [11] => 
+            [12] => 
+        )
+
+    [1] => Array
+        (
+            [0] => 19
+            [1] => Barcherry
+            [2] => Idan
+            [3] => IN_PROGRESS
+            [4] => MOBILE
+            [5] => 
+            [6] => 
+            [7] => 
+            [8] => 
+            [9] => https://chat.whatsapp.com/FzBORnSJ5AjCfsW2epn0Dp
+            [10] => 1
+            [11] => 
+            [12] => 
+        )
+
+    [2] => Array
+        (
+            [0] => 45
+            [1] => Belajar Shalat
+            [2] => Sahira Dhiyaulhaq
+            [3] => NOT_STARTED
+            [4] => MOBILE
+            [5] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
+            [6] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
+            [7] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
+            [8] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
+            [9] => https://chat.whatsapp.com/FluFrxjiyjG7gOmHKyojsS
+            [10] => 1
+            [11] => 
+            [12] => 
+        )
+
+)
+
+English
+[7] =>
+INDONESIAN
+[7] =>
+
+EXTENSION OPTIONSMORE »
+
+            */
+            $this->render('profile/home', [
+                'projects' => $projects,
+            ]);
+        }else{
+            $this->daily($data);
+        }
+    }
+    
+    public function daily($data = null)
+    {
         // print_r($data);
         $dateGet = date('Y-m-d');
         if (isset($data['date'])) {

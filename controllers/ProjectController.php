@@ -16,7 +16,35 @@ class ProjectController extends BaseController
         $projects = array();
 
         if ($isAdmin) {
-            $projects = $this->db->getAllClean("projects")->fetch_all();
+            $projects = $this->db->raw('
+                SELECT 
+                    p.id AS project_id,
+                    p.name AS project_name,
+                    u.fullname AS pic_fullname,
+                    p.status,
+                    p.type,
+                    p.url_drive,
+                    p.url_figma,
+                    p.url_logo,
+                    p.url_repo,
+                    p.url_group_wa,
+                    COUNT(pu.user_id) AS total_users,
+                    p.is_priority,
+                    p.is_a1
+                FROM 
+                    projects p
+                LEFT JOIN 
+                    users u ON p.pic = u.id
+                LEFT JOIN 
+                    project_users pu ON p.id = pu.project_id
+                WHERE 
+                    p.deleted_at IS NULL
+                GROUP BY 
+                    p.id
+                ORDER BY 
+                    p.name
+                ;
+            ')->fetch_all();
         }else{
             $projects = $this->db->raw('
                 SELECT 
@@ -29,13 +57,23 @@ class ProjectController extends BaseController
                     p.url_figma, 
                     p.url_logo, 
                     p.url_repo, 
-                    p.url_group_wa
+                    p.url_group_wa,
+                    COUNT(pu.user_id) AS total_users,
+                    p.is_priority,
+                    p.is_a1
                 FROM 
                     projects p
-                LEFT JOIN users u
-                ON p.pic = u.id
+                LEFT JOIN 
+                    users u ON p.pic = u.id
+                LEFT JOIN 
+                    project_users pu ON p.id = pu.project_id
                 WHERE p.pic = '.$this->user->id.'
-                AND p.deleted_at is NULL;
+                    AND p.deleted_at is NULL
+                GROUP BY 
+                    p.id
+                ORDER BY 
+                    p.name
+                ;
             ')->fetch_all();
         }
         
@@ -128,8 +166,9 @@ class ProjectController extends BaseController
             FROM 
                 users u
             LEFT JOIN roles r ON u.role_id = r.id
-            WHERE r.name= "Project Manager IT"
+            WHERE (r.name= "Project Manager IT" OR r.name= "CEO of Products" OR u.access = "ADMIN")
             AND u.is_active = 1
+            ORDER BY u.fullname
             ;
         ')->fetch_all();
         
@@ -243,24 +282,24 @@ class ProjectController extends BaseController
         }
     }
 
-    public function member($data)
+    public function detail($data)
     {
         // $this->dd('dasdas');
-        $isAdmin = $this->isAdmin();
-        $isProjectManager = $this->isProjectManager();
+        // $isAdmin = $this->isAdmin();
+        // $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin && !$isProjectManager) {
-            $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('home');
-        }
+        // if (!$isAdmin && !$isProjectManager) {
+        //     $this->setMessage('Kamu tidak punya hak akses!');
+        //     $this->redirect('home');
+        // }
 
         $id = $this->db->escape($data['id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
 
-        if ($isProjectManager && $project->pic != $this->user->id) {
-            $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('home');
-        }
+        // if ($isProjectManager && $project->pic != $this->user->id) {
+        //     $this->setMessage('Kamu tidak punya hak akses!');
+        //     $this->redirect('home');
+        // }
         
         if (empty($project)) {
             $this->setMessage('Project yang dipilih tidak ada');
@@ -283,7 +322,7 @@ class ProjectController extends BaseController
             $arrayMapUser = array_map(function($item) {
                 return (string)$item[0];
             }, $users);
-            $dateGet = date('Y-m-d');
+            $dateGet = date('Y-m-d', strtotime(date('Y-m-d') . ' -5 days'));
 
             $queryDailys = '
                 SELECT 
@@ -298,15 +337,15 @@ class ProjectController extends BaseController
                 $keyFinal .= '"' . $value . '",';
             }
             $keyFinal = rtrim($keyFinal, ',');
-            $queryDailys = $queryDailys . " WHERE d.user_id IN ($keyFinal) AND d.date_activity = '$dateGet'";
-            $queryDailys = $queryDailys . " ORDER BY d.created_at desc";
+            $queryDailys = $queryDailys . " WHERE d.user_id IN ($keyFinal) AND d.date_activity >= '$dateGet'";
+            $queryDailys = $queryDailys . " ORDER BY d.date_activity desc, vud.fullname asc";
             // $this->dd($queryDailys);
             $dailys = $this->db->raw($queryDailys)->fetch_all();
         }
     
         $queryMeetings = '
             SELECT 
-                m.id, m.title, m.description, m.time_start, m.time_end
+                m.id, m.title, m.description, m.date, m.time_start, m.time_end
             FROM meetings m 
             WHERE m.project_id = '.$id.'
             ORDER BY m.time_start DESC
@@ -316,7 +355,7 @@ class ProjectController extends BaseController
         $meetings = $this->db->raw($queryMeetings)->fetch_all();
         
         $alert = $this->getMessage();
-        $this->render('project/member', [
+        $this->render('project/detail', [
             'alert' => $alert,
             'id' => $id,
             'users' => $users,
@@ -471,7 +510,7 @@ class ProjectController extends BaseController
         
         if (empty($projectUser)) {
             $this->setMessage('Data yang ingin di nonactive tidak ada!');
-            $this->redirect('project/member/'.$id);
+            $this->redirect('project/detail/'.$id);
         }
 
         try {
@@ -480,10 +519,10 @@ class ProjectController extends BaseController
             ];
             $update = $this->db->update("project_users", $data, 'id', $id);
             $this->setMessage('Data berhasil di nonactive', 'SUCCESS');
-            $this->redirect('project/member/'.$projectUser->project_id);
+            $this->redirect('project/detail/'.$projectUser->project_id);
         } catch (\Throwable $th) {
             $this->setMessage($th->getMessage());
-            $this->redirect('project/member/'.$projectUser->project_id);
+            $this->redirect('project/detail/'.$projectUser->project_id);
         }
     }
     
@@ -509,7 +548,7 @@ class ProjectController extends BaseController
         
         if (empty($projectUser)) {
             $this->setMessage('Data yang ingin di nonactive tidak ada!');
-            $this->redirect('project/member/'.$id);
+            $this->redirect('project/detail/'.$id);
         }
 
         try {
@@ -518,10 +557,10 @@ class ProjectController extends BaseController
             ];
             $update = $this->db->update("project_users", $data, 'id', $id);
             $this->setMessage('Data berhasil di active', 'SUCCESS');
-            $this->redirect('project/member/'.$projectUser->project_id);
+            $this->redirect('project/detail/'.$projectUser->project_id);
         } catch (\Throwable $th) {
             $this->setMessage($th->getMessage());
-            $this->redirect('project/member/'.$projectUser->project_id);
+            $this->redirect('project/detail/'.$projectUser->project_id);
         }
     }
 
@@ -535,7 +574,7 @@ class ProjectController extends BaseController
             $this->redirect('home');
         }
 
-        $id = $this->db->escape($data['id']);
+        $id = $this->db->escape($data['project_user_id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
 
         if ($isProjectManager && $project->pic != $this->user->id) {
@@ -613,10 +652,10 @@ class ProjectController extends BaseController
             ];
             $update = $this->db->update("project_users", $data, 'id', $project_user_id);
             $this->setMessage('Data berhasil disimpan', 'SUCCESS');
-            $this->redirect('project/member/note/'.$project_user_id);
+            $this->redirect('project/detail/note/'.$project_user_id);
         } catch (\Throwable $th) {
             $this->setMessage($th->getMessage());
-            $this->redirect('project/member/note/'.$project_user_id);
+            $this->redirect('project/detail/note/'.$project_user_id);
         }
     }
 
@@ -726,7 +765,7 @@ class ProjectController extends BaseController
             }
             $this->db->commit();
             $this->setMessage('Data kehadiran berhasil disimpan', 'SUCCESS');
-            $this->redirect('project/member/'.$project_id);
+            $this->redirect('project/detail/'.$project_id);
         } catch (\Throwable $th) {
             $this->db->rollback();
             $this->setMessage($th->getMessage());

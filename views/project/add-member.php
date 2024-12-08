@@ -32,7 +32,7 @@
                 <div class="d-flex justify-content-between">
                     <h4>Anggota Projects</h4>
                     <div>
-                        <a href="<?= BASE_URL ?>/project/member/<?= $id ?>" class="btn btn-dark my-2">List Member</a>
+                        <a href="<?= BASE_URL ?>/project/detail/<?= $id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>
                 </div>
             </h5>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
-                <a href="<?= BASE_URL ?>/project/member/<?= $id ?>" class="btn btn-light my-2">Kembali</a>
+                <a href="<?= BASE_URL ?>/project/detail/<?= $id ?>" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>

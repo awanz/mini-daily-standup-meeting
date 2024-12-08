@@ -7,7 +7,7 @@
                 <div class="d-flex justify-content-between">
                     <h4>Catatan <u><?= $projectUser->fullname; ?></u> di project <u><?= $projectUser->project_name; ?></u></h4>
                     <div>
-                        <a href="<?= BASE_URL ?>/project/member/<?= $id ?>" class="btn btn-dark my-2">List Member</a>
+                        <a href="<?= BASE_URL ?>/project/detail/<?= $projectUser->project_id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>
                 </div>
             </h5>
@@ -22,7 +22,7 @@
                     <textarea class="form-control" name="notes" id="notes" rows="4"><?=$this->e($projectUser->notes ?? "")?></textarea>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
-                <a href="<?= BASE_URL ?>/project/member/<?= $projectUser->project_id ?>" class="btn btn-light my-2">Kembali</a>
+                <a href="<?= BASE_URL ?>/project/detail/<?= $projectUser->project_id ?>" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>

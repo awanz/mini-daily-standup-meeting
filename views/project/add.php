@@ -3,6 +3,14 @@
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Tambah Projects</h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/project" class="btn btn-dark my-2">List Project</a>
+                    </div>
+                </div>
+            </h5>
             <?php if ($alert): ?>
                 <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                     <?= $alert['message'] ?>
@@ -32,6 +40,8 @@
                         <option value="MOBILE">MOBILE</option>
                         <option value="MEDSOS">MEDSOS</option>
                         <option value="GAME">GAME</option>
+                        <option value="ANIMASI">ANIMASI</option>
+                        <option value="MAJALAH">MAJALAH</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>

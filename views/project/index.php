@@ -54,8 +54,10 @@
                     <thead>
                         <tr>
                             <th>Project</th>
+                            <th>Total Member</th>
                             <th>PIC</th>
                             <th>Status</th>
+                            <th>Type</th>
                             <th>GDrive</th>
                             <th>Figma</th>
                             <th>Logo</th>
@@ -67,8 +69,14 @@
                     <tbody>
                         <?php foreach ($projects as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[1] ?></td>
+                            <td>
+                                <?= $value[1] ?>
+                                <?php if ($value[12] == 1) { ?><span class="badge bg-primary text-white">A1X</span><?php } ?>
+                                <?php if ($value[11] == 1) { ?><span class="badge bg-danger text-white">P2X</span><?php } ?>
+                            </td>
+                            <td><?= $value[10] ?></td>
                             <td><?= $value[2] ?></td>
+                            <td><?= $value[4] ?></td>
                             <td>
                             <?php if (isset($value[3]) && $value[3] == 'NOT_STARTED') { ?>
                                 <span class="badge bg-light text-dark">Belum Mulai</span>
@@ -80,12 +88,7 @@
                                 <span class="badge bg-danger">Perbaikan</span>
                                 <?php }elseif (isset($value[3]) && $value[3] == 'PUBLISH') { ?>
                                 <span class="badge bg-primary">Diterbitkan</span>
-                                <?php } ?>
-                            </td>
-                            <td>
-                                <?php if (!empty($value[4])) { ?>
-                                <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-dark my-1">LINK</a>
-                                <?php } ?>
+                            <?php } ?>
                             </td>
                             <td>
                                 <?php if (!empty($value[5])) { ?>
@@ -108,7 +111,13 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="<?= BASE_URL ?>/project/member/<?= $value[0] ?>" class="btn btn-dark my-1">Member</a>
+                                <?php if (!empty($value[9])) { ?>
+                                <a target="_BLANK" href="<?= $value[9] ?>" class="btn btn-dark my-1">LINK</a>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL ?>/project/meeting-attendance/<?= $value[0] ?>" class="btn btn-success my-1">Absensi</a>
+                                <a href="<?= BASE_URL ?>/project/detail/<?= $value[0] ?>" class="btn btn-primary my-1">Detail</a>
                                 <a href="<?= BASE_URL ?>/project/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
                                 <?php if ($isAdmin): ?>
                                 <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/project/delete/<?= $value[0] ?>">

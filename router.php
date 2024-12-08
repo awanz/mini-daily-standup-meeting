@@ -82,8 +82,8 @@ function handleRoute($uri)
         '/project/delete/:id' => [
             'GET' => ['ProjectController', 'delete'],
         ],
-        '/project/member/:id' => [
-            'GET' => ['ProjectController', 'member'],
+        '/project/detail/:id' => [
+            'GET' => ['ProjectController', 'detail'],
         ],
         '/project/member/note/:project_user_id' => [
             'GET' => ['ProjectController', 'note'],

@@ -6,8 +6,8 @@
         lengthMenu: [50, 100, 1000],
         order: [[0, 'desc']],
     });
-    new DataTable('#history', {
-        pageLength: 31,
+    new DataTable('#tableDaily', {
+        pageLength: 7,
         lengthMenu: [5, 10, 25, 50, 1000],
         layout: {
             topStart: {
@@ -132,15 +132,17 @@
                             </td>
                             <td><?= $value[3] ?></td>
                             <td>
-                                <?php if (!empty($value[5])) { ?>
-                                <a target="_BLANK" href="<?= $value[5] ?>" class="btn btn-primary my-1">Google Drive</a>
-                                <?php } ?>
-                                <?php if (!empty($value[6])) { ?>
-                                <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-danger my-1">Figma</a>
+                                <?php if ((!empty($value[4]) && $value[1] == 'ACTIVED') || $isAdmin) { ?>
+                                    <?php if (!empty($value[5])) { ?>
+                                    <a target="_BLANK" href="<?= $value[5] ?>" class="btn btn-primary my-1">GDrive</a>
+                                    <?php } ?>
+                                    <?php if (!empty($value[6])) { ?>
+                                    <a target="_BLANK" href="<?= $value[6] ?>" class="btn btn-danger my-1">Figma</a>
+                                    <?php } ?>
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (!empty($value[4]) && $value[1] == 'ACTIVED') { ?>
+                                <?php if ((!empty($value[4]) && $value[1] == 'ACTIVED') || $isAdmin) { ?>
                                 <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>
                                 <?php } ?>
                             </td>
@@ -191,20 +193,17 @@
 </div>
 <?php } ?>
 
-<?php
-if (count($dailys) > 0) {
-?>
+<?php if (count($dailys) > 0) { ?>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>History Daily</h4>
-                    <span><a href="<?= BASE_URL ?>/home" class="btn btn-dark">Lapor</a></span>
+                    <h4>Riwayat Kehadiran</h4>
                 </div>
             </h5>
             <div class="table-responsive">
-                <table id="history" class="table table-striped table-bordered">
+                <table id="tableDaily" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Tanggal</th>
@@ -228,6 +227,41 @@ if (count($dailys) > 0) {
         </div>
     </div>
 </div>
-<?php
-}
-?>
+<?php } ?>
+
+<?php if (count($dailys) > 0) { ?>
+<div class="container">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Riwayat Daily Standup Meeting</h4>
+                    <span><a href="<?= BASE_URL ?>/home" class="btn btn-dark">Lapor</a></span>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="tableDaily" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Aktifitas Kemarin</th>
+                        <th>Hari ini</th>
+                        <th>Permasalahan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($dailys as $daily): ?>
+                    <tr>
+                        <td><?=$this->e($daily[2])?></td>
+                        <td><?= $daily[3] ?></td>
+                        <td><?= $daily[4] ?></td>
+                        <td><?= $daily[5] ?></td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>

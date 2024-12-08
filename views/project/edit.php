@@ -3,6 +3,14 @@
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Edit Projects <?= $project->name ?></h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/project" class="btn btn-dark my-2">List Project</a>
+                    </div>
+                </div>
+            </h5>
             <?php if ($alert): ?>
                 <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                     <?= $alert['message'] ?>
@@ -41,6 +49,8 @@
                         <option <?php if("MOBILE" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MOBILE">MOBILE</option>
                         <option <?php if("MEDSOS" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MEDSOS">MEDSOS</option>
                         <option <?php if("GAME" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="GAME">GAME</option>
+                        <option <?php if("ANIMASI" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="ANIMASI">ANIMASI</option>
+                        <option <?php if("MAJALAH" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MAJALAH">MAJALAH</option>
                     </select>
                 </div>
                 <div class="form-group my-2">

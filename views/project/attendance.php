@@ -23,7 +23,7 @@
                 <div class="d-flex justify-content-between">
                     <h4>Absensi Kehadiran Projects</h4>
                     <div>
-                        <a href="<?= BASE_URL ?>/project/member/<?= $project_id ?>" class="btn btn-dark my-2">List Member</a>
+                        <a href="<?= BASE_URL ?>/project/detail/<?= $project_id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>
                 </div>
             </h5>
@@ -86,7 +86,7 @@
                     </div>
                 <?php } ?>
                 <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="<?= BASE_URL ?>/project/member/<?= $project_id ?>" class="btn btn-light my-2">Kembali</a>
+                <a href="<?= BASE_URL ?>/project/detail/<?= $project_id ?>" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>
