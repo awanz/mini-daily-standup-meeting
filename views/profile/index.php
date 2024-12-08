@@ -229,7 +229,7 @@
 </div>
 <?php } ?>
 
-<?php if (count($dailys) > 0) { ?>
+<?php if (count($dailys) > 0 && !$isAdmin && !$isProjectManager) { ?>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
