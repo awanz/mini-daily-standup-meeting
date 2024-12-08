@@ -67,19 +67,29 @@
                     <tbody>
                         <?php foreach ($projects as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[2] ?></td>
                             <td><?= $value[1] ?></td>
+                            <td><?= $value[2] ?></td>
                             <td>
-                            <?php if (isset($value[4]) && $value[4] == 'NOT_STARTED') { ?>
+                            <?php if (isset($value[3]) && $value[3] == 'NOT_STARTED') { ?>
                                 <span class="badge bg-light text-dark">Belum Mulai</span>
-                                <?php }elseif (isset($value[4]) && $value[4] == 'IN_PROGRESS') { ?>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'IN_PROGRESS') { ?>
                                 <span class="badge bg-warning">Berjalan</span>
-                                <?php }elseif (isset($value[4]) && $value[4] == 'COMPLETED') { ?>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'COMPLETED') { ?>
                                 <span class="badge bg-success">Selesai</span>
-                                <?php }elseif (isset($value[4]) && $value[4] == 'FIXING') { ?>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'FIXING') { ?>
                                 <span class="badge bg-danger">Perbaikan</span>
-                                <?php }elseif (isset($value[4]) && $value[4] == 'PUBLISH') { ?>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'PUBLISH') { ?>
                                 <span class="badge bg-primary">Diterbitkan</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php if (!empty($value[4])) { ?>
+                                <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-dark my-1">LINK</a>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php if (!empty($value[5])) { ?>
+                                <a target="_BLANK" href="<?= $value[5] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>
@@ -95,16 +105,6 @@
                             <td>
                                 <?php if (!empty($value[8])) { ?>
                                 <a target="_BLANK" href="<?= $value[8] ?>" class="btn btn-dark my-1">LINK</a>
-                                <?php } ?>
-                            </td>
-                            <td>
-                                <?php if (!empty($value[9])) { ?>
-                                <a target="_BLANK" href="<?= $value[9] ?>" class="btn btn-dark my-1">LINK</a>
-                                <?php } ?>
-                            </td>
-                            <td>
-                                <?php if (!empty($value[10])) { ?>
-                                <a target="_BLANK" href="<?= $value[10] ?>" class="btn btn-dark my-1">LINK</a>
                                 <?php } ?>
                             </td>
                             <td>

@@ -20,9 +20,20 @@ class ProjectController extends BaseController
         }else{
             $projects = $this->db->raw('
                 SELECT 
-                    *
+                    p.id, 
+                    p.name, 
+                    u.fullname, 
+                    p.status, 
+                    p.type, 
+                    p.url_drive, 
+                    p.url_figma, 
+                    p.url_logo, 
+                    p.url_repo, 
+                    p.url_group_wa
                 FROM 
                     projects p
+                LEFT JOIN users u
+                ON p.pic = u.id
                 WHERE p.pic = '.$this->user->id.'
                 AND p.deleted_at is NULL;
             ')->fetch_all();
