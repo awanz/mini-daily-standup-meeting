@@ -15,6 +15,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?= BASE_URL ?>/profile">Profile</a>
                 </li>
+                <?php if ($isProjectManager || $isAdmin): ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Projects
+                    </a>
+                    <ul class="dropdown-menu">
+                        <?php if ($isAdmin): ?>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project/add">Tambah Project</a></li>
+                        <?php endif ?>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project">List Project</a></li>
+                    </ul>
+                </li>
+                <?php endif ?>
                 <?php if ($isAdmin): ?>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/warnings">Pelanggaran</a>
@@ -28,15 +41,6 @@
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/user">User Active</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/user/nonactive">User Nonactive</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Projects
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project/add">Tambah Project</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project">List Project</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

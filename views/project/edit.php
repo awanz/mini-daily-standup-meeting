@@ -14,6 +14,15 @@
                     <input name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" value="<?=$this->e($project->name ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
+                    <label for="pic">User</label>
+                    <select id="userSelect" class="form-select" name="pic" style="width: 100%;" required <?php if($isProjectManager){ ?> disabled <?php } ?>>
+                        <option selected>-- Pilih PIC --</option>
+                        <?php foreach($listPM as $user): ?>
+                        <option <?php if($user[0] == $project->pic){ ?> selected <?php } ?> value="<?= $user[0] ?>"><?= $user[3] ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group my-2">
                     <label for="status">Status</label>
                     <select class="form-select" name="status" required>
                         <option selected>-- Pilih Status --</option>

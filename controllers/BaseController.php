@@ -35,6 +35,7 @@ class BaseController
         $this->templates->addData([
             'isAdmin' => $this->isAdmin(),
             'isHR' => $this->isHR(),
+            'isProjectManager' => $this->isProjectManager(),
             'dataUser' => $this->user,
             'siteTitle' => 'Kawan Kerja',
         ]);
@@ -64,6 +65,16 @@ class BaseController
         }
 
         return $isAdmin;
+    }
+    
+    public function isProjectManager(){
+        // print_r($this->user);die();
+        $isProjectManager = false;
+        if ($this->user && $this->user->role_name == 'Project Manager IT') {
+            $isProjectManager = true;
+        }
+
+        return $isProjectManager;
     }
 
     public function isHR(){

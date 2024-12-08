@@ -119,15 +119,15 @@
                             </td>
                             <td>
                                 <?php if (isset($value[2]) && $value[2] == 'NOT_STARTED') { ?>
-                                <span class="badge bg-light text-dark"><?= $value[2] ?></span>
+                                <span class="badge bg-light text-dark">Belum Mulai</span>
                                 <?php }elseif (isset($value[2]) && $value[2] == 'IN_PROGRESS') { ?>
-                                <span class="badge bg-warning"><?= $value[2] ?></span>
+                                <span class="badge bg-warning">Berjalan</span>
                                 <?php }elseif (isset($value[2]) && $value[2] == 'COMPLETED') { ?>
-                                <span class="badge bg-success"><?= $value[2] ?></span>
+                                <span class="badge bg-success">Selesai</span>
                                 <?php }elseif (isset($value[2]) && $value[2] == 'FIXING') { ?>
-                                <span class="badge bg-danger"><?= $value[2] ?></span>
+                                <span class="badge bg-danger">Perbaikan</span>
                                 <?php }elseif (isset($value[2]) && $value[2] == 'PUBLISH') { ?>
-                                <span class="badge bg-primary"><?= $value[2] ?></span>
+                                <span class="badge bg-primary">Diterbitkan</span>
                                 <?php } ?>
                             </td>
                             <td><?= $value[3] ?></td>
@@ -140,7 +140,7 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                <?php if (!empty($value[4])) { ?>
+                                <?php if (!empty($value[4]) && $value[1] == 'ACTIVED') { ?>
                                 <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>
                                 <?php } ?>
                             </td>

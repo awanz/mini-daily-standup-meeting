@@ -37,9 +37,11 @@
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>Project List</h4>
+                    <?php if ($isAdmin): ?>
                     <div>
                         <a href="<?= BASE_URL ?>/project/add" class="btn btn-dark my-2">Tambah Project</a>
                     </div>
+                    <?php endif ?>
                 </div>
             </h5>
             <?php if ($alert): ?>
@@ -68,16 +70,16 @@
                             <td><?= $value[2] ?></td>
                             <td><?= $value[1] ?></td>
                             <td>
-                                <?php if (isset($value[4]) && $value[4] == 'NOT_STARTED') { ?>
-                                <span class="badge bg-light text-dark"><?= $value[4] ?></span>
+                            <?php if (isset($value[4]) && $value[4] == 'NOT_STARTED') { ?>
+                                <span class="badge bg-light text-dark">Belum Mulai</span>
                                 <?php }elseif (isset($value[4]) && $value[4] == 'IN_PROGRESS') { ?>
-                                <span class="badge bg-warning"><?= $value[4] ?></span>
+                                <span class="badge bg-warning">Berjalan</span>
                                 <?php }elseif (isset($value[4]) && $value[4] == 'COMPLETED') { ?>
-                                <span class="badge bg-success"><?= $value[4] ?></span>
+                                <span class="badge bg-success">Selesai</span>
                                 <?php }elseif (isset($value[4]) && $value[4] == 'FIXING') { ?>
-                                <span class="badge bg-danger"><?= $value[4] ?></span>
+                                <span class="badge bg-danger">Perbaikan</span>
                                 <?php }elseif (isset($value[4]) && $value[4] == 'PUBLISH') { ?>
-                                <span class="badge bg-primary"><?= $value[4] ?></span>
+                                <span class="badge bg-primary">Diterbitkan</span>
                                 <?php } ?>
                             </td>
                             <td>
@@ -108,9 +110,11 @@
                             <td>
                                 <a href="<?= BASE_URL ?>/project/member/<?= $value[0] ?>" class="btn btn-dark my-1">Member</a>
                                 <a href="<?= BASE_URL ?>/project/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
+                                <?php if ($isAdmin): ?>
                                 <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/project/delete/<?= $value[0] ?>">
                                     Delete
                                 </a>
+                                <?php endif ?>
                             </td>
                         </tr>
                         <?php } ?>

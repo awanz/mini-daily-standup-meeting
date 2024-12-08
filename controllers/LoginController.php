@@ -35,8 +35,22 @@ class LoginController extends BaseController
               'password' => $password,
               'is_active' => 1
             ];
+
+            $queryLogin = '
+                SELECT 
+                    u.*, r.name as role_name
+                FROM 
+                    users u
+                LEFT JOIN roles r
+                ON u.role_id = r.id
+                WHERE u.email = "'.$email.'"
+                AND u.password = "'.$password.'"
+                AND u.is_active = 1
+                LIMIT 1;
+            ';
+            $result = $this->db->raw($queryLogin)->fetch_object();
             
-            $result = $this->db->getByArray("users", $param)->fetch_object();
+            // $result = $this->db->getByArray("users", $param)->fetch_object();
             if (is_null($result)) {
                 $this->setMessage('Email atau password salah coba lagi.');
                 $this->redirect('login');

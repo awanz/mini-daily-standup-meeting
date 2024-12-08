@@ -30,6 +30,18 @@
         public function getHostInfo(){
             return $this->hostinfo;
         }
+        
+        public function beginTransaction(){
+            return $this->connection->begin_transaction();
+        }
+        
+        public function commit(){
+            return $this->connection->commit();
+        }
+        
+        public function rollback(){
+            return $this->connection->rollback();
+        }
 
         public function escape($text) {
             return $this->connection->real_escape_string($text);
@@ -166,7 +178,6 @@
                     }
                 }
             }
-
             $entry = rtrim($entry, ", ");
             $arrayKeys = array_keys($dataArray);
             
@@ -178,6 +189,7 @@
             
             $query = "INSERT INTO " . $tableName . " (" . $column . ") VALUES (" . $entry . ")";
             // print_r($query);
+            // die();
 
             $result = null;
             try {

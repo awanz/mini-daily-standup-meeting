@@ -6,13 +6,27 @@ class ProjectController extends BaseController
     public function index()
     {
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
         // echo "sadsa";die();
-        $projects = $this->db->getAllClean("projects")->fetch_all();
+        $projects = array();
+
+        if ($isAdmin) {
+            $projects = $this->db->getAllClean("projects")->fetch_all();
+        }else{
+            $projects = $this->db->raw('
+                SELECT 
+                    *
+                FROM 
+                    projects p
+                WHERE p.pic = '.$this->user->id.'
+                AND p.deleted_at is NULL;
+            ')->fetch_all();
+        }
         
         $alert = $this->getMessage();
         $this->render('project/index', [
@@ -77,24 +91,42 @@ class ProjectController extends BaseController
     {
         
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
         
         if (empty($project)) {
             $this->setMessage('Data tidak ada!');
             $this->redirect('project');
         }
+
+        $listPM = $this->db->raw('
+            SELECT 
+                *
+            FROM 
+                users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE r.name= "Project Manager IT"
+            AND u.is_active = 1
+            ;
+        ')->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('project/edit', [
             'alert' => $alert,
-            'project' => $project
+            'project' => $project,
+            'listPM' => $listPM,
         ]);
         
     }
@@ -103,16 +135,33 @@ class ProjectController extends BaseController
     {
         
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+        
+        $id = $this->db->escape($data['id']);
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+        if (empty($project)) {
+            $this->setMessage('Data tidak ada!');
+            $this->redirect('project');
+        }
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
 
-        $id = $this->db->escape($data['id']);
-
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $name = trim($_POST['name']);
+            $pic = null;
+            if ($isProjectManager && $project->pic == $this->user->id) {
+                $pic = $project->pic;
+            }else{
+                $pic = trim($_POST['pic']);
+            }
             $status = trim($_POST['status']);
             $type = trim($_POST['type']);
 
@@ -126,6 +175,7 @@ class ProjectController extends BaseController
             try {
                 $data = [
                     "name" => $name,
+                    "pic" => $pic,
                     "status" => $status,
                     "type" => $type,
                     "url_group_wa" => $url_group_wa,
@@ -136,6 +186,8 @@ class ProjectController extends BaseController
                     "note" => $note,
                     "updated_by" => $this->user->id,
                 ];
+
+                // $this->dd($data);
                 
                 $update = $this->db->update("projects", $data, 'id', $id);
                 $this->setMessage('Update project berhasil!', 'SUCCESS');
@@ -184,14 +236,20 @@ class ProjectController extends BaseController
     {
         // $this->dd('dasdas');
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
         
         if (empty($project)) {
             $this->setMessage('Project yang dipilih tidak ada');
@@ -205,8 +263,7 @@ class ProjectController extends BaseController
             LEFT JOIN view_user_daily u
             ON pu.user_id = u.id
             WHERE pu.project_id = '.$id.'
-            AND pu.status = "ACTIVED"
-            ORDER BY u.id asc;
+            ORDER BY pu.status asc, u.id asc;
         ';
         $users = $this->db->raw($queryProjectUser)->fetch_all();
         $dailys = array();
@@ -236,7 +293,16 @@ class ProjectController extends BaseController
             $dailys = $this->db->raw($queryDailys)->fetch_all();
         }
     
-        
+        $queryMeetings = '
+            SELECT 
+                m.id, m.title, m.description, m.time_start, m.time_end
+            FROM meetings m 
+            WHERE m.project_id = '.$id.'
+            ORDER BY m.time_start DESC
+            LIMIT 50;
+        ';
+
+        $meetings = $this->db->raw($queryMeetings)->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('project/member', [
@@ -245,21 +311,29 @@ class ProjectController extends BaseController
             'users' => $users,
             'dailys' => $dailys,
             'project' => $project,
+            'meetings' => $meetings,
         ]);
         
     }
     
     public function addMember($data)
     {
-        // $this->dd('dasdas');
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
         $queryProjectUser = '
             SELECT 
                 id, user_id, project_id
@@ -306,13 +380,25 @@ class ProjectController extends BaseController
     public function createMember($data)
     {
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+        
+        if (empty($project)) {
+            $this->setMessage('Data tidak ada!');
+            $this->redirect('project');
+        }
         
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $user_id = trim($_POST['user_id']);
@@ -357,16 +443,22 @@ class ProjectController extends BaseController
     {
         
         $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isProjectManager) {
             $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('project');
+            $this->redirect('home');
         }
 
         $id = $this->db->escape($data['id']);
-        $project = $this->db->getBy("project_users", "id", $id)->fetch_object();
+        $projectUser = $this->db->getBy("project_users", "id", $id)->fetch_object();
+        $project = $this->db->getBy("projects", "id", $projectUser->project_id)->fetch_object();
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
         
-        if (empty($project)) {
+        if (empty($projectUser)) {
             $this->setMessage('Data yang ingin di nonactive tidak ada!');
             $this->redirect('project/member/'.$id);
         }
@@ -377,10 +469,257 @@ class ProjectController extends BaseController
             ];
             $update = $this->db->update("project_users", $data, 'id', $id);
             $this->setMessage('Data berhasil di nonactive', 'SUCCESS');
-            $this->redirect('project/member/'.$project->project_id);
+            $this->redirect('project/member/'.$projectUser->project_id);
         } catch (\Throwable $th) {
             $this->setMessage($th->getMessage());
-            $this->redirect('project/member/'.$project->project_id);
+            $this->redirect('project/member/'.$projectUser->project_id);
+        }
+    }
+    
+    public function activeMember($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $id = $this->db->escape($data['id']);
+        $projectUser = $this->db->getBy("project_users", "id", $id)->fetch_object();
+        $project = $this->db->getBy("projects", "id", $projectUser->project_id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+        
+        if (empty($projectUser)) {
+            $this->setMessage('Data yang ingin di nonactive tidak ada!');
+            $this->redirect('project/member/'.$id);
+        }
+
+        try {
+            $data = [
+                "status" => "ACTIVED",
+            ];
+            $update = $this->db->update("project_users", $data, 'id', $id);
+            $this->setMessage('Data berhasil di active', 'SUCCESS');
+            $this->redirect('project/member/'.$projectUser->project_id);
+        } catch (\Throwable $th) {
+            $this->setMessage($th->getMessage());
+            $this->redirect('project/member/'.$projectUser->project_id);
+        }
+    }
+
+    public function note($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $id = $this->db->escape($data['id']);
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $project_user_id = $this->db->escape($data['project_user_id']);
+        $queryProjectUser = '
+            SELECT 
+                pu.id, pu.user_id, pu.project_id, pu.status, pu.notes, u.fullname, p.name as project_name
+            FROM 
+                project_users pu
+            LEFT JOIN users u
+            ON u.id = pu.user_id
+            LEFT JOIN projects p
+            ON p.id = pu.project_id
+            WHERE pu.id = '.$project_user_id.'
+            LIMIT 1;
+        ';
+        // $this->dd($queryProjectUser);
+        $projectUser = $this->db->raw($queryProjectUser)->fetch_object();
+        
+        $alert = $this->getMessage();
+        $this->render('project/note', [
+            'alert' => $alert,
+            'project_user_id' => $project_user_id,
+            'projectUser' => $projectUser,
+        ]);
+        
+    }
+
+    public function updateNote($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+        
+        $id = $this->db->escape($data['id']);
+        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+        $project_user_id = $this->db->escape($data['project_user_id']);
+        $queryProjectUser = '
+            SELECT 
+                pu.id, pu.user_id, pu.project_id, pu.status, pu.notes, u.fullname, p.name as project_name
+            FROM 
+                project_users pu
+            LEFT JOIN users u
+            ON u.id = pu.user_id
+            LEFT JOIN projects p
+            ON p.id = pu.project_id
+            WHERE pu.id = '.$project_user_id.'
+            LIMIT 1;
+        ';
+        $projectUser = $this->db->raw($queryProjectUser)->fetch_object();
+        
+        if (empty($projectUser)) {
+            $this->setMessage('Data yang ingin diberi catatan tidak ada!');
+            $this->redirect('project');
+        }
+
+        try {
+            $notes = htmlspecialchars(trim($_POST['notes']));
+            $data = [
+                "notes" => $this->db->escape($notes),
+            ];
+            $update = $this->db->update("project_users", $data, 'id', $project_user_id);
+            $this->setMessage('Data berhasil disimpan', 'SUCCESS');
+            $this->redirect('project/member/note/'.$project_user_id);
+        } catch (\Throwable $th) {
+            $this->setMessage($th->getMessage());
+            $this->redirect('project/member/note/'.$project_user_id);
+        }
+    }
+
+    public function attendance($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $project_id = $this->db->escape($data['project_id']);
+        $project = $this->db->getBy("projects", "id", $project_id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $queryProjectUser = '
+            SELECT 
+                u.id, u.fullname, u.role, u.is_finish, pu.project_id
+            FROM 
+                project_users pu
+            LEFT JOIN view_user_daily u
+            ON pu.user_id = u.id
+            WHERE 
+                pu.project_id = '.$project_id.'
+                AND pu.status = "ACTIVED"
+            ORDER BY u.fullname asc;
+        ';
+        $projectUsers = $this->db->raw($queryProjectUser)->fetch_all();
+        
+        $alert = $this->getMessage();
+        $this->render('project/attendance', [
+            'alert' => $alert,
+            'project_id' => $project_id,
+            'projectUsers' => $projectUsers,
+        ]);
+        
+    }
+    
+    public function createAttendance($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $project_id = $this->db->escape($data['project_id']);
+        $project = $this->db->getBy("projects", "id", $project_id)->fetch_object();
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $user_ids = $_POST['user_ids'];
+        $attendances = $_POST['attendances'];
+        $notes = $_POST['notes'];
+        $timeStart = $_POST['time_start'];
+        $date = $date = date("Y-m-d", strtotime($timeStart));
+        $duration = $_POST['duration'];
+        $description = $_POST['description'];
+
+        if (empty($timeStart)) {
+            $this->setMessage('Tanggal mulai belum dipilih!');
+            $this->redirect('project/meeting-attendance/'.$project_id);
+        }
+
+        $combined = array_map(function ($user_id, $attendance, $note) {
+            return [
+                "user_id" => $user_id,
+                "status" => $attendance,
+                "note" => $note
+            ];
+        }, $user_ids, $attendances, $notes);        
+
+        $this->db->beginTransaction();
+        try {
+            $dataMeeting = [
+                "title" => 'Meeting Project ' . $project->name,
+                "project_id" => $project_id,
+                "type" => 'MEETING_PROJECT',
+                "created_by" => $this->user->id,
+                "date" => $date,
+                "time_start" => $timeStart,
+                "description" => $description,
+            ];
+            $insertMeeting = $this->db->insert("meetings", $dataMeeting);
+            // $this->dd($insertMeeting);
+            $insertParticipant = null;
+            foreach ($combined as $elm) {
+                if ($elm['status'] == 'NONE') {
+                    continue;
+                }
+                $elm['meeting_id'] = $insertMeeting['last_id'];
+                $elm['created_by'] = $this->user->id;
+                $insertParticipant = $this->db->insert("meeting_attendances", $elm);
+            }
+            if (empty($insertParticipant)) {
+                throw new Exception("Tidak ada peserta yang ikut meeting", 1);
+            }
+            $this->db->commit();
+            $this->setMessage('Data kehadiran berhasil disimpan', 'SUCCESS');
+            $this->redirect('project/member/'.$project_id);
+        } catch (\Throwable $th) {
+            $this->db->rollback();
+            $this->setMessage($th->getMessage());
+            $this->redirect('project/meeting-attendance/'.$project_id);
         }
     }
 }

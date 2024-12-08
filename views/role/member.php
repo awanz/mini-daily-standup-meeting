@@ -9,6 +9,29 @@
         },
         order: [[0, 'asc']]
     });
+
+    $(document).ready(function () {
+        document.getElementById('copyEmail').addEventListener('click', function () {
+            const emailText = document.getElementById('emailText').innerText;
+            navigator.clipboard.writeText(emailText)
+                .then(() => {
+                    alert('Email copied to clipboard!');
+                })
+                .catch((err) => {
+                    alert('Failed to copy email: ' + err);
+                });
+        });
+        document.getElementById('copyPhone').addEventListener('click', function () {
+            const phoneText = document.getElementById('phoneText').innerText;
+            navigator.clipboard.writeText(phoneText)
+                .then(() => {
+                    alert('Phone copied to clipboard!');
+                })
+                .catch((err) => {
+                    alert('Failed to copy phone: ' + err);
+                });
+        });
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -31,8 +54,17 @@
                     <div class="card-body">
                         <h5 class="card-title"><?= $value[1] ?></h5>
                         <p class="card-text">
-                            e-mail: <?= $value[2] ?><br>
-                            No HP: <?= $value[3] ?><br>
+                            e-mail: <span id="emailText"><?= htmlspecialchars($value[2]) ?></span>
+                            <?php if (!empty($value[2])) { ?>
+                            <span class="pe-auto badge bg-dark" style="cursor: pointer;" id="copyEmail">Copy</span>
+                            <?php } ?>
+                            <br>
+                            No HP: <span id="phoneText"><?= htmlspecialchars($value[3]) ?></span>
+                            <?php if (!empty($value[3])) { ?>
+                            <a href="https://wa.me/<?= htmlspecialchars($value[3]) ?>" target="_blank" class="pe-auto badge bg-success" style="cursor: pointer;">Chat</a>
+                            <span class="pe-auto badge bg-dark" style="cursor: pointer;" id="copyPhone">Copy</span>
+                            <?php } ?>
+                            <br>
                             Kontrak: <?= $value[4] ?> - <?= $value[5] ?><br>
                             Total Daily Bulan ini: <?= $value[6] ?><br>
                             Projects: <?= $value[10] ?>

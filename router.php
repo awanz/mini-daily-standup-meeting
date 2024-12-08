@@ -85,12 +85,23 @@ function handleRoute($uri)
         '/project/member/:id' => [
             'GET' => ['ProjectController', 'member'],
         ],
+        '/project/member/note/:project_user_id' => [
+            'GET' => ['ProjectController', 'note'],
+            'POST' => ['ProjectController', 'updateNote'],
+        ],
         '/project/add-member/:id' => [
             'GET' => ['ProjectController', 'addMember'],
             'POST' => ['ProjectController', 'createMember'],
         ],
+        '/project/meeting-attendance/:project_id' => [
+            'GET' => ['ProjectController', 'attendance'],
+            'POST' => ['ProjectController', 'createAttendance'],
+        ],
         '/project/nonactive-member/:id' => [
             'GET' => ['ProjectController', 'nonactiveMember'],
+        ],
+        '/project/active-member/:id' => [
+            'GET' => ['ProjectController', 'activeMember'],
         ],
         
         '/role' => [
