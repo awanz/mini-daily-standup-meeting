@@ -216,7 +216,7 @@ class HomeController extends BaseController
 
         $projectQuery = '
             SELECT 
-                p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma
+                p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma, p.id
             FROM 
                 project_users pu
             LEFT JOIN users u

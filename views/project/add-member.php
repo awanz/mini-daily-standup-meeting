@@ -30,7 +30,7 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Anggota Projects</h4>
+                    <h4>Tambah Anggota Project <?= $project->name ?></h4>
                     <div>
                         <a href="<?= BASE_URL ?>/project/detail/<?= $id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>

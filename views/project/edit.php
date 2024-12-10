@@ -74,9 +74,14 @@
                     <input name="url_repo" type="text" class="form-control" id="url_repo" placeholder="Masukan url repository git" value="<?=$this->e($project->url_repo ?? "")?>">
                 </div>
                 <div class="form-group my-2">
+                    <label for="embeded">Embeded</label>
+                    <textarea class="form-control" name="embeded" id="embeded" rows="4"><?= $project->embeded ?></textarea>
+                </div>
+                <div class="form-group my-2">
                     <label for="note">Catatan</label>
                     <textarea class="form-control" name="note" id="note" rows="4"><?=$this->e($project->note ?? "")?></textarea>
                 </div>
+                
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
                 <a href="<?= BASE_URL ?>/project" class="btn btn-light my-2">Kembali</a>
             </form>

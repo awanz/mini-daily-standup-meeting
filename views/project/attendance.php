@@ -21,7 +21,7 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Absensi Kehadiran Projects</h4>
+                    <h4>Absensi Kehadiran Project <?= $project->name ?></h4>
                     <div>
                         <a href="<?= BASE_URL ?>/project/detail/<?= $project_id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>
@@ -45,10 +45,10 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-4 mb-2">
                         <label for="duration" class="form-label">Durasi (Dalam Satuan Menit)</label>
                         <div class="input-group">
-                            <input type="text" name="duration" class="form-control" placeholder="Masukan durasi (dalam satuan menit)">
+                            <input type="number" min="0" name="duration" class="form-control" placeholder="Masukan durasi (dalam satuan menit)">
                         </div>
                     </div>
                     <div class="col-md-12 mb-2">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="notes" class="form-label">Catatan</label>
-                            <input type="text" class="form-control" name="notes[]" value="-" required>
+                            <textarea class="form-control" name="notes[]" rows="1" required>-</textarea>
                         </div>
                     </div>
                 <?php } ?>

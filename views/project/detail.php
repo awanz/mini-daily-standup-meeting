@@ -56,7 +56,36 @@
                 });
         });
     });
-
+    new DataTable('#tableMeetings', {
+        pageLength: 15,
+        lengthMenu: [10, 15, 50, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength','excel']
+            }
+        },
+        order: [[0, 'asc']],
+    });
+    new DataTable('#tableDailys', {
+        pageLength: 20,
+        lengthMenu: [10, 20, 50, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength','excel']
+            }
+        },
+        order: [[0, 'asc']],
+    });
+    new DataTable('#tableMembers', {
+        pageLength: 20,
+        lengthMenu: [10, 20, 50, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength','excel']
+            }
+        },
+        order: [[0, 'asc']],
+    });
 </script>
 <?php $this->stop() ?>
 
@@ -94,18 +123,20 @@
                     </div>
                     </div>
                 </div>
-                <!-- <div class="accordion-item">
+                <?php if ($project->embeded): ?>
+                <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                        <b>Google Drive Folder Shortcut</b>
+                        <b>Embeded Shortcut</b>
                     </button>
                     </h2>
                     <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
                     <div class="accordion-body">
-                        <iframe src="https://drive.google.com/embeddedfolderview?id=1XVM3PR4nnzYZlfeI9wL2AXNdGE7-GqNY#grid" width="100%" height="600" frameborder="0"></iframe>
+                        <?= $project->embeded ?>
                     </div>
                     </div>
-                </div> -->
+                </div>
+                <?php endif ?>
                 <!-- <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-meetingsColls">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseMeetingsColls" aria-expanded="false" aria-controls="panelsStayOpen-collapseMeetingsColls">
@@ -164,7 +195,6 @@
                 <thead>
                     <tr>
                         <th>Judul</th>
-                        <th>Deskripsi</th>
                         <th>Tanggal</th>
                         <th>Waktu Mulai</th>
                         <th>Waktu Berakhir</th>
@@ -173,8 +203,9 @@
                 <tbody>
                     <?php foreach($meetings as $meeting): ?>
                     <tr>
-                        <td><?=$this->e($meeting[1])?></td>
-                        <td><?=$this->e($meeting[2])?></td>
+                        <td>
+                            <a href="<?= BASE_URL ?>/project/meeting-attendance-detail/<?= $meeting[0] ?>"><?=$this->e($meeting[1])?></a>
+                        </td>
                         <td><?=$this->e($meeting[3])?></td>
                         <td><?=$this->e($meeting[4])?></td>
                         <td><?=$this->e($meeting[5])?></td>
@@ -200,50 +231,90 @@
                     <?php endif ?>
                 </div>
             </h5>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <?php foreach ($users as $key => $value) {?>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <?= $value[1] ?> 
-                                <?php if ($value[10] == 'ACTIVED') { ?><small class="badge bg-primary rounded-pill">Aktif</small><?php } ?>
-                                <?php if ($value[10] == 'NONACTIVED') { ?><small class="badge bg-danger rounded-pill">Tidak Aktif</small><?php } ?>
-                            </h5>
-                            <h6><?= $value[7] ?></h6>
-                            <p class="card-text">
-                                E-mail: 
-                                <span class="emailText"><?= htmlspecialchars($value[2]) ?></span>
-                                <?php if (!empty($value[2])) { ?>
-                                    <span class="pe-auto badge bg-dark copyEmail" style="cursor: pointer;">Copy</span>
-                                <?php } else { echo "-"; } ?><br>
-                                No HP: 
-                                <?php if (!empty($value[3])) { ?>
-                                    <span class="phoneText"><?= htmlspecialchars($value[3]) ?></span>
-                                    <a href="https://wa.me/<?= htmlspecialchars($value[3]) ?>" target="_blank" class="pe-auto badge bg-success" style="cursor: pointer;">Chat</a>
-                                    <span class="pe-auto badge bg-dark copyPhone" style="cursor: pointer;">Copy</span>
-                                <?php } else { echo "-"; } ?><br>
-                                <span class="<?php if ($value[8]) { ?>text-dark bg-warning<?php } ?>">
-                                    Kontrak: <?= $value[4] ?> - <?= $value[5] ?><br>
-                                </span>
-                                Catatan: <?= $value[9] ?><br>
-                            </p>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Anggota Grid</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Anggota List</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <?php foreach ($users as $key => $value) {?>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <?= $value[1] ?> 
+                                        <?php if ($value[10] == 'ACTIVED') { ?><small class="badge bg-primary rounded-pill">Aktif</small><?php } ?>
+                                        <?php if ($value[10] == 'NONACTIVED') { ?><small class="badge bg-danger rounded-pill">Tidak Aktif</small><?php } ?>
+                                    </h5>
+                                    <h6><?= $value[7] ?></h6>
+                                    <p class="card-text">
+                                        E-mail: 
+                                        <span class="emailText"><?= htmlspecialchars($value[2]) ?></span>
+                                        <?php if (!empty($value[2])) { ?>
+                                            <span class="pe-auto badge bg-dark copyEmail" style="cursor: pointer;">Copy</span>
+                                        <?php } else { echo "-"; } ?><br>
+                                        No HP: 
+                                        <?php if (!empty($value[3])) { ?>
+                                            <span class="phoneText"><?= htmlspecialchars($value[3]) ?></span>
+                                            <a href="https://wa.me/<?= htmlspecialchars($value[3]) ?>" target="_blank" class="pe-auto badge bg-success" style="cursor: pointer;">Chat</a>
+                                            <span class="pe-auto badge bg-dark copyPhone" style="cursor: pointer;">Copy</span>
+                                        <?php } else { echo "-"; } ?><br>
+                                        <span class="<?php if ($value[8]) { ?>text-dark bg-warning<?php } ?>">
+                                            Kontrak: <?= $value[4] ?> - <?= $value[5] ?><br>
+                                        </span>
+                                        Catatan: <?= $value[9] ?><br>
+                                    </p>
 
+                                </div>
+                                <?php if ($isAdmin || $isProjectManager): ?>
+                                <div class="card-footer d-flex justify-content-between">
+                                    <small class="text-muted">Total Daily Bulan Ini: <a href="<?= BASE_URL ?>/history/<?= $value[2] ?>"><?= $value[6] == 99 ? '' : $value[6] ?></a> </small>
+                                    <small class="text-muted">
+                                        <a href="<?= BASE_URL ?>/project/detail/note/<?= $value[11] ?>">Catatan</a> - 
+                                        <?php if ($value[10] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?>
+                                        <?php if ($value[10] == 'NONACTIVED') { ?><a href="#" class="active-btn" data-url="<?= BASE_URL ?>/project/active-member/<?= $value[11] ?>">Active</a><?php } ?>
+                                    </small>
+                                </div>
+                                <?php endif ?>
+                            </div>
                         </div>
-                        <?php if ($isAdmin || $isProjectManager): ?>
-                        <div class="card-footer d-flex justify-content-between">
-                            <small class="text-muted">Total Daily Bulan Ini: <a href="<?= BASE_URL ?>/history/<?= $value[2] ?>"><?= $value[6] == 99 ? '' : $value[6] ?></a> </small>
-                            <small class="text-muted">
-                                <a href="<?= BASE_URL ?>/project/member/note/<?= $value[11] ?>">Catatan</a> - 
-                                <?php if ($value[10] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?>
-                                <?php if ($value[10] == 'NONACTIVED') { ?><a href="#" class="active-btn" data-url="<?= BASE_URL ?>/project/active-member/<?= $value[11] ?>">Active</a><?php } ?>
-                            </small>
-                        </div>
-                        <?php endif ?>
+                        <?php } ?>
                     </div>
                 </div>
-                <?php } ?>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="table-responsive">
+                        <table id="tableMembers" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Catatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1; foreach($users as $user): ?>
+                                <tr>
+                                    <td><?= $no; ?></td>
+                                    <th><?=$this->e($user[1])?></th>
+                                    <td><?=$this->e($user[7])?></td>
+                                    <td><?= $user[10] == 'ACTIVED' ? 'Aktif' : 'Tidak aktif' ?></td>
+                                    <td><?= !empty($user[9]) ? $user[9] : '-' ?></td>
+                                </tr>
+                                <?php $no++; endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
             </div>
+            
         </div>
     </div>
 </div>
@@ -253,31 +324,31 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Daily Standup Meeting (5 Hari Ini Terakhir)</h4>
+                    <h4>Daily Standup Meeting (5 Hari Terakhir)</h4>
                 </div>
             </h5>
             <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Nama</th>
-                        <th>Aktifitas Kemarin</th>
-                        <th>Hari ini</th>
-                        <th>Permasalahan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($dailys as $daily): ?>
-                    <tr>
-                        <td><?=$this->e($daily[2])?></td>
-                        <th><?= $daily[8] ?></th>
-                        <td><?= $daily[3] ?></td>
-                        <td><?= $daily[4] ?></td>
-                        <td><?= $daily[5] ?></td>
-                    </tr>
-                    <?php endforeach ?>
-                </tbody>
+                <table id="tableDailys" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Aktifitas Kemarin</th>
+                            <th>Hari ini</th>
+                            <th>Permasalahan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($dailys as $daily): ?>
+                        <tr>
+                            <td><?=$this->e($daily[2])?></td>
+                            <th><?= $daily[8] ?></th>
+                            <td><?= $daily[3] ?></td>
+                            <td><?= $daily[4] ?></td>
+                            <td><?= $daily[5] ?></td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
                 </table>
             </div>
         </div>

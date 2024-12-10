@@ -6,7 +6,7 @@
         lengthMenu: [50, 100, 1000],
         order: [[0, 'desc']],
     });
-    new DataTable('#tableDaily', {
+    new DataTable('#tableAttendance', {
         pageLength: 7,
         lengthMenu: [5, 10, 25, 50, 1000],
         layout: {
@@ -16,8 +16,18 @@
         },
         order: [[0, 'desc']],
     });
-    new DataTable('#projectTable', {
+    new DataTable('#tableDaily', {
         pageLength: 31,
+        lengthMenu: [5, 10, 25, 31, 50, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength','excel']
+            }
+        },
+        order: [[0, 'desc']],
+    });
+    new DataTable('#projectTable', {
+        pageLength: 10,
         lengthMenu: [5, 10, 25, 50, 1000],
         layout: {
             topStart: {
@@ -104,6 +114,7 @@
                             <th>Type</th>
                             <th>Perlengkapan</th>
                             <th>Grup WA</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,6 +156,9 @@
                                 <?php if ((!empty($value[4]) && $value[1] == 'ACTIVED') || $isAdmin) { ?>
                                 <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>
                                 <?php } ?>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL ?>/project/detail/<?= $value[7] ?>" class="btn btn-dark my-1">Detail</a>
                             </td>
                         </tr>
                         <?php } ?>
@@ -203,7 +217,7 @@
                 </div>
             </h5>
             <div class="table-responsive">
-                <table id="tableDaily" class="table table-striped table-bordered">
+                <table id="tableAttendance" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Judul Meeting</th>
@@ -218,7 +232,26 @@
                     <?php foreach($meetings as $meeting): ?>
                     <tr>
                         <td><?=$this->e($meeting[0])?></td>
-                        <td><?= $meeting[1] ?></td>
+                        <td>
+                        <?php 
+                        switch ($meeting[1]) {
+                            case 'ABSENT':
+                                echo '<span class="text-danger">Tidak hadir</span>';
+                                break;
+                            case 'PRESENT':
+                                echo '<span class="text-success">Hadir</span>';
+                                break;
+                            case 'SICK':
+                                echo '<span class="text-primary">Sakit</span>';
+                                break;
+                            case 'PERMISSION':
+                                echo '<span class="text-warning">Izin</span>';
+                                break;
+                            default:
+                                echo "Tidak hadir";
+                                break;
+                        } 
+                        ?></td>
                         <td><?= $meeting[2] ?></td>
                         <td><?= $meeting[3] ?></td>
                         <td><?= $meeting[4] ?></td>

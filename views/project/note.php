@@ -16,7 +16,7 @@
                     <?= $alert['message'] ?>
                 </div>
             <?php endif ?>
-            <form method="POST" action="<?= BASE_URL ?>/project/member/note/<?= $projectUser->id ?>">
+            <form method="POST" action="<?= BASE_URL ?>/project/detail/note/<?= $projectUser->id ?>">
                 <div class="form-group my-2">
                     <label for="notes">Catatan</label>
                     <textarea class="form-control" name="notes" id="notes" rows="4"><?=$this->e($projectUser->notes ?? "")?></textarea>

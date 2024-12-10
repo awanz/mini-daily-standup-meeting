@@ -221,6 +221,7 @@ class ProjectController extends BaseController
             $url_logo = trim($_POST['url_logo']);
             $url_repo = trim($_POST['url_repo']);
             $note = trim($_POST['note']);
+            $embeded = $_POST['embeded'];
             
             try {
                 $data = [
@@ -234,6 +235,7 @@ class ProjectController extends BaseController
                     "url_logo" => $url_logo,
                     "url_repo" => $url_repo,
                     "note" => $note,
+                    "embeded" => $embeded,
                     "updated_by" => $this->user->id,
                 ];
 
@@ -313,7 +315,7 @@ class ProjectController extends BaseController
             LEFT JOIN view_user_daily u
             ON pu.user_id = u.id
             WHERE pu.project_id = '.$id.'
-            ORDER BY pu.status asc, u.id asc;
+            ORDER BY pu.status asc, u.fullname asc;
         ';
         $users = $this->db->raw($queryProjectUser)->fetch_all();
         $dailys = array();
@@ -423,6 +425,7 @@ class ProjectController extends BaseController
             'alert' => $alert,
             'id' => $id,
             'users' => $users,
+            'project' => $project,
         ]);
         
     }
@@ -696,6 +699,55 @@ class ProjectController extends BaseController
             'alert' => $alert,
             'project_id' => $project_id,
             'projectUsers' => $projectUsers,
+            'project' => $project,
+        ]);
+        
+    }
+
+    public function attendanceDetail($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $meeting_id = $this->db->escape($data['meeting_id']);
+        $meeting = $this->db->getBy("meetings", "id", $meeting_id)->fetch_object();
+        if (empty($meeting)) {
+            throw new Exception("Meeting tidak ditemukan", 1);
+        }
+        $project = $this->db->getBy("projects", "id", $meeting->project_id)->fetch_object();
+        if (empty($project)) {
+            throw new Exception("Project tidak ditemukan", 1);
+        }
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $queryMeetingAttendance = '
+            SELECT 
+                u.fullname, r.name, ma.status, ma.note
+            FROM 
+                meeting_attendances ma
+            LEFT JOIN meetings m ON ma.meeting_id = m.id
+            LEFT JOIN users u ON ma.user_id = u.id
+            LEFT JOIN roles r ON r.id = u.role_id
+            WHERE ma.meeting_id = '.$meeting->id.'
+            ORDER BY u.fullname asc;
+        ';
+        $meetingAttendance = $this->db->raw($queryMeetingAttendance)->fetch_all();
+        
+        $alert = $this->getMessage();
+        $this->render('project/attendance-detail', [
+            'alert' => $alert,
+            'meeting' => $meeting,
+            'meetingAttendance' => $meetingAttendance,
+            'project' => $project,
         ]);
         
     }
@@ -749,6 +801,11 @@ class ProjectController extends BaseController
                 "time_start" => $timeStart,
                 "description" => $description,
             ];
+            if ($duration > 0) {
+                $timeStartDate = new DateTime($timeStart);
+                $timeStartDate->modify('+'.$duration.' minutes');
+                $dataMeeting['time_end'] = $timeStartDate->format('H:i');
+            }
             $insertMeeting = $this->db->insert("meetings", $dataMeeting);
             // $this->dd($insertMeeting);
             $insertParticipant = null;
@@ -764,12 +821,48 @@ class ProjectController extends BaseController
                 throw new Exception("Tidak ada peserta yang ikut meeting", 1);
             }
             $this->db->commit();
-            $this->setMessage('Data kehadiran berhasil disimpan', 'SUCCESS');
+            $this->setMessage("Data kehadiran <b>".$dataMeeting['title']."</b> berhasil disimpan", 'SUCCESS');
             $this->redirect('project/detail/'.$project_id);
         } catch (\Throwable $th) {
             $this->db->rollback();
             $this->setMessage($th->getMessage());
             $this->redirect('project/meeting-attendance/'.$project_id);
+        }
+    }
+
+    public function deleteAttendance($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $meeting_id = $this->db->escape($data['meeting_id']);
+        $meeting = $this->db->getBy("meetings", "id", $meeting_id)->fetch_object();
+
+        try {
+            if (empty($meeting)) {
+                throw new Exception("Meeting tidak ditemukan", 1);
+            }
+    
+            if ((time() - strtotime($meeting->created_at)) >= 3 * 24 * 60 * 60){
+                throw new Exception("Absensi sudah tidak dapat dihapus, hubungi admin", 1);
+            }
+            $this->db->beginTransaction();
+            $this->db->delete("meetings", 'id', $meeting_id);
+            $this->db->delete("meeting_attendances", 'meeting_id', $meeting_id);
+            
+            $this->db->commit();
+            $this->setMessage("Data absensi <b>$meeting->title</b> berhasil di delete", 'SUCCESS');
+            $this->redirect('project/detail/'.$meeting->project_id);
+        } catch (\Throwable $th) {
+            $this->db->rollback();
+            $this->setMessage($th->getMessage());
+            $this->redirect('project/meeting-attendance-detail/'.$meeting->id);
         }
     }
 }
