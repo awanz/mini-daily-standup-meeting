@@ -205,6 +205,7 @@ class UserController extends BaseController
             $date_end = trim($_POST['date_end']);
             $role_id = trim($_POST['role_id']);
             $access = trim($_POST['access']);
+            $notes = trim($_POST['notes']);
             
             try {
                 $data = [
@@ -215,6 +216,7 @@ class UserController extends BaseController
                     "date_end" => $this->db->escape($date_end),
                     "role_id" => $this->db->escape($role_id),
                     "access" => $this->db->escape($access),
+                    "notes" => $this->db->escape($notes),
                     "updated_by" => $this->user->id,
                 ];
                 

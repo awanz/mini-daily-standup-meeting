@@ -291,6 +291,7 @@ class RoleController extends BaseController
             ON r.id = u.role_id
             WHERE 
                 r.id = '.$role_id.'
+                AND u.is_active = 1
             ORDER BY u.fullname asc;
         ';
         $roleUsers = $this->db->raw($queryRoleUser)->fetch_all();
