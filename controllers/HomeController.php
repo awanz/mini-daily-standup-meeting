@@ -52,15 +52,13 @@ class HomeController extends BaseController
         // print_r($data);
         $dateGet = date('Y-m-d');
         if (isset($data['date'])) {
-            $dateGet = $data['date'];
+            $dateGet = $this->db->escape($data['date']);
         }
         
-        if (isset($data['date'])) {
-            $dateGet = $this->db->escape($data['date']);
-            $today = date('Y-m-d');
-            if (strtotime($dateGet) < strtotime(date('Y-m-d', strtotime('-30 day', strtotime(date('Y-m-d'))))) || strtotime($dateGet) > strtotime($today)) {
-                $this->redirect('home');
-            }
+        $today = date('Y-m-d');
+        if (strtotime($dateGet) < strtotime(date('Y-m-d', strtotime('-30 day', strtotime(date('Y-m-d'))))) || strtotime($dateGet) > strtotime($today)) {
+            $this->setMessage('Hanya bisa daily hari ini dan 30 hari kebelakang!');
+            $this->redirect('home');
         }
 
         $paramDailyFInd = [
@@ -91,7 +89,7 @@ class HomeController extends BaseController
 
         $dateGet = date('Y-m-d');
         if (isset($_POST['date_activity'])) {
-            $dateGet = htmlspecialchars(trim($_POST['date_activity']), ENT_QUOTES, 'UTF-8');
+            $dateGet = $this->db->escape($_POST['date_activity']);
         }
 
         if (!$email) {
@@ -112,7 +110,6 @@ class HomeController extends BaseController
         }
         
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            // die('xcxcxc');
             $yesterday = htmlspecialchars(trim($_POST['yesterday']), ENT_QUOTES, 'UTF-8');
             $today = htmlspecialchars(trim($_POST['today']), ENT_QUOTES, 'UTF-8');
             $problem = htmlspecialchars(trim($_POST['problem']), ENT_QUOTES, 'UTF-8');
@@ -305,7 +302,7 @@ class HomeController extends BaseController
                 $pattern = '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/';
 
                 if (!preg_match($pattern, $_POST['new_password'])) {
-                    throw new Exception("Password harus minimal 6 karakter dan mengandung huruf serta angka.", 1);
+                    throw new Exception("Password harus minimal 6 karakter dan mengandung huruf serta angka, tidak boleh simbol.", 1);
                 }
 
                 $data = [

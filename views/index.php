@@ -85,11 +85,11 @@
             </p>
             <form action="<?= BASE_URL ?>/home" method="post">
                 <div class="form-group mb-2">
-                    <label for="yesterday" class="form-label">Apa yang kamu kerjakan kemarin?</label>
+                    <label for="yesterday" class="form-label">Apa yang kamu kerjakan kemarin? (Sudah terjadi)</label>
                     <textarea class="form-control" name="yesterday" rows="3"><?=$this->e($daily->yesterday ?? "")?></textarea>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="today" class="form-label">Apa yang akan kamu kerjakan hari ini?</label>
+                    <label for="today" class="form-label">Apa yang akan kamu kerjakan hari ini? (Rencana)</label>
                     <textarea class="form-control" name="today" rows="3"><?=$this->e($daily->today ?? "")?></textarea>
                 </div>
                 <div class="form-group mb-2">

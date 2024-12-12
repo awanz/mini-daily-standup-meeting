@@ -43,8 +43,8 @@ class LoginController extends BaseController
                     users u
                 LEFT JOIN roles r
                 ON u.role_id = r.id
-                WHERE u.email = "'.$email.'"
-                AND u.password = "'.$password.'"
+                WHERE u.email = "'.$this->db->escape($email).'"
+                AND u.password = "'.$this->db->escape($password).'"
                 AND u.is_active = 1
                 LIMIT 1;
             ';
