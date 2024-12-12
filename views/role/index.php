@@ -69,7 +69,8 @@
                                 <?php } ?>
                             </td>
                             <td>    
-                                <a href="<?= BASE_URL ?>/role/member/<?= $value[0] ?>" class="btn btn-dark my-1">Member</a>
+                                <a href="<?= BASE_URL ?>/role/meeting-attendance/<?= $value[0] ?>" class="btn btn-success my-1">Absensi</a>
+                                <a href="<?= BASE_URL ?>/role/detail/<?= $value[0] ?>" class="btn btn-primary my-1">Detail</a>
                                 <a href="<?= BASE_URL ?>/role/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
                                 <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>">
                                     Delete

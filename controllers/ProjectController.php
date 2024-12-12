@@ -620,14 +620,7 @@ class ProjectController extends BaseController
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
-        
-        $id = $this->db->escape($data['id']);
-        $project = $this->db->getBy("projects", "id", $id)->fetch_object();
 
-        if ($isProjectManager && $project->pic != $this->user->id) {
-            $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('home');
-        }
         $project_user_id = $this->db->escape($data['project_user_id']);
         $queryProjectUser = '
             SELECT 
@@ -646,6 +639,12 @@ class ProjectController extends BaseController
         if (empty($projectUser)) {
             $this->setMessage('Data yang ingin diberi catatan tidak ada!');
             $this->redirect('project');
+        }
+
+        $project = $this->db->getBy("projects", "id", $projectUser->project_id)->fetch_object();
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
         }
 
         try {

@@ -54,6 +54,11 @@ body{
 <?php $this->start('footAdditional') ?>
 <?php $this->stop() ?>
 <div class="container">
+    <?php if ($alert): ?>
+        <div class="mt-2 alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
+            <?= $alert['message'] ?>
+        </div>
+    <?php endif ?>
     <div class="row mt-4">
         <?php foreach ($projects as $key => $value) { ?>
         <div class="col-lg-4 col-md-6 mb-4">

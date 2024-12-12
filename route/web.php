@@ -124,10 +124,19 @@ function handleRoute($uri)
         '/role/delete/:id' => [
             'GET' => ['RoleController', 'delete'],
         ],
-        '/role/member/:id' => [
-            'GET' => ['RoleController', 'member'],
+        '/role/detail/:id' => [
+            'GET' => ['RoleController', 'detail'],
         ],
-
+        '/role/meeting-attendance/:role_id' => [
+            'GET' => ['RoleController', 'attendance'],
+            'POST' => ['RoleController', 'createAttendance'],
+        ],
+        '/role/meeting-attendance-detail/:meeting_id' => [
+            'GET' => ['RoleController', 'attendanceDetail'],
+        ],
+        '/role/meeting-attendance-delete/:meeting_id' => [
+            'GET' => ['RoleController', 'deleteAttendance'],
+        ],
 
         '/warnings' => [
             'GET' => ['WarningController', 'index'],
@@ -153,12 +162,13 @@ function handleRoute($uri)
     foreach ($routes as $routePattern => $methods) {
         $pattern = preg_replace('#:([\w]+)#', '(?P<$1>[^/]+)', $routePattern);
         $pattern = '#^' . $pattern . '$#';
+        // echo $pattern;
 
         if (preg_match($pattern, $uri, $matches)) {
             if (isset($methods[$requestMethod])) {
                 [$controllerName, $methodName] = $methods[$requestMethod];
 
-                $controllerFile = __DIR__ . "/controllers/$controllerName.php";
+                $controllerFile = __DIR__ . "/../controllers/$controllerName.php";
 
                 if (file_exists($controllerFile)) {
                     require_once $controllerFile;
@@ -183,10 +193,14 @@ function handleRoute($uri)
     // http_response_code(404);
     // echo "Page Not Found<br>";die($uri);
 
-    $_SESSION['flash_message_alert'] = [
+    $result = [
         'status' => 'FAILED',
         'message' => 'Halaman ' . $uri . ' tidak ditemukan.',
     ];
+
+    // print_r($result);
+
+    $_SESSION['flash_message_alert'] = $result;
 
     header("Location: ". BASE_URL, false, 301);
     exit();

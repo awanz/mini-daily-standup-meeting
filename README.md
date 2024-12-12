@@ -16,15 +16,46 @@ mini-daily-standup-meeting/
 ├── assets/
 │   ├── bootstrap-5.3.3-dist/
 │   └── jquery/
-├── database/
-│   ├── sql/
-│	└── schema.dbml
+├── controller/
+├── docs/
+│   ├── database/
+│   ├──── sql/
+│	└── example/
+├── libraries/
+│   ├── database/
+│   ├── PHPMailer/
+│   ├── plates/
+│	└── template-email/
+├── route/
+│   ├── api.php
+│	└── web.php
+├── views/
 ├── .env
 ├── .gitignore
 ├── .htaccess
-├── next.config.js
-├── middleware.php
+├── config.php
+├── index.php
+├── maintenance.php
 └── README.md
+
+## Flow User
+
+### Admin
+All Menu
+### Project Manager
+- Manage Project
+    - Tambah Anggota
+    - Absensi
+### HR Rekrutasi
+- List Talent Request
+- List Talent Screening
+- Pertanyaan Wawancara
+- List Contract
+
+### Team Leader
+- Manage Role
+    - Tambah Anggota
+    - Absensi
 
 
 ## Database Schema (DDL)

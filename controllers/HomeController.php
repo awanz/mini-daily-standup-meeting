@@ -37,7 +37,9 @@ class HomeController extends BaseController
                 ;
             ')->fetch_all();
             // $this->dd($projects);
+            $alert = $this->getMessage();
             $this->render('profile/home', [
+                'alert' => $alert,
                 'projects' => $projects,
             ]);
         }else{
@@ -85,9 +87,12 @@ class HomeController extends BaseController
         $yesterday = null;
         $today = null;
         $problem = null;
-        $dateGet = htmlspecialchars(trim($_POST['date_activity']), ENT_QUOTES, 'UTF-8');
-        $dateGet = $dateGet ? $dateGet : date('Y-m-d');
         $isAdmin = $this->isAdmin();
+
+        $dateGet = date('Y-m-d');
+        if (isset($_POST['date_activity'])) {
+            $dateGet = htmlspecialchars(trim($_POST['date_activity']), ENT_QUOTES, 'UTF-8');
+        }
 
         if (!$email) {
             $this->setMessage('Session Email tidak terdaftar');

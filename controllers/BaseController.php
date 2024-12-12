@@ -93,9 +93,27 @@ class BaseController
         die();
     }
 
+    public function urlencode($string) {
+        $string = str_replace('-', '___MINUS___', $string);
+        $string = str_replace('/', '___SLASH___', $string);
+    
+        $string = urlencode($string);
+    
+        $string = str_replace('___MINUS___', '-', $string);
+        $string = str_replace('___SLASH___', '/', $string);
+    
+        return $string;
+    }
+
     public function redirect(string $path)
     {
-        header("Location: ". BASE_URL . '/' . $path, false, 301);
+        if (!empty($path)) {
+            $pathEncode = BASE_URL . '/' . $this->urlencode($path);
+            // $this->dd($pathEncode);
+            header("Location: " . $pathEncode, false, 301);
+            exit();
+        }
+        header("Location: ". BASE_URL, false, 301);
         exit();
     }
     

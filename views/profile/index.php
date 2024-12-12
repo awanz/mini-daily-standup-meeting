@@ -104,6 +104,11 @@
                     <h4>Projects</h4>
                 </div>
             </h5>
+            <?php if ($alert): ?>
+                <div class="mt-2 alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
+                    <?= $alert['message'] ?>
+                </div>
+            <?php endif ?>
             <div class="table-responsive">
                 <table id="projectTable" class="table table-striped table-bordered">
                     <thead>
