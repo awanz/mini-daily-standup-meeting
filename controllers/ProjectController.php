@@ -309,11 +309,13 @@ class ProjectController extends BaseController
         }
         $queryProjectUser = '
             SELECT 
-                u.id, u.fullname, u.email, u.phone, u.date_start, u.date_end, u.total_daily, u.role, u.is_finish, pu.notes, pu.status, pu.id
+                u.id, u.fullname, u.email, u.phone, u.date_start, u.date_end, vud.total_daily, vud.role, vud.is_finish, pu.notes, pu.status, pu.id, vud.id
             FROM 
                 project_users pu
-            LEFT JOIN view_user_daily u
+            LEFT JOIN users u
             ON pu.user_id = u.id
+            LEFT JOIN view_user_daily vud
+            ON pu.user_id = vud.id
             WHERE pu.project_id = '.$id.'
             ORDER BY pu.status asc, u.fullname asc;
         ';

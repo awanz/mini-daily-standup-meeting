@@ -131,6 +131,8 @@
                                 <span class="badge bg-success">Aktif</span>
                                 <?php }elseif (isset($value[1]) && $value[1] == 'NONACTIVED') { ?>
                                 <span class="badge bg-danger">Tidak Aktif</span>
+                                <?php }elseif (empty($value[1])) { ?>
+                                <span class="badge bg-dark text-light">Belum Bergabung</span>
                                 <?php } ?>
                             </td>
                             <td>

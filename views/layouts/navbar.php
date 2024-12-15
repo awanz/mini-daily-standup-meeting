@@ -31,6 +31,17 @@
                 </li>
                 <?php endif ?>
                 <?php if ($isAdmin): ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        HR Management
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project/add">Kebutuhan SDM</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project">List Project</a></li>
+                    </ul>
+                </li>
+                <?php endif ?>
+                <?php if ($isAdmin): ?>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/warnings">Pelanggaran</a>
                 </li>
@@ -55,6 +66,17 @@
                     </ul>
                 </li>
                 <?php endif ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Others
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/gather">Gather</a></li>
+                        <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/discord">Discord</a></li>
+                        <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/aturan">Aturan</a></li>
+                        <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/guideline">Panduan</a></li>
+                    </ul>
+                </li>
                 
             </ul>
             <div class="d-flex">

@@ -60,9 +60,9 @@
     <div class="card my-2">
         <div class="card-body">
             <p>Last login: <?=$this->e($user->last_login_at ?? "")?></p>
-            <p>Created by: <?=$this->e($user->created_by ?? "-")?></p>
+            <p>Created by: <?=$this->e($user->created_name ?? "-")?></p>
             <p>Created at: <?=$this->e($user->created_at ?? "-")?></p>
-            <p>Updated by: <?=$this->e($user->updated_by ?? "-")?></p>
+            <p>Updated by: <?=$this->e($user->updated_name ?? "-")?></p>
             <p>Updated at: <?=$this->e($user->updated_at ?? "-")?></p>
         </div>
     </div>

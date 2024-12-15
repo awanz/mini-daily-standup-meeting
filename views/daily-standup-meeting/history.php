@@ -79,9 +79,14 @@
                         <td><?= $daily[5] ?></td>
                         <?php if ($isAdmin): ?>
                         <td>
+                            <?php 
+                            $tanggalSekarang = new DateTime();
+                            $tanggalDiberikan = new DateTime($daily[6]);
+                            if ($tanggalSekarang->diff($tanggalDiberikan)->days < 30): ?>
                             <a href="#" class="btn btn-danger btn-delete" data-url="<?= BASE_URL ?>/history/delete/<?= $daily[0] ?>">
                                 Delete
                             </a>
+                            <?php endif ?>
                         </td>
                         <?php endif ?>
                     </tr>

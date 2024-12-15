@@ -64,7 +64,7 @@
                 buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'asc']],
+        order: [[1, 'desc']],
     });
     new DataTable('#tableDailys', {
         pageLength: 20,
@@ -104,8 +104,8 @@
                     <h4>Detail Projects <?= $project->name ?></h4>
                     <?php if ($isAdmin || $isProjectManager): ?>
                     <div>
-                        <a href="<?= BASE_URL ?>/project/edit/<?= $project->id ?>" class="btn btn-warning my-2">Edit Project</a>
                         <a href="<?= BASE_URL ?>/project" class="btn btn-dark my-2">List Project</a>
+                        <a href="<?= BASE_URL ?>/project/edit/<?= $project->id ?>" class="btn btn-warning my-2">Edit Project</a>
                     </div>
                     <?php endif ?>
                 </div>
@@ -182,7 +182,7 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Riwayat Meeting</h4>
+                    <h4>Riwayat Kehadiran Meeting</h4>
                     <?php if ($isAdmin || $isProjectManager): ?>
                     <div>
                         <a href="<?= BASE_URL ?>/project/meeting-attendance/<?= $id ?>" class="btn btn-success my-2">Absensi</a>
@@ -275,9 +275,9 @@
                                 <div class="card-footer d-flex justify-content-between">
                                     <small class="text-muted">Total Daily Bulan Ini: <a href="<?= BASE_URL ?>/history/<?= $value[2] ?>"><?= $value[6] == 99 ? '' : $value[6] ?></a> </small>
                                     <small class="text-muted">
-                                        <a href="<?= BASE_URL ?>/project/detail/note/<?= $value[11] ?>">Catatan</a> - 
-                                        <?php if ($value[10] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?>
-                                        <?php if ($value[10] == 'NONACTIVED') { ?><a href="#" class="active-btn" data-url="<?= BASE_URL ?>/project/active-member/<?= $value[11] ?>">Active</a><?php } ?>
+                                        <a href="<?= BASE_URL ?>/project/detail/note/<?= $value[11] ?>">Catatan</a>  
+                                        <?php if ($value[10] == 'ACTIVED' && !empty($value[12])) { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?> 
+                                        <?php if ($value[10] == 'NONACTIVED' && !empty($value[12])) { ?><a href="#" class="active-btn" data-url="<?= BASE_URL ?>/project/active-member/<?= $value[11] ?>">Active</a><?php } ?> 
                                     </small>
                                 </div>
                                 <?php endif ?>

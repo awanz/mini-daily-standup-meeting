@@ -72,23 +72,21 @@
                             <td>
                                 <?= $value[1] ?>
                                 <?php if ($value[12] == 1) { ?><span class="badge bg-primary text-white">A1X</span><?php } ?>
-                                <?php if ($value[11] == 1) { ?><span class="badge bg-danger text-white">P2X</span><?php } ?>
+                                <?php if ($value[11] == 1) { ?><span class="badge bg-danger">P2X</span><?php } ?>
                             </td>
                             <td><?= $value[10] ?></td>
                             <td><?= $value[2] ?></td>
                             <td><?= $value[4] ?></td>
                             <td>
-                            <?php if (isset($value[3]) && $value[3] == 'NOT_STARTED') { ?>
-                                <span class="badge bg-light text-dark">Belum Mulai</span>
-                                <?php }elseif (isset($value[3]) && $value[3] == 'IN_PROGRESS') { ?>
-                                <span class="badge bg-warning">Berjalan</span>
-                                <?php }elseif (isset($value[3]) && $value[3] == 'COMPLETED') { ?>
-                                <span class="badge bg-success">Selesai</span>
-                                <?php }elseif (isset($value[3]) && $value[3] == 'FIXING') { ?>
-                                <span class="badge bg-danger">Perbaikan</span>
-                                <?php }elseif (isset($value[3]) && $value[3] == 'PUBLISH') { ?>
-                                <span class="badge bg-primary">Diterbitkan</span>
-                            <?php } ?>
+                            <?php 
+                                if (isset($value[3]) && $value[3] == 'NOT_STARTED') { ?><span class="badge bg-light text-dark">Belum Mulai</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'IN_PROGRESS') { ?><span class="badge bg-warning text-dark">Berjalan</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'COMPLETED') { ?><span class="badge bg-success">Selesai</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'FIXING') { ?><span class="badge bg-info">Perbaikan</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'CANCEL') { ?><span class="badge bg-danger">Batal</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'MAINTENANCE') { ?><span class="badge bg-info">Maintenance</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'PENDING') { ?><span class="badge bg-secondary">Pending</span>
+                                <?php }elseif (isset($value[3]) && $value[3] == 'PUBLISH') { ?><span class="badge bg-primary">Diterbitkan</span><?php } ?>
                             </td>
                             <td>
                                 <?php if (!empty($value[5])) { ?>

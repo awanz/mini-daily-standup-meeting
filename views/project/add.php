@@ -28,8 +28,11 @@
                         <option value="NOT_STARTED">Not Started</option>
                         <option value="IN_PROGRESS">In Progress</option>
                         <option value="COMPLETED">Completed</option>
-                        <option value="FIXING">Fixing</option>
                         <option value="PUBLISH">Publish</option>
+                        <option value="FIXING">Fixing</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="MAINTENANCE">Maintenance</option>
+                        <option value="CANCEL">Cancel</option>
                     </select>
                 </div>
                 <div class="form-group my-2">

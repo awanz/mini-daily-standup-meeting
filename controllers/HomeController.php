@@ -10,37 +10,99 @@ class HomeController extends BaseController
             $projects = $this->db->raw('
                 SELECT 
                     p.id, 
-                    p.name, 
-                    u.fullname, 
+                    p.name,
                     p.status, 
-                    p.type, 
-                    p.url_drive, 
-                    p.url_figma, 
-                    p.url_logo, 
-                    p.url_repo, 
-                    p.url_group_wa,
-                    COUNT(pu.user_id) AS total_users,
+                    MAX(CASE 
+                        WHEN pu.status = "ACTIVED" THEN "ACTIVED"
+                        WHEN pu.status = "NONACTIVED" THEN "NONACTIVED"
+                        ELSE NULL
+                    END) AS pu_status,
+                    p.type,
+                    (SELECT COUNT(pu_sub.user_id) 
+                    FROM project_users pu_sub 
+                    WHERE pu_sub.project_id = p.id) AS total_users,
                     p.is_priority,
                     p.is_a1
                 FROM 
                     projects p
                 LEFT JOIN 
-                    users u ON p.pic = u.id
-                LEFT JOIN 
                     project_users pu ON p.id = pu.project_id
-                WHERE pu.user_id = '.$this->user->id.'
-                    AND p.deleted_at is NULL
+                WHERE 
+                    pu.user_id = '.$this->user->id.'
+                    AND p.deleted_at IS NULL
                 GROUP BY 
-                    p.id
+                    p.id, p.name, p.status, p.type, p.is_priority, p.is_a1
                 ORDER BY 
-                    p.name
-                ;
+                    FIELD(MAX(CASE 
+                        WHEN pu.status = "ACTIVED" THEN "ACTIVED"
+                        WHEN pu.status = "NONACTIVED" THEN "NONACTIVED"
+                        ELSE NULL
+                    END), "ACTIVED", NULL, "NONACTIVED"), 
+                    p.name;
+
             ')->fetch_all();
-            // $this->dd($projects);
+            $queryMeeting = null;
+
+            if ($access == 'ADMIN') {
+                $queryMeeting = '
+                    SELECT 
+                        m.id,
+                        m.title,
+                        m.date,
+                        m.time_start,
+                        m.time_end,
+                        m.type
+                    FROM 
+                        meetings m
+                    LEFT JOIN meeting_attendances ma ON ma.meeting_id = m.id
+                    LEFT JOIN users u ON ma.user_id = u.id
+                    LEFT JOIN roles r ON r.id = u.role_id
+                    WHERE (m.title <> "" OR m.title is not null)
+                    GROUP BY
+                        m.id,
+                        m.title,
+                        m.date,
+                        m.time_start,
+                        m.time_end,
+                        m.type
+                    ORDER BY m.date desc LIMIT 250;
+                ';
+            }else{
+                $queryMeeting = '
+                    SELECT 
+                        m.id,
+                        m.title,
+                        m.date,
+                        m.time_start,
+                        m.time_end,
+                        m.type
+                    FROM 
+                        meetings m
+                    LEFT JOIN meeting_attendances ma ON ma.meeting_id = m.id
+                    LEFT JOIN users u ON ma.user_id = u.id
+                    LEFT JOIN roles r ON r.id = u.role_id
+                    WHERE ma.user_id = '.$this->user->id.'
+                    AND (m.title <> "" OR m.title is not null)
+                    GROUP BY
+                        m.id,
+                        m.title,
+                        m.date,
+                        m.time_start,
+                        m.time_end,
+                        m.type
+                    ORDER BY m.date desc;
+                ';
+            }
+
+            
+            $meetings = $this->db->raw($queryMeeting)->fetch_all();
+            // $this->dd($meetingAttendance);
+            
             $alert = $this->getMessage();
             $this->render('profile/home', [
                 'alert' => $alert,
                 'projects' => $projects,
+                'meetings' => $meetings,
             ]);
         }else{
             $this->daily($data);
@@ -156,7 +218,7 @@ class HomeController extends BaseController
             if ($getEmail) {
               $query = "SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 and d.email = '".$getEmail."';";
             }else{
-              $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 ORDER BY created_at DESC limit 200;';
+              $query = 'SELECT d.id, d.user_id, d.date_activity, d.yesterday, d.today, d.problem, d.created_at, u.email, u.fullname FROM dailys d INNER JOIN users u ON d.user_id = u.id WHERE u.is_active = 1 ORDER BY created_at DESC limit 500;';
             }
             $resultDailys = $this->db->raw($query)->fetch_all();
         }else{
@@ -220,12 +282,14 @@ class HomeController extends BaseController
             SELECT 
                 p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma, p.id
             FROM 
-                project_users pu
+                projects p
+            LEFT JOIN project_users pu
+                ON pu.project_id = p.id
             LEFT JOIN users u
                 ON pu.user_id = u.id
-            LEFT JOIN projects p
-                ON pu.project_id = p.id
             WHERE pu.user_id = '.$user->id.'
+            GROUP BY
+                p.name, pu.status, p.status, p.type, p.url_group_wa, p.url_drive, p.url_figma, p.id
             ;
         ';
         $projects = $this->db->raw($projectQuery)->fetch_all();
@@ -238,6 +302,7 @@ class HomeController extends BaseController
             LEFT JOIN 
                 meetings m ON m.id = ma.meeting_id
             WHERE ma.user_id = '.$this->user->id.'
+            AND m.title <> ""
             ORDER BY 
                 m.date desc
             ;

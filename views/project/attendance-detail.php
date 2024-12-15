@@ -69,28 +69,34 @@
                     </div>
                 </div>
             </div>
-            <?php foreach ($meetingAttendance as $key => $value) { ?>
-                <div class="row mb-3">
-                    <div class="col-md-2">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" value="<?= $value[0]; ?>" disabled required>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="role" class="form-label">Role</label>
-                        <input type="text" class="form-control" value="<?= $value[1]; ?>" disabled required>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="attendances" class="form-label">Kehadiran</label>
-                        <input type="text" class="form-control" value="<?= $value[2]; ?>" disabled required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="notes" class="form-label">Catatan</label>
-                        <div>
-                            <?= $value[3]; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
+            <div class="table-responsive">
+                <table id="meetingTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Role</th>
+                            <th>Kehadiran</th>
+                            <th>Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($meetingAttendance as $meet): ?>
+                        <tr>
+                            <td><?=$this->e($meet[0])?></td>
+                            <td><?=$this->e($meet[1])?></td>
+                            <td>
+                                <?php if ($meet[2] == 'PRESENT') { ?><span class="badge bg-success">Hadir</span><?php } ?>
+                                <?php if ($meet[2] == 'ABSENT') { ?><span class="badge bg-danger">Tidak Hadir</span><?php } ?>
+                                <?php if ($meet[2] == 'PERMISSION') { ?><span class="badge bg-warning text-dark">Izin</span><?php } ?>
+                                <?php if ($meet[2] == 'SICK') { ?><span class="badge bg-info">Izin</span><?php } ?>
+                            </td>
+                            <td><?=$this->e($meet[3])?></td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+            <small><i>Dibuat: <?= $meeting->created_at; ?></i></small>
         </div>
     </div>
 </div>

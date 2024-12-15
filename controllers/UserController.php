@@ -121,7 +121,20 @@ class UserController extends BaseController
         }
 
         $id = $this->db->escape($data['id']);
-        $user = $this->db->getBy("users", "id", $id)->fetch_object();
+        // $user = $this->db->getBy("users", "id", $id)->fetch_object();
+
+        $queryUser = '
+            SELECT 
+                u.*,
+                u2.fullname as created_name,
+                u3.fullname as updated_name
+            FROM 
+                users u
+            LEFT JOIN users u2 ON u.created_by = u2.id
+            LEFT JOIN users u3 ON u.updated_by = u3.id
+            WHERE u.id = '.$id.';
+        ';
+        $user = $this->db->raw($queryUser)->fetch_object();
         
         if (empty($user)) {
             $this->setMessage('Data tidak ada!');

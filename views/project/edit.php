@@ -8,6 +8,7 @@
                     <h4>Edit Projects <?= $project->name ?></h4>
                     <div>
                         <a href="<?= BASE_URL ?>/project" class="btn btn-dark my-2">List Project</a>
+                        <a href="<?= BASE_URL ?>/project/detail/<?= $project->id ?>" class="btn btn-primary my-2">Detail Project</a>
                     </div>
                 </div>
             </h5>
@@ -39,6 +40,9 @@
                         <option <?php if("COMPLETED" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="COMPLETED">Completed</option>
                         <option <?php if("FIXING" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="FIXING">Fixing</option>
                         <option <?php if("PUBLISH" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="PUBLISH">Publish</option>
+                        <option <?php if("PENDING" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="PENDING">Pending</option>
+                        <option <?php if("MAINTENANCE" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="MAINTENANCE">Maintenance</option>
+                        <option <?php if("CANCEL" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="CANCEL">Cancel</option>
                     </select>
                 </div>
                 <div class="form-group my-2">
@@ -76,6 +80,14 @@
                 <div class="form-group my-2">
                     <label for="embeded">Embeded</label>
                     <textarea class="form-control" name="embeded" id="embeded" rows="4"><?= $project->embeded ?></textarea>
+                    <small>
+                    <b>contoh</b>: &lt;iframe 
+                        src="https://drive.google.com/embeddedfolderview?id=<b>ID GOOGLE DRIVE</b>#grid" 
+                        width="100%" 
+                        height="600" 
+                        frameborder="0"&gt;
+                    &lt;/iframe&gt;
+                    </small>
                 </div>
                 <div class="form-group my-2">
                     <label for="note">Catatan</label>
@@ -83,7 +95,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
-                <a href="<?= BASE_URL ?>/project" class="btn btn-light my-2">Kembali</a>
+                <a href="<?= BASE_URL ?>/project/detail/<?= $project->id ?>" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>
     </div>
