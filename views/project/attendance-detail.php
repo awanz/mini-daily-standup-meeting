@@ -88,7 +88,7 @@
                                 <?php if ($meet[2] == 'PRESENT') { ?><span class="badge bg-success">Hadir</span><?php } ?>
                                 <?php if ($meet[2] == 'ABSENT') { ?><span class="badge bg-danger">Tidak Hadir</span><?php } ?>
                                 <?php if ($meet[2] == 'PERMISSION') { ?><span class="badge bg-warning text-dark">Izin</span><?php } ?>
-                                <?php if ($meet[2] == 'SICK') { ?><span class="badge bg-info">Izin</span><?php } ?>
+                                <?php if ($meet[2] == 'SICK') { ?><span class="badge bg-info">Sakit</span><?php } ?>
                             </td>
                             <td><?=$this->e($meet[3])?></td>
                         </tr>

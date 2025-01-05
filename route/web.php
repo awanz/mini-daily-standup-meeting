@@ -154,6 +154,9 @@ function handleRoute($uri)
         '/email/pemecatan/:id' => [
             'GET' => ['EmailController', 'pemecatan'],
         ],
+        '/calendar' => [
+            'GET' => ['CalendarController', 'index'],
+        ],
     ];
 
     $requestMethod = $_SERVER['REQUEST_METHOD'];

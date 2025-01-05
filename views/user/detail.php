@@ -21,10 +21,20 @@
         lengthMenu: [5, 10, 25, 50, 1000],
         layout: {
             topStart: {
-                buttons: ['pageLength']
+                buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'desc']],
+        order: [[0, 'asc']],
+    });
+    new DataTable('#tableAttendance', {
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100, 1000],
+        layout: {
+            topStart: {
+                buttons: ['pageLength','excel']
+            }
+        },
+        order: [[2, 'desc']],
     });
 </script>
 <?php $this->stop() ?>
@@ -34,7 +44,11 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Profile</h4>
+                    <h4>User Detail</h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/user" class="btn btn-dark my-2">List User</a>
+                        <a href="<?= BASE_URL ?>/user/edit/<?= $user->id ?>" class="btn btn-warning my-2">Edit User</a>
+                    </div>
                 </div>
             </h5>
             <form>
@@ -75,6 +89,10 @@
                         <div class="form-group my-2">
                             <label for="date_end">Tanggal Berakhir</label>
                             <input type="date" class="form-control" id="date_end" name="date_end" value="<?= $this->e($user->date_end ?? "") ?>" disabled>
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="date_end">Catatan</label><br>
+                            <?= $this->e($user->notes ?? "") ?>
                         </div>
                     </div>
                 </div>
@@ -181,16 +199,72 @@
 </div>
 <?php } ?>
 
-<?php
-if (count($dailys) > 0) {
-?>
+<?php if (count($meetings) > 0) { ?>
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>History Daily</h4>
-                    <span><a href="<?= BASE_URL ?>/home" class="btn btn-dark">Lapor</a></span>
+                    <h4>Riwayat Kehadiran Meeting</h4>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="tableAttendance" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Judul Meeting</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Dari Jam</th>
+                        <th>Sampai Jam</th>
+                        <th>Catatan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($meetings as $meeting): ?>
+                    <tr>
+                        <td><?=$this->e($meeting[0])?></td>
+                        <td>
+                        <?php 
+                        switch ($meeting[1]) {
+                            case 'ABSENT':
+                                echo '<span class="text-danger">Tidak hadir</span>';
+                                break;
+                            case 'PRESENT':
+                                echo '<span class="text-success">Hadir</span>';
+                                break;
+                            case 'SICK':
+                                echo '<span class="text-primary">Sakit</span>';
+                                break;
+                            case 'PERMISSION':
+                                echo '<span class="text-warning">Izin</span>';
+                                break;
+                            default:
+                                echo "Tidak hadir";
+                                break;
+                        } 
+                        ?></td>
+                        <td><?= $meeting[2] ?></td>
+                        <td><?= $meeting[3] ?></td>
+                        <td><?= $meeting[4] ?></td>
+                        <td><?= $meeting[5] ?></td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<?php if (count($dailys) > 0) { ?>
+<div class="container">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Riwayat Daily</h4>
                 </div>
             </h5>
             <div class="table-responsive">
@@ -218,6 +292,4 @@ if (count($dailys) > 0) {
         </div>
     </div>
 </div>
-<?php
-}
-?>
+<?php } ?>

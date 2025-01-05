@@ -33,18 +33,24 @@
                 <?php if ($isAdmin): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        HR Management
+                        Human Resources
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project/add">Kebutuhan SDM</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/project">List Project</a></li>
+                        <li><a class="dropdown-item" href="#">Candidate Requirements</a></li>
+                        <li><a class="dropdown-item" href="#">Candidates</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Employees</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Warnings</a></li>
+                        <li><a class="dropdown-item" href="#">Surveys</a></li>
+                        <li><a class="dropdown-item" href="#">Review</a></li>
+                        <li><a class="dropdown-item" href="#">Sertificate</a></li>
                     </ul>
                 </li>
                 <?php endif ?>
                 <?php if ($isAdmin): ?>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/warnings">Pelanggaran</a>
-                </li>
+                </li> -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Users
@@ -75,6 +81,7 @@
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/discord">Discord</a></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/aturan">Aturan</a></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/guideline">Panduan</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/calendar">Kalendar 2025</a></li>
                     </ul>
                 </li>
                 

@@ -36,7 +36,7 @@
                             <th>Tanggal</th>
                             <th>Fullname</th>
                             <th>Role</th>
-                            <th>Jenis</th>
+                            <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -47,7 +47,11 @@
                             <td><?= $value[6] ?></td>
                             <td><?= $value[7] ?></td>
                             <td>
+                                <?php if(isset($value[4]) && $value[4] == 1) { ?>
+                                    <small class="text-danger"><?= $value[8] ?></small>
+                                <?php }else { ?>
                                 <?= $value[3] == 2 ? '<span class="badge bg-danger">PEMECATAN</span>' : '<span class="badge bg-warning">PERINGATAN</span>' ?>
+                                <?php } ?>
                             </td>
                             <td>
                                 <?php if(strtotime($value[5]) >= strtotime('-15 days') && $value[3] == 2 && empty($value[4])) { ?>

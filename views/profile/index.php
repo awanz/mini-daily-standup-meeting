@@ -34,7 +34,7 @@
                 buttons: ['pageLength']
             }
         },
-        order: [[0, 'desc']],
+        order: [[0, 'asc']],
     });
 </script>
 <?php $this->stop() ?>
@@ -249,7 +249,7 @@
                                 echo '<span class="text-success">Hadir</span>';
                                 break;
                             case 'SICK':
-                                echo '<span class="text-primary">Sakit</span>';
+                                echo '<span class="text-info">Sakit</span>';
                                 break;
                             case 'PERMISSION':
                                 echo '<span class="text-warning">Izin</span>';

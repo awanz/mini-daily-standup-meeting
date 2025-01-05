@@ -12,7 +12,15 @@ class WarningController extends BaseController
             $this->redirect('home');
         }
         
-        $warnings = $this->db->getAll("view_user_warnings")->fetch_all();
+        // $warnings = $this->db->getAll("view_user_warnings")->fetch_all();
+
+        $queryWarning = '
+            SELECT 
+                vuw.*
+            FROM 
+                view_user_warnings vuw;
+        ';
+        $warnings = $this->db->raw($queryWarning)->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('warning/index', [

@@ -87,6 +87,10 @@ Table projects {
     created_by int
 }
 
+Table project_sprints {
+    id integer [pk, increment]
+    
+}
 
 // Ref: users.id > dailys.user_id
 // Ref: users.id > warnings.user_id

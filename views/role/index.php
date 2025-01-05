@@ -65,7 +65,7 @@
                             <td><?= $value[4] ?></td>
                             <td>
                                 <?php if (isset($value[3])) { ?>
-                                <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-success">Group WA</a>
+                                <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-success my-1">Group WA</a>
                                 <?php } ?>
                             </td>
                             <td>    

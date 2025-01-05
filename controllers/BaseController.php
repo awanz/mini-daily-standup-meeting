@@ -70,7 +70,7 @@ class BaseController
     public function isProjectManager(){
         // print_r($this->user);die();
         $isProjectManager = false;
-        if ($this->user && ($this->user->role_name == 'Project Manager IT' || $this->user->role_name == 'CEO of Products')) {
+        if ($this->user && ($this->user->role_name == 'Project Manager IT' || $this->user->role_name == 'Product Owner')) {
             $isProjectManager = true;
         }
 

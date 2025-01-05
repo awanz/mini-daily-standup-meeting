@@ -185,6 +185,20 @@ class UserController extends BaseController
                 ';
         $projects = $this->db->raw($projectQuery)->fetch_all();
 
+        $meetings = $this->db->raw('
+            SELECT 
+                m.title, ma.status, m.date, m.time_start, m.time_end, ma.note
+            FROM 
+                meeting_attendances ma
+            LEFT JOIN 
+                meetings m ON m.id = ma.meeting_id
+            WHERE ma.user_id = '.$user->id.'
+            AND m.title <> ""
+            ORDER BY 
+                m.date desc
+            ;
+        ')->fetch_all();
+
         $alert = $this->getMessage();
         $this->render('user/detail', [
             'user' => $user,
@@ -193,6 +207,7 @@ class UserController extends BaseController
             'warnings' => $warnings,
             'role' => $role,
             'roles' => $roles,
+            'meetings' => $meetings,
             'projects' => $projects,
         ]);
         

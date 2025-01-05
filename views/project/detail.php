@@ -74,7 +74,7 @@
                 buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'asc']],
+        order: [[0, 'desc']],
     });
     new DataTable('#tableMembers', {
         pageLength: 20,
@@ -123,6 +123,69 @@
                     </div>
                     </div>
                 </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                        <b>Detail Project</b>
+                    </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                        <!-- detail -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group my-2">
+                                    <label for="name">Name</label>
+                                    <input disabled name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" value="<?=$this->e($project->name ?? "")?>">
+                                </div>                           
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group my-2">
+                                    <label for="status">Status</label>
+                                    <select disabled class="form-select" name="status" required>
+                                        <option selected>-- Pilih Status --</option>
+                                        <option <?php if("NOT_STARTED" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="NOT_STARTED">Not Started</option>
+                                        <option <?php if("IN_PROGRESS" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="IN_PROGRESS">In Progress</option>
+                                        <option <?php if("COMPLETED" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="COMPLETED">Completed</option>
+                                        <option <?php if("FIXING" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="FIXING">Fixing</option>
+                                        <option <?php if("PUBLISH" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="PUBLISH">Publish</option>
+                                        <option <?php if("PENDING" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="PENDING">Pending</option>
+                                        <option <?php if("MAINTENANCE" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="MAINTENANCE">Maintenance</option>
+                                        <option <?php if("CANCEL" == $this->e($project->status ?? "")){ echo 'selected'; } ?> value="CANCEL">Cancel</option>
+                                    </select>
+                                </div>                      
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group my-2">
+                                    <label for="type">Type</label>
+                                    <select disabled class="form-select" name="type" required>
+                                        <option selected>-- Pilih Type --</option>
+                                        <option <?php if("WEB" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="WEB">WEB</option>
+                                        <option <?php if("MOBILE" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MOBILE">MOBILE</option>
+                                        <option <?php if("MEDSOS" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MEDSOS">MEDSOS</option>
+                                        <option <?php if("GAME" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="GAME">GAME</option>
+                                        <option <?php if("ANIMASI" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="ANIMASI">ANIMASI</option>
+                                        <option <?php if("MAJALAH" == $this->e($project->type ?? "")){ echo 'selected'; } ?> value="MAJALAH">MAJALAH</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group my-2">
+                                    <label for="note">Catatan</label>
+                                    <textarea disabled class="form-control" name="note" id="note" rows="4"><?=$this->e($project->note ?? "")?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- detail -->
+                    </div>
+                    </div>
+                </div>
+
                 <?php if ($project->embeded): ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
@@ -238,6 +301,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Anggota List</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Anggota Keseluruhan</button>
+                </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -276,7 +342,7 @@
                                     <small class="text-muted">Total Daily Bulan Ini: <a href="<?= BASE_URL ?>/history/<?= $value[2] ?>"><?= $value[6] == 99 ? '' : $value[6] ?></a> </small>
                                     <small class="text-muted">
                                         <a href="<?= BASE_URL ?>/project/detail/note/<?= $value[11] ?>">Catatan</a>  
-                                        <?php if ($value[10] == 'ACTIVED' && !empty($value[12])) { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?> 
+                                        <?php if ($value[10] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $value[11] ?>">Nonactive</a><?php } ?> 
                                         <?php if ($value[10] == 'NONACTIVED' && !empty($value[12])) { ?><a href="#" class="active-btn" data-url="<?= BASE_URL ?>/project/active-member/<?= $value[11] ?>">Active</a><?php } ?> 
                                     </small>
                                 </div>
@@ -312,6 +378,28 @@
                         </table>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+                    <div class="table-responsive">
+                        <table id="tableMembers" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1; foreach($projectUsersAll as $user): ?>
+                                <tr>
+                                    <td><?= $no; ?></td>
+                                    <th><?=$this->e($user[1])?></th>
+                                    <td><?=$this->e($user[2])?></td>
+                                </tr>
+                                <?php $no++; endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
             </div>
             
@@ -324,7 +412,7 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Daily Standup Meeting (5 Hari Terakhir)</h4>
+                    <h4>Daily Standup Meeting (10 Hari Terakhir)</h4>
                 </div>
             </h5>
             <div class="table-responsive">

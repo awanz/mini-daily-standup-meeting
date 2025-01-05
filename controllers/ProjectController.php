@@ -166,7 +166,7 @@ class ProjectController extends BaseController
             FROM 
                 users u
             LEFT JOIN roles r ON u.role_id = r.id
-            WHERE (r.name= "Project Manager IT" OR r.name= "CEO of Products" OR u.access = "ADMIN")
+            WHERE (r.name= "Project Manager IT" OR r.name= "Product Owner" OR u.access = "ADMIN")
             AND u.is_active = 1
             ORDER BY u.fullname
             ;
@@ -317,6 +317,7 @@ class ProjectController extends BaseController
             LEFT JOIN view_user_daily vud
             ON pu.user_id = vud.id
             WHERE pu.project_id = '.$id.'
+            AND u.is_active = 1
             ORDER BY pu.status asc, u.fullname asc;
         ';
         $users = $this->db->raw($queryProjectUser)->fetch_all();
@@ -326,7 +327,7 @@ class ProjectController extends BaseController
             $arrayMapUser = array_map(function($item) {
                 return (string)$item[0];
             }, $users);
-            $dateGet = date('Y-m-d', strtotime(date('Y-m-d') . ' -5 days'));
+            $dateGet = date('Y-m-d', strtotime(date('Y-m-d') . ' -10 days'));
 
             $queryDailys = '
                 SELECT 
@@ -357,12 +358,26 @@ class ProjectController extends BaseController
         ';
 
         $meetings = $this->db->raw($queryMeetings)->fetch_all();
+
+        
+        $queryProjectUserALL = '
+            SELECT 
+                u.id, u.fullname, r.name as role
+            FROM project_users pu
+            LEFT JOIN users u ON pu.user_id = u.id
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE pu.project_id = '.$id.'
+            ORDER BY u.fullname asc;
+        ';
+        // $this->dd($queryProjectUserALL);
+        $projectUsersAll = $this->db->raw($queryProjectUserALL)->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('project/detail', [
             'alert' => $alert,
             'id' => $id,
             'users' => $users,
+            'projectUsersAll' => $projectUsersAll,
             'dailys' => $dailys,
             'project' => $project,
             'meetings' => $meetings,
@@ -691,6 +706,7 @@ class ProjectController extends BaseController
             WHERE 
                 pu.project_id = '.$project_id.'
                 AND pu.status = "ACTIVED"
+                AND u.id is not null
             ORDER BY u.fullname asc;
         ';
         $projectUsers = $this->db->raw($queryProjectUser)->fetch_all();

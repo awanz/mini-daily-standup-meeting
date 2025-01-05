@@ -1,8 +1,38 @@
 <?php $this->layout('layouts/base') ?>
+<?php $this->start('footAdditional') ?>
+<script>
+    $(document).on('click', '.delete-btn', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        Swal.fire({
+            title: "Yakin untuk melakukan delete?",
+            text: "Data yang dihapus akan menjadi user nonactive.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+<?php $this->stop() ?>
 
 <div class="container">
     <div class="card my-2">
         <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Edit User <?= $user->fullname ?></h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/user" class="btn btn-dark my-2">List User</a>
+                        <a href="<?= BASE_URL ?>/user/detail/<?= $user->id ?>" class="btn btn-primary my-2">Detail User</a>
+                    </div>
+                </div>
+            </h5>
             <?php if ($alert): ?>
                 <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                     <?= $alert['message'] ?>
@@ -52,8 +82,18 @@
                     <label for="notes">Catatan</label>
                     <textarea class="form-control" name="notes" id="notes" rows="4"><?=$this->e($user->notes ?? "")?></textarea>
                 </div>
-                <button type="submit" class="btn btn-dark my-2">Simpan</button>
-                <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-dark my-2">Simpan</button>
+                        <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/user/delete/<?= $user->id ?>">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                
             </form>
         </div>
     </div>
