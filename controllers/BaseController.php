@@ -137,6 +137,15 @@ class BaseController
 
     public function turnstileVerify($data = null){
         $ch = curl_init();
+        if (defined('TURNSTILE_SSL_DISABLE')) {
+            if (TURNSTILE_SSL_DISABLE == 'true') {
+                // disable if deploy server
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                // disable if deploy server
+            }
+        }
+        
         curl_setopt($ch, CURLOPT_URL, TURNSTILE_URL);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
@@ -147,7 +156,11 @@ class BaseController
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
+        if ($response === false) {
+            die('Curl error: ' . curl_error($ch));
+        }
         curl_close($ch);
+        // print_r($response);
 
         // $data = json_decode($response);
 

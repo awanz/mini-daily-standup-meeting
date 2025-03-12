@@ -5,6 +5,7 @@ function handleRoute($uri)
     if (strpos($uri, SUB_PATH) === 0) {
         $uri = substr($uri, strlen(SUB_PATH));
     }
+    // print_r($uri); die();
 
     $routes = [
         '/' => [
