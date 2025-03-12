@@ -36,6 +36,7 @@ class BaseController
             'isAdmin' => $this->isAdmin(),
             'isHR' => $this->isHR(),
             'isProjectManager' => $this->isProjectManager(),
+            'isUser' => $this->isUser(),
             'dataUser' => $this->user,
             'siteTitle' => 'Kawan Kerja',
         ]);
@@ -80,11 +81,21 @@ class BaseController
     public function isHR(){
         // print_r($this->user);die();
         $isHR = false;
-        if ($this->user && $this->user->access == 'HR') {
+        if ($this->user && ($this->user->role_name == 'HR Generalist' || $this->user->role_name == 'HR Recruiter' || $this->user->role_name == 'HR Personalia')) {
             $isHR = true;
         }
 
         return $isHR;
+    }
+    
+    public function isUser(){
+        // print_r($this->user);die();
+        $isUser = false;
+        if ($this->user && $this->user->access == 'USER') {
+            $isUser = true;
+        }
+
+        return $isUser;
     }
     
     public function dd($data = null){

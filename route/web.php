@@ -158,6 +158,12 @@ function handleRoute($uri)
         '/calendar' => [
             'GET' => ['CalendarController', 'index'],
         ],
+        '/absences-intern' => [
+            'GET' => ['AbsenceController', 'intern'],
+        ],
+        '/absences-volunteer' => [
+            'GET' => ['AbsenceController', 'volunteer'],
+        ],
     ];
 
     $requestMethod = $_SERVER['REQUEST_METHOD'];

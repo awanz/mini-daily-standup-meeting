@@ -30,7 +30,7 @@
                     </ul>
                 </li>
                 <?php endif ?>
-                <?php if ($isAdmin): ?>
+                <?php if ($isAdmin || $isHR): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Human Resources
@@ -44,6 +44,9 @@
                         <li><a class="dropdown-item" href="#">Surveys</a></li>
                         <li><a class="dropdown-item" href="#">Review</a></li>
                         <li><a class="dropdown-item" href="#">Sertificate</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-intern">Intern Absence</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-volunteer">Volunteer Absence</a></li>
                     </ul>
                 </li>
                 <?php endif ?>
@@ -69,6 +72,19 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/role/add">Tambah Role</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/role">List Role</a></li>
+                    </ul>
+                </li>
+                <?php endif ?>
+                <?php if ($isUser): ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administration 
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Vacuum Request</a></li>
+                        <li><a class="dropdown-item" href="#">Resignation Request</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Intership Finalization</a></li>
                     </ul>
                 </li>
                 <?php endif ?>
