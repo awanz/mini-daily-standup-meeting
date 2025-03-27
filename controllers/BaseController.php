@@ -232,4 +232,47 @@ class BaseController
         }
         
     }
+
+    function uploadToGoogleDrive($filePath, $fileName, $accessToken) {
+        $fileContent = file_get_contents($filePath);
+    
+        $metadata = [
+            'name' => $fileName,
+            'parents' => [$GOOGLE_CREDENTIAL_FOLDER_ID] // ID folder tujuan di Google Drive
+        ];
+    
+        $boundary = uniqid();
+        $delimiter = "--" . $boundary;
+        $closeDelimiter = "--" . $boundary . "--";
+    
+        $body = implode("\r\n", [
+            $delimiter,
+            'Content-Type: application/json; charset=UTF-8',
+            '',
+            json_encode($metadata),
+            $delimiter,
+            'Content-Type: ' . mime_content_type($filePath),
+            '',
+            $fileContent,
+            $closeDelimiter
+        ]);
+    
+        $headers = [
+            "Authorization: Bearer $accessToken",
+            "Content-Type: multipart/related; boundary=$boundary",
+            "Content-Length: " . strlen($body)
+        ];
+    
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    
+        $response = curl_exec($ch);
+        curl_close($ch);
+    
+        return json_decode($response, true);
+    }
 }

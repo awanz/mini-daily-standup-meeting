@@ -20,7 +20,9 @@
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>Pelanggaran</h4>
-                    <div><?= date('d M Y') ?></div>
+                    <div>
+                        <a href="<?= BASE_URL ?>/warnings/add" class="btn btn-dark my-2">Buat Peringatan</a>
+                    </div>
                 </div>
             </h5>
             <?php if ($alert): ?>

@@ -179,26 +179,22 @@ class EmailController extends BaseController
 
         $receiver   = $user->email;
         $fullname   = $user->fullname;
-        $subject    = 'Peringatan Ketidakaktifan (Magang) - ' . $fullname.' ('. $receiver .')';
+        $timestamp_milis = round(microtime(true) * 1000);
+        $subject    = 'Peringatan Ketidakaktifan (Magang) - ' . $fullname.' ('. $receiver .') ['.$timestamp_milis.']';
         $body       = '
         <p>
             <strong>Kepada Yth.</strong><br>
             '.$fullname.'<br>
         </p>
         <p>
-            Melalui surat elektronik ini, kami ingin menyampaikan peringatan terkait ketidakaktifan magang berdasarkan daily standup meeting anda hanya mengisi <b><u>'.$user->total_daily.'/15 hari</u></b> (akumulasi).
+            Dengan hormat,<br><br>
+            Melalui surat ini, kami sampaikan bahwa Anda akan menerima Surat Peringatan (SP) Kedua terkait dengan ketidakaktifan Anda dalam kegiatan magang di PT Kawan Kerja Indonesia yang sebelumnya Anda telah menerima SP Pertama.
         </p>
         <p>
-            Ketidakaktifan tanpa alasan yang sah dan pemberitahuan terlebih dahulu merupakan pelanggaran disiplin yang serius.
+            SP Kedua ini merupakan peringatan terakhir yang kami berikan. Oleh karena itu, dengan berat hati kami terpaksa mengambil tindakan tegas berupa pemutusan hubungan kerja (PHK) sebagai peserta magang di PT Kawan Kerja Indonesia
         </p>
         <p>
-            Oleh karena itu, kami mohon Anda untuk mengisi daily standup meeting selambat-lambatnya <b>'.$nextMonth.' 18.00 WIB</b>.
-        </p>
-        <p>
-            Jika Anda tidak mengisi daily standup meeting dalam waktu yang ditentukan, perusahaan berhak untuk mengambil tindakan disiplin selanjutnya, sesuai dengan peraturan yang berlaku.
-        </p>
-        <p>
-            Kami harap Anda dapat memahami dan mematuhi peraturan perusahaan dengan baik.
+            Kami harap Anda dapat memahami keputusan ini.
         </p>
         <p>
             Hormat kami,<br>
@@ -231,5 +227,92 @@ class EmailController extends BaseController
         $this->setMessage($result['message']);
         $this->redirect('user');
         
+    }
+    
+    public function warningCustom($user_id, $type, $reason){
+        
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('warnings');
+        }
+
+        $user = $this->db->getBy("view_user_daily", "id", $user_id)->fetch_object();
+        
+        if (empty($user)) {
+            $this->setMessage('Data user tidak ada!');
+            $this->redirect('warnings');
+        }
+        
+        $warning = $this->db->getOneBy("warnings", "user_id", $user_id, 'created_at', 'DESC')->fetch_object();
+        if (!$warning && $type == 2) {
+            $this->setMessage('Tidak dapat memberikan pemecatan karena belum diberikan peringatan');
+            $this->redirect('warnings/add');
+        }
+
+        $date = new DateTime();
+        $date->modify('last day of this month');
+        $nextMonth = $date->format('Y-m-d');
+
+        $receiver   = $user->email;
+        $fullname   = $user->fullname;
+        $timestamp_milis = round(microtime(true) * 1000);
+        $subject    = 'Peringatan '.$type.' - '.$fullname.' ('. $receiver .') ['.$timestamp_milis.']';
+        $closeBody = '<p>
+            Sesuai dengan kebijakan perusahaan, kami mengingatkan Anda untuk segera melakukan perbaikan dalam menjalankan tugas dan tanggung jawab sesuai dengan aturan yang berlaku. Jika dalam waktu 7 hari tidak ada perubahan atau pelanggaran serupa kembali terjadi, maka perusahaan dapat mengambil tindakan lebih lanjut sesuai dengan ketentuan yang berlaku.
+        </p>';
+        if ($type == 2) {
+            $closeBody = '<p>
+            Email ini merupakan peringatan terakhir yang kami berikan. Oleh karena itu, dengan berat hati kami terpaksa mengambil tindakan tegas berupa pemutusan hubungan kerja (PHK) sebagai peserta magang di PT Kawan Kerja Indonesia
+        </p>';
+        }
+        $body       = '
+        <p>
+            <strong>Kepada Yth.</strong><br>
+            '.$fullname.'<br>
+        </p>
+        <p>
+            Dengan ini, kami ingin menyampaikan Surat Peringatan '.$type.' kepada Anda berdasarkan evaluasi terhadap kinerja dan disiplin kerja di <b>PT Kawan Kerja Indonesia</b>.
+        </p>
+        <p>
+            Adapun alasan dikeluarkannya surat peringatan ini adalah sebagai berikut:
+        </p>
+        <p>
+            <b>'.$reason.'.</b>
+        </p>
+        '.$closeBody.'
+        <p>
+            Demikian surat ini disampaikan untuk dapat diperhatikan dan dipatuhi.
+        </p>
+        <p>
+            Hormat kami,<br>
+            <b> PT Kawan Kerja Indonesia </b>
+        </p>
+        ';
+        $result = $this->sendEmail($receiver, $fullname, $subject, $body);
+        
+        if ($result['status']) {
+            try {
+                $data = [
+                  "user_id" => $user->id,
+                  "email" => $receiver,
+                  "counter" => $type,            
+                ];
+                $this->db->insert("warnings", $data);
+                if ($type == 2) {
+                    $dataUser = [
+                        "is_active" => 0,
+                        "updated_by" => $this->user->id,
+                    ];
+                    $update = $this->db->update("users", $dataUser, 'id', $user->id);
+                }
+            } catch (\Throwable $th) {
+                return $th->getMessage();
+            }
+            return $result['message'];
+        }
+        return $result['message'];
     }
 }

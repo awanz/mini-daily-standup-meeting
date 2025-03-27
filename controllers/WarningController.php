@@ -1,7 +1,7 @@
 <?php
-require_once 'BaseController.php';
+require_once 'EmailController.php';
 
-class WarningController extends BaseController
+class WarningController extends EmailController
 {
     public function index()
     {
@@ -18,7 +18,8 @@ class WarningController extends BaseController
             SELECT 
                 vuw.*
             FROM 
-                view_user_warnings vuw;
+                view_user_warnings vuw
+            limit 500;
         ';
         $warnings = $this->db->raw($queryWarning)->fetch_all();
         
@@ -75,7 +76,7 @@ class WarningController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $add_time = trim($_POST['add_time']);
             $note = trim($_POST['note']);
-            $note = $note . '\n +' . $add_time . ' pekan waktu magang.';
+            $note = $note . '\n +' . $add_time . ' pekan waktu kontrak.';
             
             try {
                 $data = [
@@ -99,5 +100,50 @@ class WarningController extends BaseController
             }
         }
         
+    }
+
+    public function add($data)
+    {
+        
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $users = $this->db->raw('
+            SELECT u.id, fullname, r.name as role FROM users u
+            join roles r on u.role_id = r.id
+            where access <> "ADMIN" and is_active = 1;
+        ')->fetch_all();
+
+        $alert = $this->getMessage();
+        $this->render('warning/create', [
+            'alert' => $alert,
+            'users' => $users,
+        ]);
+        
+    }
+
+    public function addProcess()
+    {
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $user_id = $this->db->escape($_POST['user_id']);
+        $type = $this->db->escape($_POST['type']);
+        $reason = $this->db->escape($_POST['reason']);
+
+
+        $result = $this->warningCustom($user_id, $type, $reason);
+        $this->setMessage($result, 'SUCCESS');
+        $this->redirect('warnings/add');
     }
 }

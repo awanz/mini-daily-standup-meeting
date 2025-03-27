@@ -146,6 +146,10 @@ function handleRoute($uri)
             'GET' => ['WarningController', 'appeal'],
             'POST' => ['WarningController', 'appealProcess'],
         ],
+        '/warnings/add' => [
+            'GET' => ['WarningController', 'add'],
+            'POST' => ['WarningController', 'addProcess'],
+        ],
         '/email/credential/:id' => [
             'GET' => ['EmailController', 'credential'],
         ],

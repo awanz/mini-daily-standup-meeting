@@ -4,6 +4,14 @@ Enum Access {
     USER
 }
 
+Enum StatusUser {
+    ACTIVE,
+    RESIGN,
+    EXPELLED,
+    VACUUM,
+    DONE
+}
+
 Table users {
     id int [pk, increment]
     role_id int
@@ -20,10 +28,16 @@ Table users {
 
     contribution_point float
 
+    last_login_at timestamp
+
+    status StatusUser
+
     created_at timestamp
     updated_at timestamp(100)
-    created_by int(12)
-    updated_by int(12)
+    created_by int
+    updated_by int
+
+    notes text
 }
 
 Table roles {
@@ -31,8 +45,12 @@ Table roles {
     name varchar
     description text
     url_group_wa varchar
+    embeded varchar
+    deleted_at timestamp
     created_at date
+    updated_at date
     created_by int
+    updated_by int
 }
 
 Table dailys {
@@ -43,7 +61,7 @@ Table dailys {
     today text
     problem text
     created_at date
-    email varchar
+    email varchar(100)
 }
 
 Table warnings {
@@ -90,6 +108,123 @@ Table projects {
 Table project_sprints {
     id integer [pk, increment]
     
+}
+
+Table schedule_meetings {
+    id integer [pk, increment]
+    date date
+    created_at date
+    updated_at date
+    created_by int
+    updated_by int
+}
+
+Table schedule_meeting_members {
+    id integer [pk, increment]
+    schedule_meeting_id id
+    user_id
+}
+
+Enum StatusCandidateRequest {
+    OPEN
+    CANCEL
+    DONE
+}
+
+Table candidate_requests {
+    id integer [pk, increment]
+    role_id integer
+    pic integer
+    total integer
+    status StatusCandidateRequest
+    created_at date
+    updated_at date
+    created_by int
+    updated_by int
+}
+
+Enum StatusCandidates {
+    HIRED
+    HOLD
+    REJECTED
+}
+
+Table candidates {
+    id integer [pk, increment]
+    role_id
+    candidate_request_id integer
+    fullname varchar
+    description text
+    status StatusCandidates
+    created_at date
+    updated_at date
+    created_by int
+    updated_by int
+}
+
+Enum MaritalStatus {
+    SINGLE
+    MARRIED
+    DIVORCED
+}
+
+Table employees {
+    id integer [pk, increment]
+    role_id
+    candidate_id integer
+    fullname varchar
+    nickname varchar
+    birth_date date
+    birth_place varchar
+    marital_status MaritalStatus
+    whatsapp_number varchar
+    gender tinyint [note: "0: perempuan, 1: laki-laki"]
+    religion varchar
+    address text
+    province varchar
+    city varchar
+    postcode varchar
+    education_latest varchar
+    education_institution_name varchar
+    education_major varchar
+    education_entry_year varchar
+    semester varchar
+    activity text [note: "Kesibukan"]
+    skillset text
+    hobby text
+    cv varchar
+    portofolio varchar
+    photo varchar
+    url_facebook varchar
+    url_x varchar
+    url_instagram varchar
+    url_tiktok varchar
+    url_linkedin varchar
+    description text
+    status StatusCandidates
+    created_at date
+    updated_at date
+}
+
+Enum ContractType {
+    PROBATION
+    CONTRACT
+    PERMANENT
+    INTERNSHIP
+    FREELANCE
+    VOLUNTEER
+}
+
+Table employee_contracts {
+    id integer [pk, increment]
+    employee_id int
+    type ContractType
+    valid_start date
+    valid_to date
+    is_education_program tinyint
+    note text
+    created_at date
+    updated_at date
 }
 
 // Ref: users.id > dailys.user_id
