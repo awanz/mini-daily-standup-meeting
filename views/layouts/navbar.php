@@ -36,14 +36,16 @@
                         Human Resources
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Candidate Requirements</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/candidate-requests">Request Candidates</a></li>
                         <li><a class="dropdown-item" href="#">Candidates</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Employees</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Warnings</a></li>
-                        <li><a class="dropdown-item" href="#">Surveys</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Employees</a></li> -->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Peringatan</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/resigns">Pengunduran diri</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/finalizations">Penyelesaian Magang</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Surveys</a></li>
                         <li><a class="dropdown-item" href="#">Review</a></li>
-                        <li><a class="dropdown-item" href="#">Sertificate</a></li>
+                        <li><a class="dropdown-item" href="#">Sertificate</a></li> -->
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-intern">Intern Absence</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-volunteer">Volunteer Absence</a></li>
@@ -74,20 +76,26 @@
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/role">List Role</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Monitoring
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/monitoring/pic-role">PIC Role</a></li>
+                    </ul>
+                </li>
                 <?php endif ?>
-                <?php if ($isUser): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Administration 
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Vacuum Request</a></li>
-                        <li><a class="dropdown-item" href="#">Resignation Request</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Intership Finalization</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Vacuum Request</a></li> -->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/resign">Pengajuan Resign</a></li>
+                        <!-- <li><hr class="dropdown-divider"></li> -->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/intership-finalization">Pengajuan Sertifikat Magang</a></li>
                     </ul>
                 </li>
-                <?php endif ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Others

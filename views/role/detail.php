@@ -9,17 +9,7 @@
                 buttons: ['pageLength','excel']
             }
         },
-        order: [[0, 'asc']],
-    });
-    new DataTable('#tableDailys', {
-        pageLength: 20,
-        lengthMenu: [10, 20, 50, 1000],
-        layout: {
-            topStart: {
-                buttons: ['pageLength','excel']
-            }
-        },
-        order: [[0, 'asc']],
+        order: [[0, 'desc']],
     });
     new DataTable('#tableMembers', {
         pageLength: 20,
@@ -128,8 +118,8 @@
                 <table id="tableMeetings" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>Judul</th>
                         <th>Tanggal</th>
+                        <th>Judul</th>
                         <th>Waktu Mulai</th>
                         <th>Waktu Berakhir</th>
                     </tr>
@@ -137,10 +127,10 @@
                 <tbody>
                     <?php foreach($meetings as $meeting): ?>
                     <tr>
+                        <td><?=$this->e($meeting[3])?></td>
                         <td>
                             <a href="<?= BASE_URL ?>/role/meeting-attendance-detail/<?= $meeting[0] ?>"><?=$this->e($meeting[1])?></a>
                         </td>
-                        <td><?=$this->e($meeting[3])?></td>
                         <td><?=$this->e($meeting[4])?></td>
                         <td><?=$this->e($meeting[5])?></td>
                     </tr>

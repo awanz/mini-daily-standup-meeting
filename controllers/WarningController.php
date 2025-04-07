@@ -19,6 +19,7 @@ class WarningController extends EmailController
                 vuw.*
             FROM 
                 view_user_warnings vuw
+            where vuw.fullname is not null
             limit 500;
         ';
         $warnings = $this->db->raw($queryWarning)->fetch_all();

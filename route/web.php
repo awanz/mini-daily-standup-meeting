@@ -18,6 +18,7 @@ function handleRoute($uri)
         '/forgot-password' => [
             'GET' => ['LoginController', 'forgotPassword'],
         ],
+
         '/profile' => [
             'GET' => ['HomeController', 'profile'],
         ],
@@ -25,6 +26,23 @@ function handleRoute($uri)
             'GET' => ['HomeController', 'changePassword'],
             'POST' => ['HomeController', 'changePasswordProcess'],
         ],
+
+        '/profile/resign' => [
+            'GET' => ['ProfileController', 'resign'],
+            'POST' => ['ProfileController', 'resignProcess'],
+        ],
+        '/profile/resign/cancel' => [
+            'POST' => ['ProfileController', 'resignCancelProcess'],
+        ],
+
+        '/profile/intership-finalization' => [
+            'GET' => ['ProfileController', 'intershipFinalization'],
+            'POST' => ['ProfileController', 'intershipFinalizationProcess'],
+        ],
+        '/profile/intership-finalization/cancel' => [
+            'POST' => ['ProfileController', 'intershipFinalizationCancelProcess'],
+        ],
+
         '/home' => [
             'GET' => ['HomeController', 'index'],
             'POST' => ['HomeController', 'submitDaily'],
@@ -167,6 +185,51 @@ function handleRoute($uri)
         ],
         '/absences-volunteer' => [
             'GET' => ['AbsenceController', 'volunteer'],
+        ],
+        
+        '/hr/resigns' => [
+            'GET' => ['HRResignController', 'index'],
+        ],
+        '/hr/resigns/approve' => [
+            'POST' => ['HRResignController', 'approveResign'],
+        ],
+        '/hr/resigns/revise' => [
+            'POST' => ['HRResignController', 'reviseResign'],
+        ],
+        '/hr/resigns/cancel' => [
+            'POST' => ['HRResignController', 'cancelResign'],
+        ],
+
+        '/hr/finalizations' => [
+            'GET' => ['HRFinalizationController', 'index'],
+        ],
+        '/hr/finalizations/approve' => [
+            'POST' => ['HRFinalizationController', 'approveFinalization'],
+        ],
+        '/hr/finalizations/revise' => [
+            'POST' => ['HRFinalizationController', 'reviseFinalization'],
+        ],
+        '/hr/finalizations/cancel' => [
+            'POST' => ['HRFinalizationController', 'cancelFinalization'],
+        ],
+
+        '/hr/candidate-requests' => [
+            'GET' => ['HRCandidateRequestController', 'index'],
+        ],
+        '/hr/candidate-requests/detail/:id' => [
+            'GET' => ['HRCandidateRequestController', 'detail'],
+        ],
+        '/hr/candidate-requests/add' => [
+            'GET' => ['HRCandidateRequestController', 'add'],
+            'POST' => ['HRCandidateRequestController', 'addProcess'],
+        ],
+        '/hr/candidate-requests/edit/:id' => [
+            'GET' => ['HRCandidateRequestController', 'edit'],
+            'POST' => ['HRCandidateRequestController', 'editProcess'],
+        ],
+
+        '/monitoring/pic-role' => [
+            'GET' => ['MonitoringController', 'index'],
         ],
     ];
 

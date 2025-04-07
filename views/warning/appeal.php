@@ -26,8 +26,13 @@
                     <input type="text" class="form-control" id="counter" disabled value="<?= $warning->counter == 2 ? 'PEMECATAN' : 'PERINGATAN' ?>">
                 </div>
                 <div class="form-group my-2">
-                    <label for="add_time">Penambahan Waktu (Dalam Pekan)</label>
-                    <input name="add_time" type="number" class="form-control" id="add_time" value="2">
+                    <label for="counter">Alasan</label><br>
+                    <textarea disabled class="form-control" rows="4"><?= $warning->reason ?></textarea>
+                </div>
+                <div class="form-group my-2">
+                    <label for="add_time">Penambahan Waktu (Dalam Pekan)</label><br>
+                    <small><i><b>[Aturan Baru] penambahan waktu magang minimal 4 pekan (1 bulan)</b></i></small>
+                    <input name="add_time" type="number" class="form-control" id="add_time" value="4" min="4">
                 </div>
                 <div class="form-group my-2">
                     <label for="note">Catatan</label>

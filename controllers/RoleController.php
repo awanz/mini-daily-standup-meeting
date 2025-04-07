@@ -27,9 +27,12 @@ class RoleController extends BaseController
                         u.role_id = r.id 
                         AND u.is_active = 1
                 ) AS total_users,
-                ROW_NUMBER() OVER (ORDER BY `r`.`name`) AS `no`
+                ROW_NUMBER() OVER (ORDER BY `r`.`name`) AS `no`,
+                u.fullname
             FROM 
                 roles r
+            LEFT JOIN
+                users u on r.pic_id = u.id
             WHERE 
                 r.deleted_at IS NULL
             ORDER BY r.name asc;
@@ -111,11 +114,24 @@ class RoleController extends BaseController
             $this->setMessage('Data tidak ada!');
             $this->redirect('role');
         }
+
+        $listPIC = $this->db->raw('
+            SELECT 
+                *
+            FROM 
+                users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE (u.access = "ADMIN")
+            AND u.is_active = 1
+            ORDER BY u.fullname
+            ;
+        ')->fetch_all();
         
         $alert = $this->getMessage();
         $this->render('role/edit', [
             'alert' => $alert,
             'role' => $role,
+            'listPIC' => $listPIC,
         ]);
         
     }
@@ -137,12 +153,14 @@ class RoleController extends BaseController
             $name = trim($_POST['name']);
             $description = trim($_POST['description']);
             $url_group_wa = trim($_POST['url_group_wa']);
+            $pic_id = trim($_POST['pic_id']);
             
             try {
                 $data = [
                     "name" => $name,
                     "description" => $description,
                     "url_group_wa" => $url_group_wa,
+                    "pic_id" => $pic_id,
                 ];
                 
                 $update = $this->db->update("roles", $data, 'id', $id);
@@ -324,7 +342,7 @@ class RoleController extends BaseController
 
         $queryMeetingAttendance = '
             SELECT 
-                u.fullname, r.name, ma.status, ma.note
+                u.fullname, r.name, ma.status, ma.note, ma.id
             FROM 
                 meeting_attendances ma
             LEFT JOIN meetings m ON ma.meeting_id = m.id

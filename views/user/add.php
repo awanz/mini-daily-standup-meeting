@@ -36,11 +36,15 @@
                 </div>
                 <div class="form-group my-2">
                     <label for="phone">No Whatsapp (Mulai dengan 62 tanpa simbol +)</label>
-                    <input name="phone" type="text" class="form-control" id="phone" placeholder="6285000000000">
+                    <input name="phone" type="text" class="form-control" id="phone" placeholder="6285000000000" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="date_start">Tanggal Mulai</label>
                     <input type="date" class="form-control" id="date_start" name="date_start" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="duration">Durasi Magang <b>(Secara Default Minimal 5 Bulan)</b></label>
+                    <input type="text" class="form-control" id="duration" name="duration" value="5" required>
                 </div>
                 <!-- <div class="form-group my-2">
                     <label for="date_end">Tanggal Berakhir</label>

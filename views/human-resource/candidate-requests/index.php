@@ -37,8 +37,10 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Role</h4>
-                    <div><?= date('d M Y') ?></div>
+                    <h4>Request Candidates</h4>
+                    <div>
+                        <a href="<?= BASE_URL ?>/hr/candidate-requests/add" class="btn btn-dark my-2">Request</a>
+                    </div>
                 </div>
             </h5>
             <?php if ($alert): ?>
@@ -50,36 +52,41 @@
                 <table id="usertable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
+                            <th>No</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Request</th>
+                            <th>Seleksi</th>
+                            <th>Hire</th>
+                            <th>Requester</th>
                             <th>PIC</th>
-                            <th>Total Anggota</th>
-                            <th>Whatsapp</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($roles as $key => $value) { ?>
+                        <?php $no = 1; foreach ($candidateRequests as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[5] ?></td>
+                            <td><?= $no ?></td>
                             <td><?= $value[1] ?></td>
-                            <td><?= $value[6] ?></td>
-                            <td><?= $value[4] ?></td>
                             <td>
-                                <?php if (isset($value[3])) { ?>
-                                <a target="_BLANK" href="<?= $value[3] ?>" class="btn btn-success my-1">Group WA</a>
-                                <?php } ?>
+                                <?= $value[3] == 'REQUEST' ? '<span class="badge bg-warning text-dark">REQUEST</span>': '' ?>
+                                <?= $value[3] == 'OPEN' ? '<span class="badge bg-primary">OPEN</span>': '' ?>
+                                <?= $value[3] == 'CANCEL' ? '<span class="badge bg-danger">CANCEL</span>': '' ?>
+                                <?= $value[3] == 'DONE' ? '<span class="badge bg-success text-white">DONE</span>': '' ?>
+                                
                             </td>
-                            <td>    
-                                <a href="<?= BASE_URL ?>/role/meeting-attendance/<?= $value[0] ?>" class="btn btn-success my-1">Absensi</a>
-                                <a href="<?= BASE_URL ?>/role/detail/<?= $value[0] ?>" class="btn btn-primary my-1">Detail</a>
-                                <a href="<?= BASE_URL ?>/role/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
-                                <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/role/delete/<?= $value[0] ?>">
-                                    Delete
-                                </a>
+                            <td><?= $value[2] ?></td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><?= $value[5] ?></td>
+                            <td><?= $value[4] ?? '<span class="badge bg-danger">Belum ada PIC</span>' ?></td>
+                            <td> 
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/detail/<?= $value[0] ?>" class="btn btn-primary my-1">Detail</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
+                                <!-- <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/add/<?= $value[0] ?>" class="btn btn-success my-1">Add Candidate</a> -->
                             </td>
                         </tr>
-                        <?php } ?>
+                        <?php $no++;} ?>
                     </tbody>
                 </table>
             </div>

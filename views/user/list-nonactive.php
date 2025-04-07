@@ -59,7 +59,6 @@
                             <td><?= $value[5] ?></td>
                             <td>
                             <a href="<?= BASE_URL ?>/user/edit/<?= $value[0] ?>" class="btn btn-warning my-1">Edit</a>
-                            <a href="#" data-url="<?= BASE_URL ?>/user/actived/<?= $value[0] ?>" class="btn btn-dark btn-actived">Actived</a>
                             </td>
                         </tr>
                         <?php } ?>

@@ -1,7 +1,7 @@
 <?php
-require_once 'BaseController.php';
+require_once 'EmailController.php';
 
-class UserController extends BaseController
+class UserController extends EmailController
 {
     public function index()
     {
@@ -83,10 +83,13 @@ class UserController extends BaseController
             $phone = trim($_POST['phone']);
             $role_id = trim($_POST['role_id']);
             $date_start = trim($_POST['date_start']);
+            $duration = trim($_POST['duration']);
             // $date_end = trim($_POST['date_end']);
             $date_start_obj = new DateTime($date_start);
-            $date_start_obj->modify('+'.DURATION_MAGANG.' months');
+            $date_start_obj->modify('+'.$duration.' months');
             $date_end = $date_start_obj->format('Y-m-d');
+            $password = $this->generateEmailPassword($email, $fullname);
+            
             
             try {
                 $data = [
@@ -94,13 +97,14 @@ class UserController extends BaseController
                     "fullname" => $this->db->escape($fullname),
                     "phone" => $this->db->escape($phone),
                     "role_id" => $this->db->escape($role_id),
+                    "password" => $this->db->escape($password),
                     "date_start" => $this->db->escape($date_start),
                     "date_end" => $this->db->escape($date_end),
                     "created_by" => $this->user->id,
                 ];
                 
                 $insertData = $this->db->insert("users", $data);
-                $this->setMessage('Simpan user berhasil!', 'SUCCESS');
+                $this->setMessage('Simpan user berhasil! ['.$password.']', 'SUCCESS');
                 $this->redirect('user/add');
             } catch (\Throwable $th) {
                 $this->setMessage($th->getMessage());

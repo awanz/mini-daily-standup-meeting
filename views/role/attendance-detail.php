@@ -73,6 +73,7 @@
                 <table id="meetingTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
+                            <th>Number</th>
                             <th>Nama</th>
                             <th>Role</th>
                             <th>Kehadiran</th>
@@ -82,6 +83,7 @@
                     <tbody>
                         <?php foreach($meetingAttendance as $meet): ?>
                         <tr>
+                            <td><?=$this->e($meet[4])?></td>
                             <td><?=$this->e($meet[0])?></td>
                             <td><?=$this->e($meet[1])?></td>
                             <td>

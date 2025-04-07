@@ -78,6 +78,7 @@
                                 <?php if (empty($value[5]) || empty($value[6]) || empty($value[8])) { ?> style="background-color: purple;" <?php } ?>
                                 >
                                 <?= $value[2] ?>
+                                <?php if ($value[12] == 0) { ?> <span class="badge bg-primary">Need Password</span> <?php } ?>
                             </td>
                             <td><?= $value[8] ?></td>
                             <td><?= $value[3] ?></td>

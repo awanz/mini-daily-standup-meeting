@@ -60,10 +60,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <input type="hidden" name="user_ids[]" value="<?= $dataUser->id; ?>">
+                    <div class="col-md-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" value="<?= $dataUser->fullname; ?>" disabled required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="role" class="form-label">Role</label>
+                        <input type="text" class="form-control" value="<?= $dataUser->role_name; ?>" disabled required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="attendances" class="form-label">Kehadiran</label>
+                        <select class="form-select" name="attendances[]" required>
+                            <option value="ABSENT">Tidak Hadir</option>
+                            <option value="PRESENT">Hadir</option>
+                            <option value="SICK">Sakit</option>
+                            <option value="PERMISSION">Izin</option>
+                            <option value="NONE">Tidak Wajib Ikut</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="notes" class="form-label">Catatan</label>
+                        <textarea class="form-control" name="notes[]" rows="1" required>-</textarea>
+                    </div>
+                </div>
                 <?php foreach ($roleUsers as $key => $value) { ?>
                     <div class="row mb-3">
                         <input type="hidden" name="user_ids[]" value="<?= $value[0]; ?>">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="nama" class="form-label">Nama</label>
                             <input type="text" class="form-control" value="<?= $value[1]; ?>" disabled required>
                         </div>
@@ -81,7 +106,7 @@
                                 <option value="NONE">Tidak Wajib Ikut</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label for="notes" class="form-label">Catatan</label>
                             <textarea class="form-control" name="notes[]" rows="1" required>-</textarea>
                         </div>

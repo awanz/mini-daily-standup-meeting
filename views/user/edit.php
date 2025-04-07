@@ -88,9 +88,11 @@
                         <a href="<?= BASE_URL ?>/user" class="btn btn-light my-2">Kembali</a>
                     </div>
                     <div>
+                        <?php if ($user->is_active == 1) { ?>
                         <a href="#" class="btn btn-danger delete-btn my-1" data-url="<?= BASE_URL ?>/user/delete/<?= $user->id ?>">
                             Delete
                         </a>
+                        <?php } ?>
                     </div>
                 </div>
                 

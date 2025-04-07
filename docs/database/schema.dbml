@@ -32,8 +32,8 @@ Table users {
 
     status StatusUser
 
-    created_at timestamp
-    updated_at timestamp(100)
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at timestamp [note: "when update data, fill in the current date"]
     created_by int
     updated_by int
 
@@ -47,8 +47,8 @@ Table roles {
     url_group_wa varchar
     embeded varchar
     deleted_at timestamp
-    created_at date
-    updated_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
     created_by int
     updated_by int
 }
@@ -60,7 +60,7 @@ Table dailys {
     yesterday text
     today text
     problem text
-    created_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
     email varchar(100)
 }
 
@@ -69,7 +69,7 @@ Table warnings {
     user_id int
     email varchar
     counter int
-    created_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
     created_by int
 }
 
@@ -101,31 +101,75 @@ Table projects {
     url_repo varchar
     url_group_wa varchar
     note text
-    created_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
     created_by int
+}
+
+Enum StatusSprint {
+    PLANNED
+    IN_PROGRESS,
+    COMPLETED,
+    CANCEL
 }
 
 Table project_sprints {
     id integer [pk, increment]
-    
+    project_id int
+    name varchar
+    description text
+    date_start date
+    date_end date
+    status StatusSprint
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+    created_by int
+    updated_by int
+}
+
+Table project_sprint_blacklogs {
+    id integer [pk, increment]
+    project_id int
+    title varchar
+    description text
+    status StatusSprint
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+    created_by int
+    updated_by int
+}
+
+Table TypeScheduleMeeting {
+    USER
+    ROLE
+    PROJECT
 }
 
 Table schedule_meetings {
     id integer [pk, increment]
-    date date
-    created_at date
-    updated_at date
+    type TypeScheduleMeeting
+    meeting_date_start date
+    meeting_date_end date
+    user_id int
+    project_id int
+    role_id int
+    title varchar
+    description text
+    location varchar
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
     created_by int
     updated_by int
 }
 
 Table schedule_meeting_members {
     id integer [pk, increment]
-    schedule_meeting_id id
-    user_id
+    schedule_meeting_id int
+    user_id int
+    created_at timestamp [note: "when adding new data, fill in the current date"]
 }
 
 Enum StatusCandidateRequest {
+    REQUEST
     OPEN
     CANCEL
     DONE
@@ -134,11 +178,13 @@ Enum StatusCandidateRequest {
 Table candidate_requests {
     id integer [pk, increment]
     role_id integer
-    pic integer
+    pic_id integer
     total integer
     status StatusCandidateRequest
-    created_at date
-    updated_at date
+    description text
+    note text
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
     created_by int
     updated_by int
 }
@@ -153,11 +199,14 @@ Table candidates {
     id integer [pk, increment]
     role_id
     candidate_request_id integer
+    nik varchar
     fullname varchar
-    description text
+    email varchar
+    phone varchar
     status StatusCandidates
-    created_at date
-    updated_at date
+    description text
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at timestamp [note: "when update data, fill in the current date"]
     created_by int
     updated_by int
 }
@@ -202,8 +251,8 @@ Table employees {
     url_linkedin varchar
     description text
     status StatusCandidates
-    created_at date
-    updated_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
 }
 
 Enum ContractType {
@@ -223,8 +272,56 @@ Table employee_contracts {
     valid_to date
     is_education_program tinyint
     note text
-    created_at date
-    updated_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+}
+
+Enum EmployeeResignStatus {
+    REQUEST,
+    REVISED,
+    APPROVED,
+    CANCELED,
+}
+
+Table employee_resigns {
+    id integer [pk, increment]
+    user_id int
+    employee_id int
+    status EmployeeResignStatus
+    file_resign varchar
+    reason text
+    approval_id int
+    approval_date date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+    created_by int
+    updated_by int
+}
+
+Table personal_tasks {
+    id integer [pk, increment]
+    name varchar
+    description text
+    counter tinyint
+    note text
+    deleted_at date
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+    deleted_by int
+    created_by int
+    updated_by int
+}
+
+Table user_personal_tasks {
+    id integer [pk, increment]
+    user_id int
+    personal_task_id int
+    date_done date
+    notes text
+    created_at timestamp [note: "when adding new data, fill in the current date"]
+    updated_at date [note: "when update data, fill in the current date"]
+    created_by int
+    updated_by int
 }
 
 // Ref: users.id > dailys.user_id

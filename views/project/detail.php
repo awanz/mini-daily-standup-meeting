@@ -119,7 +119,11 @@
                     </h2>
                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
-                        Hello Kawan
+                        <?php if (!empty($project->description)) { ?>
+                            <?=$this->e($project->description ?? "")?>
+                        <?php }else { ?>
+                            Hello Kawan
+                        <?php } ?>
                     </div>
                     </div>
                 </div>
@@ -139,6 +143,16 @@
                                     <label for="name">Name</label>
                                     <input disabled name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" value="<?=$this->e($project->name ?? "")?>">
                                 </div>                           
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group my-2">
+                                    <label for="note">Deskripsi</label><br>
+                                    <?php if (!empty($project->description)) { ?>
+                                    <?=$this->e($project->description ?? "")?>
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -179,6 +193,25 @@
                                     <label for="note">Catatan</label>
                                     <textarea disabled class="form-control" name="note" id="note" rows="4"><?=$this->e($project->note ?? "")?></textarea>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?php if (!empty($project->url_drive)) { ?>
+                                    <a target="_BLANK" href="<?= $project->url_drive ?>" class="btn btn-primary my-1">Google Drive</a>
+                                <?php } ?>
+                                <?php if (!empty($project->url_figma)) { ?>
+                                    <a target="_BLANK" href="<?= $project->url_figma ?>" class="btn btn-danger my-1">Figma</a>
+                                <?php } ?>
+                                <?php if (!empty($project->url_logo)) { ?>
+                                    <a target="_BLANK" href="<?= $project->url_logo ?>" class="btn btn-info text-white my-1">Logo</a>
+                                <?php } ?>
+                                <?php if (!empty($project->url_repo)) { ?>
+                                    <a target="_BLANK" href="<?= $project->url_repo ?>" class="btn btn-dark my-1">Repository</a>
+                                <?php } ?>
+                                <?php if (!empty($project->url_group_wa)) { ?>
+                                    <a target="_BLANK" href="<?= $project->url_group_wa ?>" class="btn btn-success my-1">Whatsapp Group</a>
+                                <?php } ?>
                             </div>
                         </div>
                         <!-- detail -->
@@ -360,6 +393,9 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Kontrak Berakhir</th>
                                     <th>Status</th>
                                     <th>Catatan</th>
                                 </tr>
@@ -370,8 +406,17 @@
                                     <td><?= $no; ?></td>
                                     <th><?=$this->e($user[1])?></th>
                                     <td><?=$this->e($user[7])?></td>
+                                    <td><?=$this->e($user[2])?></td>
+                                    <td style="text-align: left;"><a href="https://wa.me/<?= htmlspecialchars($user[3]) ?>" target="_blank"><?=$this->e($user[3])?></a></td>
+                                    <td><?=$this->e($user[5])?></td>
                                     <td><?= $user[10] == 'ACTIVED' ? 'Aktif' : 'Tidak aktif' ?></td>
-                                    <td><?= !empty($user[9]) ? $user[9] : '-' ?></td>
+                                    <td><?= !empty($user[9]) ? $user[9] : '-' ?>
+                                        <a href="<?= BASE_URL ?>/project/detail/note/<?= $value[11] ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php $no++; endforeach ?>
                             </tbody>
@@ -386,6 +431,8 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Catatan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -394,6 +441,18 @@
                                     <td><?= $no; ?></td>
                                     <th><?=$this->e($user[1])?></th>
                                     <td><?=$this->e($user[2])?></td>
+                                    <td>
+                                        <?php if ($user[3] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $user[0] ?>">Aktif</a><?php } ?> 
+                                        <?php if ($user[3] == 'NONACTIVED') { ?>Tidak aktif<?php } ?> 
+                                    </td>
+                                    <td>
+                                        <?=$this->e($user[4])?>
+                                        <a href="<?= BASE_URL ?>/project/detail/note/<?= $user[0] ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php $no++; endforeach ?>
                             </tbody>

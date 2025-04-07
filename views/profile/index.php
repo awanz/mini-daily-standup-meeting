@@ -162,10 +162,12 @@
                             <td>
                                 <?php if ((!empty($value[4]) && $value[1] == 'ACTIVED') || $isAdmin) { ?>
                                 <a target="_BLANK" href="<?= $value[4] ?>" class="btn btn-success my-1">JOIN WA</a>
-                                <?php } ?>
+                                <?php } ?> 
                             </td>
                             <td>
-                                <a href="<?= BASE_URL ?>/project/detail/<?= $value[7] ?>" class="btn btn-dark my-1">Detail</a>
+                                <?php if (($value[1] == 'ACTIVED') || $isAdmin) { ?>
+                                    <a href="<?= BASE_URL ?>/project/detail/<?= $value[7] ?>" class="btn btn-dark my-1">Detail</a>
+                                <?php } ?> 
                             </td>
                         </tr>
                         <?php } ?>
@@ -199,7 +201,7 @@
                     <tbody>
                         <?php foreach ($warnings as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[6] ?></td>
+                            <td><?= $value[7] ?></td>
                             <td><?= $value[2] ?></td>
                             <td>
                                 <?= $value[3] == 2 ? '<span class="badge bg-danger">PEMECATAN</span>' : '<span class="badge bg-warning">PERINGATAN</span>' ?>

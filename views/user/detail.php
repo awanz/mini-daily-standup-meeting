@@ -179,16 +179,18 @@
                             <th>Tanggal</th>
                             <th>Email</th>
                             <th>Jenis Peringatan</th>
+                            <th>Alasan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($warnings as $key => $value) { ?>
                         <tr>
-                            <td><?= $value[6] ?></td>
+                            <td><?= $value[7] ?></td>
                             <td><?= $value[2] ?></td>
                             <td>
                                 <?= $value[3] == 2 ? '<span class="badge bg-danger">PEMECATAN</span>' : '<span class="badge bg-warning">PERINGATAN</span>' ?>
                             </td>
+                            <td><?= $value[5] ?></td>
                         </tr>
                         <?php } ?>
                     </tbody>

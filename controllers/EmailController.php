@@ -68,6 +68,42 @@ class EmailController extends BaseController
         
     }
     
+    public function generateEmailPassword($email, $fullname)
+    {
+        $randomLetterss = substr($email, 0, 2);
+        $randomNumber = str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
+        $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomLetter = $letters[mt_rand(0, strlen($letters) - 1)];
+        $randomLetter2 = $letters[mt_rand(0, strlen($letters) - 1)];
+        $newPasswordRaw = $randomLetter . $randomLetterss . $randomNumber . $randomLetter2;
+        $newPasswordRaw = preg_replace_callback('/\./', function () use ($letters) {
+            return $letters[rand(0, strlen($letters) - 1)];
+        }, $newPasswordRaw);
+
+        $subject    = 'Credential Daily Kawan Kerja';
+        $body       = '
+        Hello, '.$fullname.'<br>
+        Berikut credential yang bisa digunakan untuk mengakses <i><a href="https://kawankerja.id/daily">standup meeting</a></i>:
+        <br><br>
+        <hr>
+        Email: <b>'.$email.'</b><br>
+        Password: <b>'.$newPasswordRaw.'</b><br>
+        <hr>
+        <br><br>
+        <b>Pastikan credential tidak diberikan kepada orang lain dan dijaga kerahasiaannya!</b><br><br>
+        <p>
+          Hormat kami,<br>
+          <b> PT Kawan Kerja Indonesia </b>
+        </p>
+        ';
+        $result = $this->sendEmail($email, $fullname, $subject, $body);
+        // $this->dd($result);
+        if ($result['status']) {
+            return md5(md5($newPasswordRaw));
+        }
+        return null;
+    }
+    
     public function peringatan($data){
         
         $isAdmin = $this->isAdmin();
@@ -130,6 +166,7 @@ class EmailController extends BaseController
                   "user_id" => $user->id,
                   "email" => $receiver,
                   "counter" => 1,            
+                  "reason" => "Daily standup meeting tidak memenuhi batas minimal",            
                 ];
                 $this->db->insert("warnings", $data);
             } catch (\Throwable $th) {
@@ -187,7 +224,6 @@ class EmailController extends BaseController
             '.$fullname.'<br>
         </p>
         <p>
-            Dengan hormat,<br><br>
             Melalui surat ini, kami sampaikan bahwa Anda akan menerima Surat Peringatan (SP) Kedua terkait dengan ketidakaktifan Anda dalam kegiatan magang di PT Kawan Kerja Indonesia yang sebelumnya Anda telah menerima SP Pertama.
         </p>
         <p>
@@ -208,11 +244,12 @@ class EmailController extends BaseController
                 $data = [
                   "user_id" => $user->id,
                   "email" => $receiver,
-                  "counter" => 2,            
+                  "counter" => 2,"reason" => "Tidak mengisi daily standup meeting",        
                 ];
                 $this->db->insert("warnings", $data);
                 $dataUser = [
                     "is_active" => 0,
+                    "status" => 'EXPELLED',
                     "updated_by" => $this->user->id,
                 ];
                 $update = $this->db->update("users", $dataUser, 'id', $id);
@@ -298,12 +335,14 @@ class EmailController extends BaseController
                 $data = [
                   "user_id" => $user->id,
                   "email" => $receiver,
-                  "counter" => $type,            
+                  "counter" => $type,           
+                  "reason" => $reason,           
                 ];
                 $this->db->insert("warnings", $data);
                 if ($type == 2) {
                     $dataUser = [
                         "is_active" => 0,
+                        "status" => 'EXPELLED',
                         "updated_by" => $this->user->id,
                     ];
                     $update = $this->db->update("users", $dataUser, 'id', $user->id);
@@ -314,5 +353,13 @@ class EmailController extends BaseController
             return $result['message'];
         }
         return $result['message'];
+    }
+
+    public function sendEmailCustom($receiver, $fullname, $subject, $body){
+        $timestamp_milis = round(microtime(true) * 1000);
+        $subject    = $subject.' - '.$fullname.' ('. $receiver .') ['.$timestamp_milis.']';
+        $result = $this->sendEmail($receiver, $fullname, $subject, $body);
+        
+        return $result;
     }
 }

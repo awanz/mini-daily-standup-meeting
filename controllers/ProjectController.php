@@ -12,7 +12,6 @@ class ProjectController extends BaseController
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
-        // echo "sadsa";die();
         $projects = array();
 
         if ($isAdmin) {
@@ -36,7 +35,7 @@ class ProjectController extends BaseController
                 LEFT JOIN 
                     users u ON p.pic = u.id
                 LEFT JOIN 
-                    project_users pu ON p.id = pu.project_id
+                    project_users pu ON p.id = pu.project_id AND pu.status = "ACTIVED"
                 WHERE 
                     p.deleted_at IS NULL
                 GROUP BY 
@@ -66,7 +65,7 @@ class ProjectController extends BaseController
                 LEFT JOIN 
                     users u ON p.pic = u.id
                 LEFT JOIN 
-                    project_users pu ON p.id = pu.project_id
+                    project_users pu ON p.id = pu.project_id AND pu.status = "ACTIVED"
                 WHERE p.pic = '.$this->user->id.'
                     AND p.deleted_at is NULL
                 GROUP BY 
@@ -103,8 +102,6 @@ class ProjectController extends BaseController
 
     public function create()
     {
-        // print_r('dasdas');
-        // die();
         $isAdmin = $this->isAdmin();
 
         if (!$isAdmin) {
@@ -286,22 +283,26 @@ class ProjectController extends BaseController
 
     public function detail($data)
     {
-        // $this->dd('dasdas');
-        // $isAdmin = $this->isAdmin();
-        // $isProjectManager = $this->isProjectManager();
-
-        // if (!$isAdmin && !$isProjectManager) {
-        //     $this->setMessage('Kamu tidak punya hak akses!');
-        //     $this->redirect('home');
-        // }
-
         $id = $this->db->escape($data['id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
-
-        // if ($isProjectManager && $project->pic != $this->user->id) {
-        //     $this->setMessage('Kamu tidak punya hak akses!');
-        //     $this->redirect('home');
-        // }
+        $isUser = $this->isUser();
+        if ($isUser) {
+            $queryCheckProjectUser = '
+                SELECT 
+                    id
+                FROM 
+                    project_users pu
+                WHERE pu.project_id = '.$id.'
+                AND pu.user_id = '.$this->user->id.'
+                AND pu.status = "ACTIVED"
+                ;
+            ';
+            $checkUserProject = $this->db->raw($queryCheckProjectUser)->fetch_all();
+            if (empty($checkUserProject)) {
+                $this->setMessage('Tidak memiliki hak akses!');
+                $this->redirect('home');
+            }
+        }
         
         if (empty($project)) {
             $this->setMessage('Project yang dipilih tidak ada');
@@ -362,11 +363,12 @@ class ProjectController extends BaseController
         
         $queryProjectUserALL = '
             SELECT 
-                u.id, u.fullname, r.name as role
+                pu.id, u.fullname, r.name as role, pu.status, pu.notes
             FROM project_users pu
             LEFT JOIN users u ON pu.user_id = u.id
             LEFT JOIN roles r ON u.role_id = r.id
             WHERE pu.project_id = '.$id.'
+            AND u.id is not null
             ORDER BY u.fullname asc;
         ';
         // $this->dd($queryProjectUserALL);
