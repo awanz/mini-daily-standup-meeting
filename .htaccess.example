@@ -2,7 +2,7 @@ Order Allow,Deny
 Allow from all
 
 RewriteEngine On
-RewriteBase /mini-daily-standup-meeting/
+RewriteBase /daily/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L]
