@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group my-2">
                     <label for="pic">PIC</label>
-                    <input type="number" class="form-control" min="1" disabled value="<?= $this->e($candidateRequest->fullname ?? "") ?>">
+                    <input type="text" class="form-control" disabled value="<?= $this->e($candidateRequest->fullname ?? "") ?>">
                 </div>
                 <div class="form-group my-2">
                     <label for="total">Total</label>
