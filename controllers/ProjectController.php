@@ -286,7 +286,8 @@ class ProjectController extends BaseController
         $id = $this->db->escape($data['id']);
         $project = $this->db->getBy("projects", "id", $id)->fetch_object();
         $isUser = $this->isUser();
-        if ($isUser) {
+        $isProjectManager = $this->isProjectManager();
+        if ($isUser && !$isProjectManager) {
             $queryCheckProjectUser = '
                 SELECT 
                     id
