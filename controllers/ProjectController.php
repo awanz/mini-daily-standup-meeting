@@ -773,7 +773,7 @@ class ProjectController extends BaseController
 
         $queryMeetingAttendance = '
             SELECT 
-                u.fullname, r.name, ma.status, ma.note
+                u.fullname, r.name, ma.status, ma.note, ma.id
             FROM 
                 meeting_attendances ma
             LEFT JOIN meetings m ON ma.meeting_id = m.id
@@ -830,7 +830,7 @@ class ProjectController extends BaseController
                 "status" => $attendance,
                 "note" => $note
             ];
-        }, $user_ids, $attendances, $notes);        
+        }, $user_ids, $attendances, $notes);
 
         $this->db->beginTransaction();
         try {

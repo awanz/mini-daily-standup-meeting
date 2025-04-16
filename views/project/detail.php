@@ -195,25 +195,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?php if (!empty($project->url_drive)) { ?>
-                                    <a target="_BLANK" href="<?= $project->url_drive ?>" class="btn btn-primary my-1">Google Drive</a>
-                                <?php } ?>
-                                <?php if (!empty($project->url_figma)) { ?>
-                                    <a target="_BLANK" href="<?= $project->url_figma ?>" class="btn btn-danger my-1">Figma</a>
-                                <?php } ?>
-                                <?php if (!empty($project->url_logo)) { ?>
-                                    <a target="_BLANK" href="<?= $project->url_logo ?>" class="btn btn-info text-white my-1">Logo</a>
-                                <?php } ?>
-                                <?php if (!empty($project->url_repo)) { ?>
-                                    <a target="_BLANK" href="<?= $project->url_repo ?>" class="btn btn-dark my-1">Repository</a>
-                                <?php } ?>
-                                <?php if (!empty($project->url_group_wa)) { ?>
-                                    <a target="_BLANK" href="<?= $project->url_group_wa ?>" class="btn btn-success my-1">Whatsapp Group</a>
-                                <?php } ?>
-                            </div>
-                        </div>
                         <!-- detail -->
                     </div>
                     </div>
@@ -233,41 +214,25 @@
                     </div>
                 </div>
                 <?php endif ?>
-                <!-- <div class="accordion-item">
-                    <h2 class="accordion-header" id="panelsStayOpen-meetingsColls">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseMeetingsColls" aria-expanded="false" aria-controls="panelsStayOpen-collapseMeetingsColls">
-                            <b>Log Meetings</b>
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapseMeetingsColls" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-meetingsColls">
-                        <div class="accordion-body">
-                            <div class="table-responsive">
-                                <table id="history" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Judul</th>
-                                        <th>Deskripsi</th>
-                                        <th>Tanggal</th>
-                                        <th>Waktu Mulai</th>
-                                        <th>Waktu Berakhir</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach($meetings as $meeting): ?>
-                                    <tr>
-                                        <td><?=$this->e($meeting[1])?></td>
-                                        <td><?=$this->e($meeting[2])?></td>
-                                        <td><?=$this->e($meeting[3])?></td>
-                                        <td><?=$this->e($meeting[4])?></td>
-                                        <td><?=$this->e($meeting[5])?></td>
-                                    </tr>
-                                    <?php endforeach ?>
-                                </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <?php if (!empty($project->url_drive)) { ?>
+                        <a target="_BLANK" href="<?= $project->url_drive ?>" class="btn btn-primary my-1">Google Drive</a>
+                    <?php } ?>
+                    <?php if (!empty($project->url_figma)) { ?>
+                        <a target="_BLANK" href="<?= $project->url_figma ?>" class="btn btn-danger my-1">Figma</a>
+                    <?php } ?>
+                    <?php if (!empty($project->url_logo)) { ?>
+                        <a target="_BLANK" href="<?= $project->url_logo ?>" class="btn btn-info text-white my-1">Logo</a>
+                    <?php } ?>
+                    <?php if (!empty($project->url_repo)) { ?>
+                        <a target="_BLANK" href="<?= $project->url_repo ?>" class="btn btn-dark my-1">Repository</a>
+                    <?php } ?>
+                    <?php if (!empty($project->url_group_wa)) { ?>
+                        <a target="_BLANK" href="<?= $project->url_group_wa ?>" class="btn btn-success my-1">Whatsapp Group</a>
+                    <?php } ?>
+                </div>
             </div>
         </div>
     </div>

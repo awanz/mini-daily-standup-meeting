@@ -62,7 +62,6 @@
                     </div>
                 </div>
                 <div class="row mb-12">
-                    <input type="hidden" name="user_ids[]" value="<?= $value[0]; ?>">
                     <div class="col-md-4">
                         <label for="nama" class="form-label">Nama</label>
                     </div>
