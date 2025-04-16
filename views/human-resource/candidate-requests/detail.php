@@ -31,15 +31,19 @@
                     <input type="text" class="form-control" disabled value="<?= $this->e($candidateRequest->fullname ?? "") ?>">
                 </div>
                 <div class="form-group my-2">
-                    <label for="total">Total</label>
+                    <label for="contract_date">Tanggal Kontrak</label>
+                    <input type="text" class="form-control" disabled value="<?= $this->e($candidateRequest->contract_date ?? "") ?>">
+                </div>
+                <div class="form-group my-2">
+                    <label for="total">Total Kuota</label>
                     <input type="number" class="form-control" min="1" disabled value="<?= $this->e($candidateRequest->total ?? "") ?>">
                 </div>
                 <div class="form-group my-2">
-                    <label for="description">Description</label><br>
+                    <label for="description"><u>Description</u></label><br>
                     <?= $this->e($candidateRequest->description ?? "") ?>
                 </div>
                 <div class="form-group my-2">
-                    <label for="note">Catatan</label><br>
+                    <label for="note"><u>Catatan</u></label><br>
                     <?= $this->e($candidateRequest->note ?? "") ?>
                 </div>
                 <a href="<?= BASE_URL ?>/hr/candidate-requests" class="btn btn-light my-2">Kembali</a>

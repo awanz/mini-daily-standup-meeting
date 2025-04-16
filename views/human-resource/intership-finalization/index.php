@@ -47,7 +47,7 @@
                             <td><?= $no ?></td>
                             <td><?= $value[1] ?></td>
                             <td><?= $value[2] ?></td>
-                            <td><?= $value[7] ?> - <?= $value[8] ?></td>
+                            <td><?= $value[8] ?> - <?= $value[9] ?></td>
                             <td>
                                 <?= $value[3] == 'REQUEST' ? '<span class="badge bg-success">REQUEST</span>': ''?>
                                 <?= $value[3] == 'APPROVED' ? '<span class="badge bg-primary">APPROVED</span>': '' ?>

@@ -9,7 +9,7 @@
                 buttons: ['pageLength','excel']
             }
         },
-        order: [[2, 'desc']],
+        order: [[0, 'asc']],
     });
 </script>
 <?php $this->stop() ?>
@@ -19,9 +19,7 @@
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
-                    <h4>Monitoring PIC Role</h4>
-                    <div>
-                    </div>
+                    <h4>Monitoring Project Manager</h4>
                 </div>
             </h5>
             <?php if ($alert): ?>
@@ -35,27 +33,27 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Total Anak Magang</th>
-                            <th>Roles</th>
+                            <th>Role</th>
+                            <th>Projects</th>
+                            <th>Last Login</th>
+                            <th>Meeting Project</th>
+                            <th>Meeting Role</th>
+                            <th>Meeting Total</th>
+                            <th>Meeting Tidak Hadir</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $no = 1; foreach ($picRoles as $key => $value) { ?>
+                        <?php $no = 1; while ($row = $lists->fetch_object()) { ?>
                         <tr>
                             <td><?= $no ?></td>
-                            <td><?= $value[1] ?></td>
-                            <td><?= $value[2] ?></td>
-                            <td>
-                                <?php
-                                    $items = explode(',', $value[3]);
-
-                                ?>
-                                <ul>
-                                    <?php foreach ($items as $item): ?>
-                                        <li><?= trim($item) ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </td>
+                            <td><a href="<?= BASE_URL ?>/user/detail/<?= $row->id ?>"><?= $row->fullname ?></a></td>
+                            <td><?= $row->role_name ?></td>
+                            <td><?= $row->projects ?></td>
+                            <td><?= $row->last_login_at ?></td>
+                            <td><?= $row->total_meeting_project ?></td>
+                            <td><?= $row->total_meeting_role ?></td>
+                            <td><?= $row->total_meetings_current_month ?></td>
+                            <td><?= $row->total_meeting_absent ?></td>
                         </tr>
                         <?php $no++;} ?>
                     </tbody>

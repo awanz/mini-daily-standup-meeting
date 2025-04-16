@@ -41,8 +41,9 @@
                         <li><hr class="dropdown-divider"></li>
                         <!-- <li><a class="dropdown-item" href="#">Employees</a></li> -->
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Peringatan</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/resigns">Pengunduran diri</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/finalizations">Penyelesaian Magang</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/resigns">Pengajuan Resign</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/finalizations">Pengajuan Sertifikat</a></li>
+                        <li><a class="dropdown-item" href="#">Cetak Sertifikat</a></li>
                         <!-- <li><a class="dropdown-item" href="#">Surveys</a></li>
                         <li><a class="dropdown-item" href="#">Review</a></li>
                         <li><a class="dropdown-item" href="#">Sertificate</a></li> -->
@@ -82,6 +83,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/monitoring/pic-role">PIC Role</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/monitoring/project-manager">Project Manager</a></li>
                     </ul>
                 </li>
                 <?php endif ?>
@@ -93,7 +95,7 @@
                         <!-- <li><a class="dropdown-item" href="#">Vacuum Request</a></li> -->
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/resign">Pengajuan Resign</a></li>
                         <!-- <li><hr class="dropdown-divider"></li> -->
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/intership-finalization">Pengajuan Sertifikat Magang</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/intership-finalization">Pengajuan Sertifikat</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

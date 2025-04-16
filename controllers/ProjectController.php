@@ -364,7 +364,7 @@ class ProjectController extends BaseController
         
         $queryProjectUserALL = '
             SELECT 
-                pu.id, u.fullname, r.name as role, pu.status, pu.notes
+                pu.id, u.fullname, r.name as role, pu.status, pu.notes, u.phone, pu.project_id, u.id as user_id
             FROM project_users pu
             LEFT JOIN users u ON pu.user_id = u.id
             LEFT JOIN roles r ON u.role_id = r.id
@@ -701,7 +701,7 @@ class ProjectController extends BaseController
 
         $queryProjectUser = '
             SELECT 
-                u.id, u.fullname, u.role, u.is_finish, pu.project_id
+                u.id, u.fullname, u.role, u.is_finish, pu.project_id, u.date_end
             FROM 
                 project_users pu
             LEFT JOIN view_user_daily u
@@ -721,6 +721,28 @@ class ProjectController extends BaseController
             'projectUsers' => $projectUsers,
             'project' => $project,
         ]);
+        
+    }
+    
+    public function attendanceDownload($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isProjectManager = $this->isProjectManager();
+
+        if (!$isAdmin && !$isProjectManager) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        $project_id = $this->db->escape($data['project_id']);
+        $project = $this->db->getBy("projects", "id", $project_id)->fetch_object();
+
+        if ($isProjectManager && $project->pic != $this->user->id) {
+            $this->setMessage('Kamu tidak punya hak akses!');
+            $this->redirect('home');
+        }
+
+        echo "download..";
         
     }
 

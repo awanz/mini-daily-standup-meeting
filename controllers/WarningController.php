@@ -6,13 +6,12 @@ class WarningController extends EmailController
     public function index()
     {
         $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
 
-        if (!$isAdmin) {
-            $this->setMessage('Kamu tidak punya hak akses');
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }
-        
-        // $warnings = $this->db->getAll("view_user_warnings")->fetch_all();
 
         $queryWarning = '
             SELECT 
@@ -144,7 +143,7 @@ class WarningController extends EmailController
 
 
         $result = $this->warningCustom($user_id, $type, $reason);
-        $this->setMessage($result, 'SUCCESS');
+        $this->setMessage('Peringatan '.$type.' dan '.$result, 'SUCCESS');
         $this->redirect('warnings/add');
     }
 }

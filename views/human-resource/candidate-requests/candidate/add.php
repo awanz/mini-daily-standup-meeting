@@ -43,7 +43,7 @@
             <form method="POST" action="<?= BASE_URL ?>/hr/candidate-requests/add">
                 <div class="form-group my-2">
                     <label for="Role">Role</label>
-                    <select id="roleSelect" class="form-select" name="role_id" required>
+                    <select id="roleSelect" class="form-select" name="role_id" disabled>
                         <option selected value="">-- Pilih Type --</option>
                         <?php foreach($roles as $role): ?>
                         <option value="<?= $role[0] ?>"><?= $role[1] ?></option>
@@ -51,20 +51,28 @@
                     </select>
                 </div>
                 <div class="form-group my-2">
-                    <label for="contract_date">Tanggal Kontrak</label>
-                    <input name="contract_date" type="date" class="form-control" required>
+                    <label for="total">Total</label>
+                    <input name="total" type="number" class="form-control" min="1" required>
                 </div>
                 <div class="form-group my-2">
-                    <label for="total">Total Kuota</label>
-                    <input name="total" type="number" class="form-control" min="1" required>
+                    <label for="nik">NIK</label>
+                    <input name="nik" type="number" class="form-control" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="fullname">Fullname</label>
+                    <input name="fullname" type="text" class="form-control" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="email">Email</label>
+                    <input name="email" type="email" class="form-control" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="phone">Phone</label>
+                    <input name="phone" type="number" class="form-control" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="description">Description</label>
                     <textarea class="form-control" name="description" id="description" rows="4"></textarea>
-                </div>
-                <div class="form-group my-2">
-                    <label for="note">Catatan</label>
-                    <textarea class="form-control" name="note" id="note" rows="4"></textarea>
                 </div>
                 <button type="submit" class="btn btn-dark my-2">Simpan</button>
                 <a href="<?= BASE_URL ?>/hr/candidate-requests" class="btn btn-light my-2">Kembali</a>

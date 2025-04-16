@@ -61,7 +61,7 @@
                     <textarea class="form-control" name="reason" id="reason" rows="6" required></textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-dark my-2">Tambah</button>
+                <button type="submit" class="btn btn-dark my-2">Kirim</button>
                 <a href="<?= BASE_URL ?>/warnings" class="btn btn-light my-2">Kembali</a>
             </form>
         </div>

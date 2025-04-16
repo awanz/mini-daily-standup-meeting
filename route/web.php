@@ -116,6 +116,9 @@ function handleRoute($uri)
             'GET' => ['ProjectController', 'attendance'],
             'POST' => ['ProjectController', 'createAttendance'],
         ],
+        '/project/meeting-attendance/download/:project_id' => [
+            'GET' => ['ProjectController', 'attendanceDownload']
+        ],
         '/project/meeting-attendance-detail/:meeting_id' => [
             'GET' => ['ProjectController', 'attendanceDetail'],
         ],
@@ -227,9 +230,26 @@ function handleRoute($uri)
             'GET' => ['HRCandidateRequestController', 'edit'],
             'POST' => ['HRCandidateRequestController', 'editProcess'],
         ],
+        '/hr/candidate-requests/candidate/:id' => [
+            'GET' => ['HRCandidateRequestController', 'candidate'],
+        ],
+        '/hr/candidate-requests/candidate/add/:id' => [
+            'GET' => ['HRCandidateRequestController', 'candidateAdd'],
+            'POST' => ['HRCandidateRequestController', 'candidateAddProcess'],
+        ],
+        '/hr/candidate-requests/candidate/edit/:id' => [
+            'GET' => ['HRCandidateRequestController', 'candidateEdit'],
+            'POST' => ['HRCandidateRequestController', 'candidateEditProcess'],
+        ],
+        '/hr/candidate-requests/candidate/delete/:id' => [
+            'POST' => ['HRCandidateRequestController', 'candidateDeleteProcess'],
+        ],
 
         '/monitoring/pic-role' => [
             'GET' => ['MonitoringController', 'index'],
+        ],
+        '/monitoring/project-manager' => [
+            'GET' => ['MonitoringController', 'listProjectManager'],
         ],
     ];
 

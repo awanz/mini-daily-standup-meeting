@@ -281,6 +281,7 @@
                     <h4>Riwayat Kehadiran Meeting</h4>
                     <?php if ($isAdmin || $isProjectManager): ?>
                     <div>
+                        <a href="<?= BASE_URL ?>/project/meeting-attendance/download/<?= $id ?>" class="btn btn-primary my-2">Download</a>
                         <a href="<?= BASE_URL ?>/project/meeting-attendance/<?= $id ?>" class="btn btn-success my-2">Absensi</a>
                     </div>
                     <?php endif ?>
@@ -431,6 +432,7 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Role</th>
+                                    <th>Phone</th>
                                     <th>Status</th>
                                     <th>Catatan</th>
                                 </tr>
@@ -439,8 +441,11 @@
                                 <?php $no = 1; foreach($projectUsersAll as $user): ?>
                                 <tr>
                                     <td><?= $no; ?></td>
-                                    <th><?=$this->e($user[1])?></th>
+                                    <td>
+                                        <a href="<?= BASE_URL ?>/user/detail/<?= $user[7] ?>" target="_BLANK"><?=$this->e($user[1])?></a>    
+                                    </td>
                                     <td><?=$this->e($user[2])?></td>
+                                    <td><?=$this->e($user[5])?></td>
                                     <td>
                                         <?php if ($user[3] == 'ACTIVED') { ?><a href="#" class="delete-btn" data-url="<?= BASE_URL ?>/project/nonactive-member/<?= $user[0] ?>">Aktif</a><?php } ?> 
                                         <?php if ($user[3] == 'NONACTIVED') { ?>Tidak aktif<?php } ?> 

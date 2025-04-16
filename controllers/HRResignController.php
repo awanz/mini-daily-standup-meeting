@@ -43,6 +43,7 @@ class HRResignController extends EmailController
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
+        
         try {
             $resignQuery = '
                 SELECT 
@@ -65,6 +66,7 @@ class HRResignController extends EmailController
                 "approval_id" => $this->db->escape($this->user->id),
                 "approval_date" => date('Y-m-d'),
             ];
+            
             $update = $this->db->update("employee_resigns", $data, 'id', $resign->id);
 
             // update user
@@ -86,7 +88,6 @@ class HRResignController extends EmailController
                 <p><b>Salam hangat, <br>
                 PT KAWAN KERJA INDONESIA<b>
                 <p>';
-
             // kirim email
             $sendEmail = $this->sendEmailCustom($user->email, $user->fullname, $subject, $body);
 

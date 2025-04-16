@@ -183,8 +183,9 @@ class BaseController
     public function sendEmail($receiver, $fullname, $subject, $body){
         
         $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isHR) {
             $this->setMessage('Kamu tidak punya hak akses!');
             $this->redirect('home');
         }

@@ -30,7 +30,7 @@
                 <?= $alert['message'] ?>
             </div>
             <?php endif ?>
-            <p>Banding hanya bisa di lakukan sekali dan hanya bisa melakukan banding jika dari keluarnya pemecatan kurang dari 20 hari.</p>
+            <p>Banding hanya bisa di lakukan sekali dan hanya bisa melakukan banding jika dari keluarnya pemecatan <b>kurang dari 20 hari</b>.</p>
             <div class="table-responsive">
                 <table id="warningTable" class="table table-striped table-bordered">
                     <thead>

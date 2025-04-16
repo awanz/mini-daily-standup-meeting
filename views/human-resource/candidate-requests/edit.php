@@ -51,6 +51,10 @@
                     </select>
                 </div>
                 <div class="form-group my-2">
+                    <label for="contract_date">Tanggal Kontrak</label>
+                    <input name="contract_date" type="date" class="form-control" value="<?= $candidateRequest->contract_date ?>" required>
+                </div>
+                <div class="form-group my-2">
                     <label for="pic">PIC</label>
                     <select id="userSelect" class="form-select" name="pic_id" style="width: 100%;">
                         <option selected value="0">-- Pilih PIC --</option>
@@ -70,8 +74,8 @@
                     </select>
                 </div>
                 <div class="form-group my-2">
-                    <label for="total">Total</label>
-                    <input name="total" type="number" class="form-control" min="1" value="<?= $candidateRequest->role_id ?>" required>
+                    <label for="total">Total Kuota</label>
+                    <input name="total" type="number" class="form-control" min="1" value="<?= $candidateRequest->total ?>" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="description">Description</label>

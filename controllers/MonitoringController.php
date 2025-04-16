@@ -53,5 +53,50 @@ class MonitoringController extends BaseController
             'picRoles' => $picRoles,
         ]);
     }
+    
+    public function listProjectManager()
+    {
+        $isAdmin = $this->isAdmin();
+
+        if (!$isAdmin) {
+            $this->setMessage('Kamu tidak punya hak akses');
+            $this->redirect('home');
+        }
+
+        $listsQuery = '
+                SELECT 
+                    u.id,
+                    MAX(u.fullname) AS fullname,
+                    MAX(r.name) AS role_name,
+                    GROUP_CONCAT(DISTINCT p.name SEPARATOR ", ") AS projects,
+                    MAX(u.last_login_at) AS last_login_at,
+                    COUNT(DISTINCT CASE WHEN m.type = "MEETING_PROJECT" AND ma.status = "PRESENT" THEN m.id END) AS total_meeting_project,
+                    COUNT(DISTINCT CASE WHEN m.type = "MEETING_ROLE" AND ma.status = "PRESENT" THEN m.id END) AS total_meeting_role,
+                    COUNT(DISTINCT CASE WHEN ma.status = "PRESENT" THEN ma.id END) AS total_meetings_current_month,
+                    COUNT(DISTINCT CASE WHEN ma.status != "PRESENT" AND ma.status IS NOT NULL THEN ma.id END) AS total_meeting_absent
+                FROM users u
+                JOIN roles r ON u.role_id = r.id
+                LEFT JOIN project_users pu ON u.id = pu.user_id AND pu.status = "ACTIVED"
+                LEFT JOIN projects p ON pu.project_id = p.id
+                LEFT JOIN meeting_attendances ma 
+                    ON u.id = ma.user_id 
+                    AND MONTH(ma.created_at) = MONTH(CURRENT_DATE()) 
+                    AND YEAR(ma.created_at) = YEAR(CURRENT_DATE())
+                LEFT JOIN meetings m 
+                    ON ma.meeting_id = m.id
+                WHERE u.is_active = 1
+                AND r.name IN ("Project Manager IT")
+                GROUP BY u.id
+                ORDER BY fullname;
+
+        ';
+        $lists = $this->db->raw($listsQuery);
+
+        $alert = $this->getMessage();
+        $this->render('monitoring/project-manager/index', [
+            'alert' => $alert,
+            'lists' => $lists,
+        ]);
+    }
 
 }

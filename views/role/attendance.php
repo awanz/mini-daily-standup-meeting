@@ -11,7 +11,8 @@
         enableTime: true,
         dateFormat: "Y-m-d H:i",
         time_24hr: true,
-        defaultDate: new Date()
+        defaultDate: new Date(),
+        maxDate: new Date()
     });
 </script>
 <?php $this->stop() ?>
@@ -37,7 +38,7 @@
                     <div class="col-md-3 mb-2">
                         <label for="datetimepicker" class="form-label">Tanggal dan Jam Meeting</label>
                         <div class="input-group">
-                            <input type="text" id="datetimepicker" name="time_start" class="form-control" placeholder="Pick a date and time" required>
+                            <input max="<?= date('Y-m-d') ?>" type="text" id="datetimepicker" name="time_start" class="form-control" placeholder="Pick a date and time" required>
                             <span class="input-group-text">
                                 <label for="datetimepicker" class="d-flex align-items-center mb-0" style="cursor: pointer;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
@@ -50,7 +51,7 @@
                     <div class="col-md-4 mb-2">
                         <label for="duration" class="form-label">Durasi (Dalam Satuan Menit)</label>
                         <div class="input-group">
-                            <input type="number" min="0" name="duration" class="form-control" placeholder="Masukan durasi (dalam satuan menit)">
+                            <input type="number" min="0" max="480" name="duration" class="form-control" placeholder="Masukan durasi (dalam satuan menit)">
                         </div>
                     </div>
                     <div class="col-md-12 mb-2">
@@ -85,7 +86,12 @@
                         <textarea class="form-control" name="notes[]" rows="1" required>-</textarea>
                     </div>
                 </div>
-                <?php foreach ($roleUsers as $key => $value) { ?>
+                <?php 
+                    foreach ($roleUsers as $key => $value) { 
+                    if ($value[0] === $dataUser->id) {
+                        continue;
+                    }
+                ?>
                     <div class="row mb-3">
                         <input type="hidden" name="user_ids[]" value="<?= $value[0]; ?>">
                         <div class="col-md-3">
