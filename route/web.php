@@ -186,6 +186,9 @@ function handleRoute($uri)
         '/absences-intern' => [
             'GET' => ['AbsenceController', 'intern'],
         ],
+        '/intern-finalization' => [
+            'GET' => ['AbsenceController', 'internFinalization'],
+        ],
         '/absences-volunteer' => [
             'GET' => ['AbsenceController', 'volunteer'],
         ],

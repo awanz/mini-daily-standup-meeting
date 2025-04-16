@@ -48,8 +48,9 @@
                         <li><a class="dropdown-item" href="#">Review</a></li>
                         <li><a class="dropdown-item" href="#">Sertificate</a></li> -->
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-intern">Intern Absence</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-volunteer">Volunteer Absence</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/intern-finalization">Magang Selesai</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-intern">Absensi Magang</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/absences-volunteer">Absensi Volunteer</a></li>
                     </ul>
                 </li>
                 <?php endif ?>

@@ -60,7 +60,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Request</th>
+                            <th>Pengajuan</th>
                             <th>Role</th>
                             <th>Kontrak</th>
                             <th>Status</th>

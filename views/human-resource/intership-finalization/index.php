@@ -32,6 +32,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Pengajuan</th>
                             <th>Fullname</th>
                             <th>Role</th>
                             <th>Tanggal Magang</th>
@@ -45,6 +46,7 @@
                         <?php $no = 1; foreach ($finalizations as $key => $value) { ?>
                         <tr>
                             <td><?= $no ?></td>
+                            <td><?= date("Y-m-d", strtotime($value[10])) ?></td>
                             <td><?= $value[1] ?></td>
                             <td><?= $value[2] ?></td>
                             <td><?= $value[8] ?> - <?= $value[9] ?></td>

@@ -15,7 +15,7 @@ class HRFinalizationController extends EmailController
 
         $finalizationQuery = '
             SELECT 
-                eif.id, u.fullname, r.name as role_name, eif.status, eif.file, eif.is_survey, u2.fullname, u2.id, u.date_start, u.date_end
+                eif.id, u.fullname, r.name as role_name, eif.status, eif.file, eif.is_survey, u2.fullname, u2.id, u.date_start, u.date_end, eif.created_at
             FROM 
                 employee_intership_finalizations eif
             LEFT JOIN users u on u.id = eif.user_id

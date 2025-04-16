@@ -15,7 +15,7 @@ class HRResignController extends EmailController
 
         $resignQuery = '
             SELECT 
-                er.id, u.fullname, r.name as role_name, er.status, er.file_resign, er.reason, u2.fullname, u2.id
+                er.id, u.fullname, r.name as role_name, er.status, er.file_resign, er.reason, u2.fullname, u2.id, er.created_at
             FROM 
                 employee_resigns er
             LEFT JOIN users u on u.id = er.user_id
