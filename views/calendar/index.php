@@ -1,4 +1,18 @@
 <?php $this->layout('layouts/base') ?>
+<?php $this->start('headAdditional') ?>
+<style>
+@media (max-width: 767.98px) {
+    .small-on-mobile {
+        font-size: 0.7rem; 
+    }
+}
+@media (max-width: 1080px) {
+    .small-on-mobile {
+        font-size: 0.5rem; 
+    }
+}
+</style>
+<?php $this->stop() ?>
 
 <div class="container">
     <div class="card my-2">
@@ -41,7 +55,7 @@
                 for ($month = 1; $month <= 12; $month++) {
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, 2025);
                     ?>
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-4 mb-4 small-on-mobile">
                         <div class="card">
                             <div class="card-header text-center fw-bold">
                                 <?= $months[$month - 1] ?> 2025

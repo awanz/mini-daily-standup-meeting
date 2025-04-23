@@ -167,7 +167,7 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <?= $value[1] ?> 
+                                        <a href="<?= BASE_URL ?>/user/detail/<?= $value[0] ?>"><?= $value[1] ?> </a>
                                         <?php if ($value[10] == 'ACTIVED') { ?><small class="badge bg-primary rounded-pill">Aktif</small><?php } ?>
                                         <?php if ($value[10] == 'NONACTIVED') { ?><small class="badge bg-danger rounded-pill">Tidak Aktif</small><?php } ?>
                                     </h5>

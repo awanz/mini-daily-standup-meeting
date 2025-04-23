@@ -1,11 +1,11 @@
 <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary sticky-top" data-bs-theme="dark">
-    <div class="container px-4">
+    <div class="container-fluid px-4">
         <a class="navbar-brand" href="<?= BASE_URL ?>/home">Daily</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="<?= BASE_URL ?>/home">Home</a>
                 </li>
@@ -88,6 +88,19 @@
                     </ul>
                 </li>
                 <?php endif ?>
+                <?php if ($isSuperAdmin): ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Finance
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/finance/kurs-dollar">Kurs Dollar</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/finance/cashflow">Catatan Keuangan</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/finance/invoice">Invoice</a></li>
+                    </ul>
+                </li>
+                <?php endif ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Administration 
@@ -104,11 +117,19 @@
                         Others
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a target="_BLANK" class="dropdown-item" href="https://drive.google.com/drive/folders/1B0N6Sb0V-PNBbkS_5ZdsE0Fn-oWAI4xC?usp=sharing">Assets</a></li>
+                        <li><a target="_BLANK" class="dropdown-item" href="https://docs.google.com/document/d/1dGKBAH_UGVaGQGEZhPJaZOlAidyykFX6/edit?usp=sharing&ouid=117242716899239908221&rtpof=true&sd=true">Company Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/gather">Gather</a></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/discord">Discord</a></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/aturan">Aturan</a></li>
                         <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/guideline">Panduan</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/calendar">Kalendar 2025</a></li>
+                        <?php if ($isAdmin): ?>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a target="_BLANK" class="dropdown-item" href="https://kawankerja.id/webmail">e-Mail</a></li>
+                        <?php endif ?>
                     </ul>
                 </li>
                 

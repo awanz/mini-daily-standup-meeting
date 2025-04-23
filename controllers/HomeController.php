@@ -6,7 +6,7 @@ class HomeController extends BaseController
     public function index($data = null)
     {
         $access = $this->user->access;
-        if ($access == 'ADMIN' || $access == 'VOLUNTEER') {
+        if ($access == 'SUPERADMIN' || $access == 'ADMIN' || $access == 'VOLUNTEER') {
             $projects = $this->db->raw('
                 SELECT 
                     p.id, 
@@ -43,7 +43,7 @@ class HomeController extends BaseController
             ')->fetch_all();
             $queryMeeting = null;
 
-            if ($access == 'ADMIN') {
+            if ($access == 'ADMIN' || $access == 'SUPERADMIN') {
                 $queryMeeting = '
                     SELECT 
                         m.id,

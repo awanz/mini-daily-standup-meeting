@@ -72,6 +72,12 @@
                             <label for="phone">No Whatsapp</label>
                             <input name="phone" type="text" class="form-control" id="phone" placeholder="Masukan phone" value="<?= $this->e($user->phone ?? "") ?>" disabled>
                         </div>
+                        <?php if (!empty($user->nip)) { ?>
+                        <div class="form-group my-2">
+                            <label for="phone">Nomor Induk Pegawai</label>
+                            <input name="phone" type="text" class="form-control" id="phone" placeholder="Masukan phone" value="<?= $this->e($user->nip ?? "") ?>" disabled>
+                        </div>
+                        <?php } ?>
                         
                     </div>
                     <div class="col-md-6">

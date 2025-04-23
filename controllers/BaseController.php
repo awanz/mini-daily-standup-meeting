@@ -33,6 +33,7 @@ class BaseController
         $this->checkLogged();
         $this->templates = new Engine(__DIR__ . '/../views');
         $this->templates->addData([
+            'isSuperAdmin' => $this->isSuperAdmin(),
             'isAdmin' => $this->isAdmin(),
             'isHR' => $this->isHR(),
             'isProjectManager' => $this->isProjectManager(),
@@ -61,11 +62,20 @@ class BaseController
     public function isAdmin(){
         // print_r($this->user);die();
         $isAdmin = false;
-        if ($this->user && $this->user->access == 'ADMIN') {
+        if ($this->user && $this->user->access == 'ADMIN' || $this->user && $this->user->access == 'SUPERADMIN') {
             $isAdmin = true;
         }
 
         return $isAdmin;
+    }
+    
+    public function isSuperAdmin(){
+        $isSuperAdmin = false;
+        if ($this->user && $this->user->access == 'SUPERADMIN') {
+            $isSuperAdmin = true;
+        }
+
+        return $isSuperAdmin;
     }
     
     public function isProjectManager(){

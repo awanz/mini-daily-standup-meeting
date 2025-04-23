@@ -254,6 +254,13 @@ function handleRoute($uri)
         '/monitoring/project-manager' => [
             'GET' => ['MonitoringController', 'listProjectManager'],
         ],
+        
+        '/finance/kurs-dollar' => [
+            'GET' => ['FinanceController', 'kursDollar'],
+        ],
+        '/finance/kurs-dollar/refresh' => [
+            'GET' => ['FinanceController', 'kursDollarRefresh'],
+        ],
     ];
 
     $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -293,15 +300,15 @@ function handleRoute($uri)
     // http_response_code(404);
     // echo "Page Not Found<br>";die($uri);
 
-    $result = [
-        'status' => 'FAILED',
-        'message' => 'Halaman ' . $uri . ' tidak ditemukan.',
-    ];
+    // $result = [
+    //     'status' => 'FAILED',
+    //     'message' => 'Halaman ' . $uri . ' tidak ditemukan.',
+    // ];
 
     // print_r($result);
 
-    $_SESSION['flash_message_alert'] = $result;
+    // $_SESSION['flash_message_alert'] = $result;
 
-    header("Location: ". BASE_URL, false, 301);
+    header("Location: ". BASE_URL.'/404.html', false, 301);
     exit();
 }

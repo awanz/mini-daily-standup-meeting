@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group my-2">
                     <label for="pic">PIC</label>
-                    <input type="text" class="form-control" disabled value="<?= $this->e($candidateRequest->fullname ?? "") ?>">
+                    <input type="text" class="form-control" disabled value="<?= $this->e($candidateRequest->pic_name ?? "") ?>">
                 </div>
                 <div class="form-group my-2">
                     <label for="contract_date">Tanggal Kontrak</label>
@@ -38,15 +38,23 @@
                     <label for="total">Total Kuota</label>
                     <input type="number" class="form-control" min="1" disabled value="<?= $this->e($candidateRequest->total ?? "") ?>">
                 </div>
+                <?php if(!empty($candidateRequest->description)){ ?>
                 <div class="form-group my-2">
                     <label for="description"><u>Description</u></label><br>
                     <?= $this->e($candidateRequest->description ?? "") ?>
                 </div>
+                <?php } ?>
+                <?php if(!empty($candidateRequest->note)){ ?>
                 <div class="form-group my-2">
                     <label for="note"><u>Catatan</u></label><br>
                     <?= $this->e($candidateRequest->note ?? "") ?>
                 </div>
+                <?php } ?>
                 <a href="<?= BASE_URL ?>/hr/candidate-requests" class="btn btn-light my-2">Kembali</a>
+                <hr>
+                <div class="form-group my-2">
+                    <p>Last update by <?= $this->e($candidateRequest->updated_name ?? "") ?> at <?= $this->e($candidateRequest->updated_at ?? "") ?></p>
+                </div>
             </form>
         </div>
     </div>

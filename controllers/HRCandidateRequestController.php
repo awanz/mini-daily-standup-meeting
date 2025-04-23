@@ -108,11 +108,12 @@ class HRCandidateRequestController extends BaseController
 
         $candidateRequestQuery = '
             SELECT 
-                cr.id, r.name as role_name, cr.total, cr.status, u.fullname, cr.description, cr.note, cr.role_id, cr.contract_date
+                cr.*, r.name as role_name, u.fullname as pic_name, u2.fullname as updated_name
             FROM 
                 candidate_requests cr
             LEFT JOIN roles r on r.id = cr.role_id
             LEFT JOIN users u on u.id = cr.pic_id
+            LEFT JOIN users u2 on u2.id = cr.updated_by
             WHERE cr.id='.$this->db->escape(trim($data['id'])).'
             ORDER BY cr.created_at DESC
             LIMIT 1
