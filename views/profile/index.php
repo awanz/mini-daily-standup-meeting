@@ -39,13 +39,16 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>Profile</h4>
-                    <span><a href="<?= BASE_URL ?>/profile/change-password" class="btn btn-dark">Ganti Password</a></span>
+                    <span>
+                        <a href="<?= BASE_URL ?>/profile/magang-overview" class="btn btn-light">Magang</a>
+                        <a href="<?= BASE_URL ?>/profile/change-password" class="btn btn-dark">Ganti Password</a>
+                    </span>
                 </div>
             </h5>
             <form>
@@ -102,7 +105,7 @@
 </div>
 
 <?php if (count($projects) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -187,7 +190,7 @@
 
 
 <?php if (count($warnings) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -223,7 +226,7 @@
 <?php } ?>
 
 <?php if (count($meetings) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -282,7 +285,7 @@
 <?php } ?>
 
 <?php if (count($dailys) > 0 && !$isAdmin && !$isProjectManager) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">

@@ -11,9 +11,19 @@ function handleRoute($uri)
         '/' => [
             'GET' => ['LoginController', 'index'],
         ],
+        '/certificate/:id' => [
+            'GET' => ['CertificateController', 'index'],
+        ],
+        '/certificate-pdf/:id' => [
+            'GET' => ['CertificateController', 'pdf'],
+        ],
         '/login' => [
             'GET' => ['LoginController', 'index'],
             'POST' => ['LoginController', 'loginProcess'],
+        ],
+        
+        '/logout' => [
+            'GET' => ['ProfileController', 'logout'],
         ],
         '/forgot-password' => [
             'GET' => ['LoginController', 'forgotPassword'],
@@ -43,6 +53,11 @@ function handleRoute($uri)
             'POST' => ['ProfileController', 'intershipFinalizationCancelProcess'],
         ],
 
+        '/profile/contract-extend' => [
+            'GET' => ['ProfileController', 'contractExtend'],
+            'POST' => ['ProfileController', 'contractExtendProcess'],
+        ],
+
         '/home' => [
             'GET' => ['HomeController', 'index'],
             'POST' => ['HomeController', 'submitDaily'],
@@ -59,10 +74,6 @@ function handleRoute($uri)
         '/history/delete/:id' => [
             'GET' => ['HomeController', 'delete'],
         ],
-        '/keluar' => [
-            'GET' => ['HomeController', 'logout2'],
-        ],
-
         '/user' => [
             'GET' => ['UserController', 'index'],
         ],
@@ -206,6 +217,16 @@ function handleRoute($uri)
             'POST' => ['HRResignController', 'cancelResign'],
         ],
 
+        '/hr/contract-extend' => [
+            'GET' => ['ContractExtend', 'index'],
+        ],
+        '/hr/contract-extend/approve' => [
+            'POST' => ['ContractExtend', 'approveContractExtend'],
+        ],
+        '/hr/contract-extend/revise' => [
+            'POST' => ['ContractExtend', 'reviseContractExtend'],
+        ],
+        
         '/hr/finalizations' => [
             'GET' => ['HRFinalizationController', 'index'],
         ],
@@ -217,6 +238,17 @@ function handleRoute($uri)
         ],
         '/hr/finalizations/cancel' => [
             'POST' => ['HRFinalizationController', 'cancelFinalization'],
+        ],
+        
+        '/hr/certificate-print' => [
+            'GET' => ['HRFinalizationController', 'certificateList'],
+        ],
+        
+        '/hr/certificate-print/print' => [
+            'POST' => ['HRFinalizationController', 'certificatePrint'],
+        ],
+        '/hr/certificate-print/send' => [
+            'POST' => ['HRFinalizationController', 'certificateSend'],
         ],
 
         '/hr/candidate-requests' => [
@@ -262,7 +294,7 @@ function handleRoute($uri)
             'GET' => ['FinanceController', 'kursDollarRefresh'],
         ],
     ];
-
+    // die($uri);
     $requestMethod = $_SERVER['REQUEST_METHOD'];
 
     // Handle dynamic routes

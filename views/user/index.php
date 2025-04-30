@@ -32,7 +32,7 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -59,8 +59,6 @@
                             <th>Total Daily</th>
                             <th>Projects</th>
                             <th>Send Password</th>
-                            <th>Peringatan 1</th>
-                            <th>Pemecatan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -85,8 +83,6 @@
                             <td><?php if ($value[7] == 99) { ?><?= $value[7] ?><?php }else{ ?><a href="<?= BASE_URL ?>/history/<?= $value[3] ?>"><?= $value[7] ?></a><?php } ?></td>
                             <td><?= $value[11] ?></td>
                             <td><a href="<?= BASE_URL ?>/email/credential/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
-                            <td><a href="<?= BASE_URL ?>/email/peringatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
-                            <td><a href="<?= BASE_URL ?>/email/pemecatan/<?= $value[1] ?>" class="btn btn-dark">Send</a></td>
                             <td>
                                 <?php if (!empty($value[4])) { ?>
                                 <a target="_BLANK" href="https://wa.me/<?= $value[4] ?>" class="btn btn-success my-1">WA</a>

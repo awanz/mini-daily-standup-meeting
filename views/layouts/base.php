@@ -16,7 +16,7 @@
             'isHR' => $isHR,
         ]) 
     ?>
-    <div class="container">
+    <div class="container-fluid">
         <main>
             <?= $this->section('content'); ?>
         </main>

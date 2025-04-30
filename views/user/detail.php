@@ -39,7 +39,7 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -103,7 +103,7 @@
 </div>
 
 <?php if (count($projects) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -164,7 +164,7 @@
 
 
 <?php if (count($warnings) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -202,7 +202,7 @@
 <?php } ?>
 
 <?php if (count($meetings) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -261,7 +261,7 @@
 <?php } ?>
 
 <?php if (count($dailys) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">

@@ -10,6 +10,9 @@ try {
 
     handleRoute($uri);
 } catch (\Throwable $th) {
+    // echo "<pre>";
+    // print_r($th);
+    // die();
     // if (DEBUG) {
     //     echo '<pre>';
     //     print_r($th);

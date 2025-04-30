@@ -14,7 +14,7 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -37,6 +37,7 @@
                             <th>Role</th>
                             <th>Tanggal Magang</th>
                             <th>Status</th>
+                            <th>No Sertifikat</th>
                             <th>File</th>
                             <th>Survey</th>
                             <th>Action</th>
@@ -56,6 +57,7 @@
                                 <?= $value[3] == 'REVISED' ? '<span class="badge bg-warning">REVISED</span>': '' ?>
                                 <?= $value[3] == 'CANCELED' ? '<span class="badge bg-danger">CANCELED</span>': '' ?>
                             </td>
+                            <td><?= $value[11] ?></td>
                             <td><a href="<?= $value[4] ?>" target="_BLANK">File Laporan Magang</a></td>
                             <td><?= $value[5] == 1 ? '<a href="https://docs.google.com/spreadsheets/d/1YheInax1JRz1Ljya3KdWZ5gH_BG18_apLG95o-0oFKc/edit?gid=1420681690#gid=1420681690" target="_BLANK">Sudah</a>' : 'Belum' ?></td>
                             <td>

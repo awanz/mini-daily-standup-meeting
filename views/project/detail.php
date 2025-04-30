@@ -89,14 +89,14 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <?php if ($alert): ?>
         <div class="my-2 alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
             <?= $alert['message'] ?>
         </div>
     <?php endif ?>
 </div>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -238,7 +238,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -280,7 +280,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -436,7 +436,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">

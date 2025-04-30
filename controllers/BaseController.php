@@ -22,6 +22,14 @@ require_once __DIR__ . '/../libraries/PHPMailer/SMTP.php';
 
 use League\Plates\Engine;
 
+require_once __DIR__ . '/../libraries/fpdf/fpdf.php';
+require_once __DIR__ . '/../libraries/fpdi/autoload.php';
+
+require_once __DIR__ . '/../libraries/phpqrcode/qrlib.php';
+
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\FpdfTpl;
+
 class BaseController
 {
     private $templates;
@@ -285,5 +293,100 @@ class BaseController
         curl_close($ch);
     
         return json_decode($response, true);
+    }
+
+    public function numberToRoman($num) {
+        $romans = [
+            1  => 'I',
+            2  => 'II',
+            3  => 'III',
+            4  => 'IV',
+            5  => 'V',
+            6  => 'VI',
+            7  => 'VII',
+            8  => 'VIII',
+            9  => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
+    
+        return $romans[$num] ?? '';
+    }
+
+    public function generateCertificate($fullName, $roleName, $certificateNumber, $approval_date, $date_start, $date_end)
+    {        
+        header('X-Robots-Tag: noindex, nofollow', true);
+        $file = __DIR__ . '/../assets/pdf/certificate.pdf';
+        if (!file_exists($file)) {
+            die('File sertifikat tidak ditemukan: ' . $file);
+        }
+
+        ob_start();
+        QRcode::png('https://kawankerja.id/daily/certificate/'.base64_encode($certificateNumber));
+        $imageData = ob_get_clean();
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'qr_') . '.png';
+        file_put_contents($tmpFile, $imageData);
+
+        $pdf = new Fpdi();
+        $pdf->AddFont('Poppins-Regular','','poppins-regular.php');
+        $pdf->AddFont('Poppins-Bold', 'B', 'Poppins-Bold.php');
+        $pdf->AddPage('L');
+
+        $pageCount = $pdf->setSourceFile($file);
+        $templateId = $pdf->importPage(1);
+        $size = $pdf->getTemplateSize($templateId);
+
+        $pdf->useTemplate($templateId, 0, 0, $size['width'], $size['height']);
+
+        $pdf->SetFont('Poppins-Regular', '', 18);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->SetXY(0, 0);
+        $pdf->Cell(271, 103, $certificateNumber, 0, 0, 'R');
+        
+        $pdf->SetXY(0, 0);
+        $pdf->SetTextColor(252, 169, 25);
+        $sizeFontName = 32;
+        if (mb_strlen($fullName) > 29) {
+            $sizeFontName = 20;
+        }
+        $pdf->SetFont('Poppins-Bold', 'B', $sizeFontName);
+        $pdf->Cell(277, 180, strtoupper($fullName), 0, 0, 'R');
+
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetXY(85, 105);
+        $pdf->SetFont('Poppins-Regular', '', 15);
+        $pdf->Write(6, 'Has participated as an apprentice in the role of ');
+        $pdf->SetFont('Poppins-Bold', 'B', 15);
+        $pdf->Write(6, $roleName);
+        $pdf->SetFont('Poppins-Regular', '', 15);
+        $pdf->SetXY(85, 111);
+        $pdf->Write(6, 'from ');
+        $pdf->SetFont('Poppins-Bold', 'B', 15);
+        $pdf->Write(6, $date_start);
+        $pdf->SetFont('Poppins-Regular', '', 15);
+        $pdf->Write(6, ', to ');
+        $pdf->SetFont('Poppins-Bold', 'B', 15);
+        $pdf->Write(6, $date_end);
+        $pdf->SetFont('Poppins-Regular', '', 15);
+        $pdf->Write(6, ', at ');
+        $pdf->SetFont('Poppins-Bold', 'B', 15);
+        $pdf->Write(6, 'PT Kawan Kerja Indonesia');
+        $pdf->SetFont('Poppins-Regular', '', 15);
+        $pdf->Write(6, '.');
+
+        $pdf->SetXY(208, 145);
+        $pdf->SetFont('Poppins-Regular', '', 13);
+        $pdf->Write(6, 'Bandung, ');
+        $pdf->Write(6, $approval_date);
+
+        $pdf->Image($tmpFile, 70, 155, 30, 30);
+        $pdf->SetXY(72, 187);
+        $pdf->SetFont('Poppins-Regular', '', 11);
+        $pdf->Cell(0, 0, '[SCAN HERE]', 0, 0, 'L');
+
+        $pdf->Output('I', 'sertifikat_edited.pdf');
+        unlink($tmpFile);
     }
 }

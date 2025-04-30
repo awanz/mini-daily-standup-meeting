@@ -39,11 +39,11 @@
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/candidate-requests">Request Candidates</a></li>
                         <li><a class="dropdown-item" href="#">Candidates</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <!-- <li><a class="dropdown-item" href="#">Employees</a></li> -->
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Peringatan</a></li>
+                        <!-- <li><a class="dropdown-item" href="<?= BASE_URL ?>/warnings">Peringatan</a></li> -->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/contract-extend">Perpanjang Magang</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/resigns">Pengajuan Resign</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/finalizations">Pengajuan Sertifikat</a></li>
-                        <li><a class="dropdown-item" href="#">Cetak Sertifikat</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/hr/certificate-print">Cetak Sertifikat</a></li>
                         <!-- <li><a class="dropdown-item" href="#">Surveys</a></li>
                         <li><a class="dropdown-item" href="#">Review</a></li>
                         <li><a class="dropdown-item" href="#">Sertificate</a></li> -->
@@ -107,6 +107,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <!-- <li><a class="dropdown-item" href="#">Vacuum Request</a></li> -->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/contract-extend">Pengajuan Perpanjang Magang</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/resign">Pengajuan Resign</a></li>
                         <!-- <li><hr class="dropdown-divider"></li> -->
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/intership-finalization">Pengajuan Sertifikat</a></li>
@@ -135,7 +136,7 @@
                 
             </ul>
             <div class="d-flex">
-                <a href="<?= BASE_URL ?>/keluar" class="btn btn-outline-light">Keluar</a>
+                <a href="<?= BASE_URL ?>/logout" class="btn btn-outline-light">Keluar</a>
             </div>
         </div>
     </div>

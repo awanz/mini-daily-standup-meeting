@@ -26,9 +26,9 @@
                     <form method="post" action="login">
                       <div class="d-flex align-items-center mb-3 pb-1">
                         <i class="fas fa-cubes fa-2x " style="color: #ff6219;"></i>
-                        <span class="h1 fw-bold mb-0">K<u>awan</u> Kerja Daily</span>
+                        <span class="h1 fw-bold mb-0">Daily 2.0</span>
                       </div>
-                      <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Masuk ke Daily Standup Meeting</h5>
+                      <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Masuk ke Daily 2.0</h5>
                       <?php if ($alert): ?>
                       <div class="alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
                         <?= $alert['message'] ?>
@@ -65,9 +65,7 @@
   </div>
 
   <script>
-    // Fungsi callback saat captcha berhasil
     function captchaSuccess(token) {
-      // Aktifkan tombol login
       document.getElementById('loginButton').disabled = false;
     }
   </script>

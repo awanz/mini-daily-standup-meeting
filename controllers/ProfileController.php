@@ -176,4 +176,51 @@ class ProfileController extends BaseController
         }
         
     }
+
+    public function logout()
+    {
+        session_destroy();
+        $this->redirect('login');
+    }
+
+    public function contractExtend()
+    {
+        $contractExtend = $this->db->raw('
+            SELECT 
+                *
+            FROM 
+                contract_extend
+            WHERE
+                user_id = '.$this->user->id.'
+            ORDER BY created_at DESC
+            limit 1
+            ;
+        ')->fetch_object();
+
+        $alert = $this->getMessage();
+        $this->render('profile/contract-extend', [
+            'alert' => $alert,
+            'contractExtend' => $contractExtend
+        ]);
+    }
+
+    public function contractExtendProcess($data)
+    {        
+        try {
+            $data = [
+                "user_id" => $this->db->escape($this->user->id),
+                "status" => 'REQUEST',
+                "duration" => $this->db->escape($_POST['duration']),
+                "description" => $this->db->escape($_POST['description']),
+                "created_by" => $this->db->escape($this->user->id),
+            ];
+            $insert = $this->db->insert("contract_extend", $data);
+            $this->setMessage('Pengajuan perpanjangan magang berhasil dikirim.', 'SUCCESS');
+            $this->redirect('profile/contract-extend');
+        } catch (\Throwable $th) {
+            $this->setMessage($th->getMessage());
+            $this->redirect('profile/contract-extend');
+        }
+        
+    }
 }

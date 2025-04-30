@@ -2,7 +2,7 @@
 <?php $this->start('headAdditional') ?>
 <style>
     table.dataTable {
-        font-size: 9px;
+        font-size: 14px;
     }
 </style>
 <?php $this->stop() ?>
@@ -39,7 +39,7 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
@@ -73,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $no = 1; $currentDate = new DateTime(); while ($data = $candidateRequests->fetch_object()) { ?>
+                        <?php $no = 1; $currentDate = new DateTime(); while ($data = $contractExtend->fetch_object()) { ?>
                         <tr>
                             <td><?= $no ?></td>
                             <td><?= date("Y-m-d", strtotime($data->created_at)); ?></td>
@@ -104,9 +104,9 @@
                                 <?php if($data->job_qualification): ?>
                                     <a href="<?= $data->job_qualification ?>" class="btn btn-success my-1">Qualification</a>
                                 <?php endif; ?>
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/<?= $data->id ?>" class="btn btn-dark my-1">Kandidat</a>
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/detail/<?= $data->id ?>" class="btn btn-primary my-1">Detail</a>
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/edit/<?= $data->id ?>" class="btn btn-warning my-1">Edit</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/<?= $data->id ?>" class="btn btn-sm btn-dark my-1">Kandidat</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/detail/<?= $data->id ?>" class="btn btn-sm btn-primary my-1">Detail</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/edit/<?= $data->id ?>" class="btn btn-sm btn-warning my-1">Edit</a>
                                 <!-- <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/add/<?= $data->id ?>" class="btn btn-success my-1">Add Candidate</a> -->
                                  <?php } ?>
                             </td>

@@ -66,14 +66,14 @@ body{
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="mt-4 p-5 bg-dark text-white rounded">
     <h1>Daily</h1>
     <p>Welcome to Kawan Kerja Daily</p>
     </div>
 </div>
 
-<div class="container">
+<div class="xxx">
     <?php if ($alert): ?>
         <div class="mt-2 alert <?= $alert['status'] === 'FAILED' ? 'alert-danger' : 'alert-primary' ?>" role="alert">
             <?= $alert['message'] ?>
@@ -134,7 +134,7 @@ body{
 </div>
 
 <?php if (count($meetings) > 0) { ?>
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">

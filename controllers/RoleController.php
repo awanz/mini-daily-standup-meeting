@@ -28,7 +28,8 @@ class RoleController extends BaseController
                         AND u.is_active = 1
                 ) AS total_users,
                 ROW_NUMBER() OVER (ORDER BY `r`.`name`) AS `no`,
-                u.fullname
+                u.fullname,
+                r.role_code
             FROM 
                 roles r
             LEFT JOIN
@@ -78,12 +79,14 @@ class RoleController extends BaseController
             $name = trim($_POST['name']);
             $description = trim($_POST['description']);
             $url_group_wa = trim($_POST['url_group_wa']);
+            $role_code = trim($_POST['role_code']);
             
             try {
                 $data = [
                     "name" => $name,
                     "description" => $description,
                     "url_group_wa" => $url_group_wa,
+                    "role_code" => strtoupper($role_code),
                 ];
                 
                 $insertData = $this->db->insert("roles", $data);
@@ -121,7 +124,7 @@ class RoleController extends BaseController
             FROM 
                 users u
             LEFT JOIN roles r ON u.role_id = r.id
-            WHERE (u.access = "ADMIN")
+            WHERE u.access in ("ADMIN", "SUPERADMIN")
             AND u.is_active = 1
             ORDER BY u.fullname
             ;
@@ -154,6 +157,7 @@ class RoleController extends BaseController
             $description = trim($_POST['description']);
             $url_group_wa = trim($_POST['url_group_wa']);
             $pic_id = trim($_POST['pic_id']);
+            $role_code = trim($_POST['role_code']);
             
             try {
                 $data = [
@@ -161,6 +165,7 @@ class RoleController extends BaseController
                     "description" => $description,
                     "url_group_wa" => $url_group_wa,
                     "pic_id" => $pic_id,
+                    "role_code" => strtoupper($role_code),
                 ];
                 
                 $update = $this->db->update("roles", $data, 'id', $id);

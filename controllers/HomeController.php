@@ -231,12 +231,6 @@ class HomeController extends BaseController
             'alert' => $alert
         ]);
     }
-
-    public function logout2()
-    {
-        session_destroy();
-        $this->redirect('login');
-    }
     
     public function delete($data)
     {

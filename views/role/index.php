@@ -32,13 +32,15 @@
 </script>
 <?php $this->stop() ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <h5 class="card-title">
                 <div class="d-flex justify-content-between">
                     <h4>Role</h4>
-                    <div><?= date('d M Y') ?></div>
+                    <div>
+                        <a href="<?= BASE_URL ?>/role/add" class="btn btn-dark my-2">Tambah Role</a>
+                    </div>
                 </div>
             </h5>
             <?php if ($alert): ?>
@@ -52,6 +54,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Code</th>
                             <th>PIC</th>
                             <th>Total Anggota</th>
                             <th>Whatsapp</th>
@@ -63,6 +66,7 @@
                         <tr>
                             <td><?= $value[5] ?></td>
                             <td><?= $value[1] ?></td>
+                            <td><?= $value[7] ?></td>
                             <td><?= $value[6] ?></td>
                             <td><?= $value[4] ?></td>
                             <td>

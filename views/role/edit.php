@@ -1,6 +1,6 @@
 <?php $this->layout('layouts/base') ?>
 
-<div class="container">
+<div class="xxx">
     <div class="card my-2">
         <div class="card-body">
             <?php if ($alert): ?>
@@ -11,7 +11,11 @@
             <form method="POST" action="<?= BASE_URL ?>/role/edit/<?=$this->e($role->id ?? "")?>">
                 <div class="form-group my-2">
                     <label for="name">Name</label>
-                    <input name="name" type="text" class="form-control" id="name" placeholder="Masukan nama project" value="<?=$this->e($role->name ?? "")?>" required>
+                    <input name="name" type="text" class="form-control" id="name" placeholder="Masukan nama role" value="<?=$this->e($role->name ?? "")?>" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="name">Code</label>
+                    <input name="role_code" type="text" class="form-control" id="role_code" placeholder="Masukan code role" value="<?=$this->e($role->role_code ?? "")?>" required>
                 </div>
                 <div class="form-group my-2">
                     <label for="pic">User</label>

@@ -345,5 +345,24 @@ Table reimbursements {
     updated_by int
 }
 
+Enum ExtendContractStatus {
+    REQUEST
+    REVISED
+    APPROVED
+}
+
+Table ExtendContract {
+    id integer [pk, increment]
+    user_id int
+    approval_id int
+    duration int
+    description text
+    status ExtendContractStatus
+    created_at timestamp
+    updated_at timestamp
+    created_by int
+    updated_by int
+}
+
 // Ref: users.id > dailys.user_id
 // Ref: users.id > warnings.user_id
