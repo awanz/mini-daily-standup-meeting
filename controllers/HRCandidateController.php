@@ -34,15 +34,16 @@ class HRCandidateController extends BaseController
         ]);
     }
     
-    public function add()
+    public function add($data)
     {
         $isAdmin = $this->isAdmin();
         $isHR = $this->isHR();
-
+        
         if (!$isAdmin && !$isHR) {
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
+        $id = htmlspecialchars(strip_tags($data['id']));
 
         $roles = $this->db->getAllClean("roles", true, "name asc")->fetch_all();
 
@@ -50,6 +51,7 @@ class HRCandidateController extends BaseController
         $this->render('human-resource/candidate-requests/add', [
             'alert' => $alert,
             'roles' => $roles,
+            'id' => $id
         ]);
     }
 

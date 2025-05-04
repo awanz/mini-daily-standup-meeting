@@ -63,23 +63,6 @@
   <p class="text-center"><?= $finalization->certificate ?? '-' ?></p>
   <div class="row g-4">
     
-    <!-- PDF Sertifikat -->
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          Sertifikat Peserta
-        </div>
-        
-        <div class="card-body">
-          <a href="<?= BASE_URL ?>/certificate-pdf/MDAxNi9LS0kvQUtOLUlUUy9JVi8yMDI1" download class="btn btn-outline-dark btn-download">
-            <i class="bi bi-download me-2"></i>Download Sertifikat
-          </a>
-          <embed src="<?= BASE_URL ?>/certificate-pdf/<?= base64_encode($finalization->certificate) ?? '-' ?>" type="application/pdf" width="100%" height="500px" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabel Kehadiran -->
     <div class="col-md-6">
         <div class="card mb-2">
             <div class="card-header">
@@ -122,19 +105,19 @@
                 <tbody>
                 <tr>
                     <td>Hadir</td>
-                    <td><?= $finalization->total_meeting_present ?? '-' ?></td>
+                    <td><?= $absensiMeeting->total_meeting_present ?? '-' ?></td>
                 </tr>
                 <tr>
                     <td>Izin</td>
-                    <td><?= $finalization->total_meeting_permission ?? '-' ?></td>
+                    <td><?= $absensiMeeting->total_meeting_permission ?? '-' ?></td>
                 </tr>
                 <tr>
                     <td>Sakit</td>
-                    <td><?= $finalization->total_meeting_sick ?? '-' ?></td>
+                    <td><?= $absensiMeeting->total_meeting_sick ?? '-' ?></td>
                 </tr>
                 <tr>
                     <td>Absen</td>
-                    <td><?= $finalization->total_meeting_absent ?? '-' ?></td>
+                    <td><?= $absensiMeeting->total_meeting_absent ?? '-' ?></td>
                 </tr>
                 </tbody>
             </table>
@@ -148,6 +131,20 @@
             <p>Tercatat ada <b style="font-size: 20px"><?= $totaldaily->total_daily ?? '0' ?></b> logbook yang diisi.</p>
             </div>
         </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Sertifikat Peserta
+        </div>
+        
+        <div class="card-body">
+          <a href="<?= BASE_URL ?>/certificate-pdf/<?= base64_encode($finalization->certificate) ?? '-' ?>" download class="btn btn-outline-dark btn-download">
+            <i class="bi bi-download me-2"></i>Download Sertifikat
+          </a>
+          <embed src="<?= BASE_URL ?>/certificate-pdf/<?= base64_encode($finalization->certificate) ?? '-' ?>" type="application/pdf" width="100%" height="500px" />
+        </div>
+      </div>
     </div>
 
   </div>

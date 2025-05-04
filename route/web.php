@@ -272,12 +272,12 @@ function handleRoute($uri)
             'GET' => ['HRCandidateRequestController', 'candidateAdd'],
             'POST' => ['HRCandidateRequestController', 'candidateAddProcess'],
         ],
-        '/hr/candidate-requests/candidate/edit/:id' => [
+        '/hr/candidate-requests/candidate/edit/:id/:candidate_id' => [
             'GET' => ['HRCandidateRequestController', 'candidateEdit'],
             'POST' => ['HRCandidateRequestController', 'candidateEditProcess'],
         ],
-        '/hr/candidate-requests/candidate/delete/:id' => [
-            'POST' => ['HRCandidateRequestController', 'candidateDeleteProcess'],
+        '/hr/candidate-requests/candidate/delete/:id/:candidate_id' => [
+            'GET' => ['HRCandidateRequestController', 'candidateDeleteProcess'],
         ],
 
         '/monitoring/pic-role' => [

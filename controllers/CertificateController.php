@@ -23,6 +23,10 @@ class CertificateController extends BaseController
         ";
         $finalization = $this->db->raw($finalizationQuery)->fetch_object();
         // $this->dd($finalization);
+        if (!isset($finalization)) {
+            die("Sertifikat tidak di temukan, url yang dimasukan salah.");
+        }
+        
         $absensiMeeting = $this->db->raw('
                 SELECT 
                     u.id,
@@ -45,9 +49,6 @@ class CertificateController extends BaseController
                 GROUP BY u.id
                 ORDER BY fullname;
         ')->fetch_object();
-        if (empty($finalization)) {
-            header("Location: ". BASE_URL.'/404.html', false, 301);
-        }
         
         $totaldaily = $this->db->raw('
                 SELECT 

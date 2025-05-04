@@ -314,9 +314,12 @@ class BaseController
         return $romans[$num] ?? '';
     }
 
-    public function generateCertificate($fullName, $roleName, $certificateNumber, $approval_date, $date_start, $date_end)
+    public function generateCertificate($fullName, $roleName, $certificateNumber, $approval_date, $date_start, $date_end, $outputType = 'I')
     {        
         header('X-Robots-Tag: noindex, nofollow', true);
+        if (empty($certificateNumber)) {
+            die('Nomor sertifikat kosong.');
+        }
         $file = __DIR__ . '/../assets/pdf/certificate.pdf';
         if (!file_exists($file)) {
             die('File sertifikat tidak ditemukan: ' . $file);
@@ -386,7 +389,7 @@ class BaseController
         $pdf->SetFont('Poppins-Regular', '', 11);
         $pdf->Cell(0, 0, '[SCAN HERE]', 0, 0, 'L');
 
-        $pdf->Output('I', 'sertifikat_edited.pdf');
+        $pdf->Output($outputType, 'Sertifikat_Magang_'.$roleName.'_'.$fullName.'.pdf');
         unlink($tmpFile);
     }
 }

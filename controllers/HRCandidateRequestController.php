@@ -15,7 +15,9 @@ class HRCandidateRequestController extends BaseController
 
         $candidateRequestsQuery = '
             SELECT 
-                cr.*, r.name as role_name, u.fullname as name_pic, u2.fullname as name_create, r.interview_question, r.job_qualification, u3.fullname as name_update
+                cr.*, r.name as role_name, u.fullname as name_pic, u2.fullname as name_create, r.interview_question, r.job_qualification, u3.fullname as name_update,
+                (SELECT COUNT(*) FROM candidates c WHERE c.candidate_request_id = cr.id) AS total_selection,
+                (SELECT COUNT(*) FROM candidates c WHERE c.candidate_request_id = cr.id and c.status = "HIRED") AS total_hired
             FROM 
                 candidate_requests cr
             LEFT JOIN roles r on r.id = cr.role_id
@@ -228,25 +230,29 @@ class HRCandidateRequestController extends BaseController
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
-
-        $candidateRequestQuery = '
+        $id = htmlspecialchars(strip_tags($data['id']));
+        $candidateRequest = $this->db->raw('
             SELECT 
-                cr.*, r.name as role_name
+                role_id, r.name as role_name, cr.id
             FROM 
                 candidate_requests cr
             LEFT JOIN roles r on r.id = cr.role_id
-            WHERE cr.id='.$this->db->escape(trim($data['id'])).'
+            WHERE cr.id='.$id.'
             ORDER BY cr.created_at DESC
             LIMIT 1
             ;
-        ';
-        $candidateRequest = $this->db->raw($candidateRequestQuery)->fetch_object();
+        ')->fetch_object();
+        if (!isset($candidateRequest)) {
+            throw new Exception("Kandidat request tidak ditemukan", 1);
+        }
+        // $this->dd($candidateRequest);
 
         $candidateQuery = '
             SELECT 
                 *
             FROM 
                 candidates
+            WHERE candidate_request_id = '.$id.'
             ;
         ';
         $candidates = $this->db->raw($candidateQuery);
@@ -263,11 +269,31 @@ class HRCandidateRequestController extends BaseController
     {
         $isAdmin = $this->isAdmin();
         $isHR = $this->isHR();
-
+        
         if (!$isAdmin && !$isHR) {
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
+        $id = htmlspecialchars(strip_tags($data['id']));
+        if (!isset($id)) {
+            throw new Exception("Id kandidat request tidak boleh kosong!", 1);
+        }
+        // $this->dd($id);
+        $candidateRequest = $this->db->raw('
+            SELECT 
+                role_id, contract_date, note
+            FROM 
+                candidate_requests cr
+            WHERE id='.$id.'
+            ORDER BY cr.created_at DESC
+            LIMIT 1
+            ;
+        ')->fetch_object();
+        // $this->dd($candidateRequest);
+        if (!isset($candidateRequest)) {
+            throw new Exception("Kandidat request tidak ditemukan", 1);
+        }
+        // $this->dd($candidateRequest);
 
         $roles = $this->db->getAllClean("roles", true, "name asc")->fetch_all();
 
@@ -275,10 +301,12 @@ class HRCandidateRequestController extends BaseController
         $this->render('human-resource/candidate-requests/candidate/add', [
             'alert' => $alert,
             'roles' => $roles,
+            'id' => $id,
+            'candidateRequest' => $candidateRequest
         ]);
     }
 
-    public function candidateAddProcess()
+    public function candidateAddProcess($data)
     {
         $isAdmin = $this->isAdmin();
         $isHR = $this->isHR();
@@ -287,26 +315,191 @@ class HRCandidateRequestController extends BaseController
             $this->setMessage('Kamu tidak punya hak akses');
             $this->redirect('home');
         }
+        $id = htmlspecialchars(strip_tags($data['id']));
         
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             try {
+                // $this->dd($_POST);
+                $candidateRequest = $this->db->raw('
+                    SELECT 
+                        id, role_id, contract_date, note
+                    FROM 
+                        candidate_requests cr
+                    WHERE id='.$id.'
+                    ORDER BY cr.created_at DESC
+                    LIMIT 1
+                    ;
+                ')->fetch_object();
+                if (!isset($candidateRequest)) {
+                    throw new Exception("Kandidat request tidak ditemukan", 1);
+                }
                 $data = [
-                    "role_id" => $this->db->escape(trim($_POST['role_id'])),
-                    "total" => $this->db->escape(trim($_POST['total'])),
-                    "description" => $this->db->escape(trim($_POST['description'])),
-                    "note" => $this->db->escape(trim($_POST['note'])),
+                    "candidate_request_id" => $candidateRequest->id,
+                    "nik" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['nik'])))),
+                    "fullname" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['fullname'])))),
+                    "email" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['email'])))),
+                    "phone" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['phone'])))),
+                    "description" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['description'])))),
+                    "status" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['status'])))),
                     "created_by" => $this->user->id,
                 ];
+                // $this->dd($data);
                 
-                $insertData = $this->db->insert("candidate_requests", $data);
-                $this->setMessage('Meminta kandidat berhasil!', 'SUCCESS');
-                $this->redirect('hr/candidate-requests/add');
+                $insertData = $this->db->insert("candidates", $data);
+                $this->setMessage('Menambahkan kandidat berhasil!', 'SUCCESS');
+                $this->redirect('hr/candidate-requests/candidate/add/'.$id);
             } catch (\Throwable $th) {
                 $this->setMessage($th->getMessage());
-                $this->redirect('hr/candidate-requests/add');
+                $this->redirect('hr/candidate-requests/candidate/add/'.$id);
             }
         }
         
     }
 
+    public function candidateDeleteProcess($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses');
+            $this->redirect('home');
+        }
+        // $this->dd($data);
+        $id = htmlspecialchars(strip_tags($data['id']));
+        $candidate_id = htmlspecialchars(strip_tags($data['candidate_id']));
+        $candidate = $this->db->getBy("candidates", "id", $candidate_id)->fetch_object();
+        
+        if (empty($candidate)) {
+            $this->setMessage('Data yang ingin di delete tidak ada!');
+            $this->redirect('hr/candidate-requests/candidate/'.$id);
+        }
+
+        try {
+            $update = $this->db->delete("candidates",'id', $candidate->id);
+            $this->setMessage('Data berhasil di delete', 'SUCCESS');
+            $this->redirect('hr/candidate-requests/candidate/'.$id);
+        } catch (\Throwable $th) {
+            $this->setMessage($th->getMessage());
+            $this->redirect('hr/candidate-requests/candidate/'.$id);
+        }
+    }
+
+    public function candidateEdit($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+        
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses');
+            $this->redirect('home');
+        }
+        $id = htmlspecialchars(strip_tags($data['id']));
+        $candidate_id = htmlspecialchars(strip_tags($data['candidate_id']));
+        if (!isset($id)) {
+            throw new Exception("Id kandidat request tidak boleh kosong!", 1);
+        }
+        // $this->dd($id);
+        $candidateRequest = $this->db->raw('
+            SELECT 
+                role_id, contract_date, note
+            FROM 
+                candidate_requests cr
+            WHERE id='.$id.'
+            ORDER BY cr.created_at DESC
+            LIMIT 1
+            ;
+        ')->fetch_object();
+        if (!isset($candidateRequest)) {
+            throw new Exception("Kandidat request tidak ditemukan", 1);
+        }
+        $candidate = $this->db->raw('
+            SELECT 
+                *
+            FROM 
+                candidates c
+            WHERE id='.$candidate_id.'
+            ORDER BY c.created_at DESC
+            LIMIT 1
+            ;
+        ')->fetch_object();
+        if (!isset($candidate)) {
+            throw new Exception("Kandidat tidak ditemukan", 1);
+        }
+
+        $roles = $this->db->getAllClean("roles", true, "name asc")->fetch_all();
+
+        $alert = $this->getMessage();
+        $this->render('human-resource/candidate-requests/candidate/edit', [
+            'alert' => $alert,
+            'roles' => $roles,
+            'id' => $id,
+            'candidateRequest' => $candidateRequest,
+            'candidate' => $candidate,
+        ]);
+    }
+
+    public function candidateEditProcess($data)
+    {
+        $isAdmin = $this->isAdmin();
+        $isHR = $this->isHR();
+
+        if (!$isAdmin && !$isHR) {
+            $this->setMessage('Kamu tidak punya hak akses');
+            $this->redirect('home');
+        }
+        $id = htmlspecialchars(strip_tags($data['id']));
+        $candidate_id = htmlspecialchars(strip_tags($data['candidate_id']));
+        
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            try {
+                // $this->dd($_POST);
+                $candidateRequest = $this->db->raw('
+                    SELECT 
+                        id, role_id, contract_date, note
+                    FROM 
+                        candidate_requests cr
+                    WHERE id='.$id.'
+                    ORDER BY cr.created_at DESC
+                    LIMIT 1
+                    ;
+                ')->fetch_object();
+                if (!isset($candidateRequest)) {
+                    throw new Exception("Kandidat request tidak ditemukan", 1);
+                }
+                $candidate = $this->db->raw('
+                    SELECT 
+                        *
+                    FROM 
+                        candidates c
+                    WHERE id='.$candidate_id.'
+                    ORDER BY c.created_at DESC
+                    LIMIT 1
+                    ;
+                ')->fetch_object();
+                if (!isset($candidate)) {
+                    throw new Exception("Kandidat tidak ditemukan", 1);
+                }
+                $data = [
+                    "candidate_request_id" => $candidateRequest->id,
+                    "nik" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['nik'])))),
+                    "fullname" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['fullname'])))),
+                    "email" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['email'])))),
+                    "phone" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['phone'])))),
+                    "description" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['description'])))),
+                    "status" => $this->db->escape(trim(htmlspecialchars(strip_tags($_POST['status'])))),
+                    "updated_by" => $this->user->id,
+                ];
+                // $this->dd($data);
+                
+                $insertData = $this->db->update("candidates", $data, 'id', $candidate_id);
+                $this->setMessage('Update kandidat berhasil!', 'SUCCESS');
+                $this->redirect('hr/candidate-requests/candidate/edit/'.$id.'/'.$candidate_id);
+            } catch (\Throwable $th) {
+                $this->setMessage($th->getMessage());
+                $this->redirect('hr/candidate-requests/candidate/edit/'.$id.'/'.$candidate_id);
+            }
+        }
+        
+    }
 }

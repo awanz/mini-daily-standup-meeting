@@ -37,6 +37,7 @@
                             <th>Role</th>
                             <th>Tanggal Magang</th>
                             <th>Status</th>
+                            <th>No Sertifikat</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -48,8 +49,10 @@
                             <td><?= $data->fullname ?></td>
                             <td><?= $data->role_name ?></td>
                             <td><?= $data->date_start ?> - <?= $data->date_end ?></td>
-                            <td><?= $data->status ?></td>
+                            <td><?= $data->status ?> (<?= $data->id ?>)</td>
+                            <td><?= $data->certificate ?></td>
                             <td class="d-flex">
+                                <?php if (isset($data->certificate)) { ?>
                                 <form method="POST" action="<?= BASE_URL ?>/hr/certificate-print/print">
                                     <input type="hidden" name="id" value="<?= $data->id ?>">
                                     <button type="submit" class="btn btn-outline-dark mx-1 btn-sm">Cetak</button>
@@ -58,6 +61,9 @@
                                     <input type="hidden" name="id" value="<?= $data->id ?>">
                                     <button type="submit" class="btn btn-success mx-1 btn-sm">Kirim</button>
                                 </form>
+                                <?php }else{ ?>
+                                <span>Tidak ada Sertifikat</span>
+                                <?php } ?>
                             </td>
                         </tr>
                         <?php $no++; } ?>

@@ -75,14 +75,14 @@ class ContractExtend extends EmailController
                 WHERE id = '.$this->db->escape($contractExtend->user_id).'
                 ;
             ')->fetch_object();
-            $originalDateEnd = new DateTime($user->date_end);
-            $now = new DateTime();
+            $dateEnd = new DateTime($user->date_end);
+            // $now = new DateTime();
 
-            if ($originalDateEnd > $now) {
-                $dateEnd = $originalDateEnd->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
-            } else {
-                $dateEnd = $now->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
-            }
+            // if ($originalDateEnd > $now) {
+            //     $dateEnd = $originalDateEnd->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
+            // } else {
+            //     $dateEnd = $now->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
+            // }
             $data = [
                 "is_active" => 1,
                 "status" => 'ACTIVE',

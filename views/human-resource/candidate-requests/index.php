@@ -69,11 +69,12 @@
                             <th>Hire</th>
                             <th>Requester</th>
                             <th>PIC</th>
+                            <th>Kandidat</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $no = 1; $currentDate = new DateTime(); while ($data = $contractExtend->fetch_object()) { ?>
+                        <?php $no = 1; $currentDate = new DateTime(); while ($data = $candidateRequests->fetch_object()) { ?>
                         <tr>
                             <td><?= $no ?></td>
                             <td><?= date("Y-m-d", strtotime($data->created_at)); ?></td>
@@ -87,28 +88,31 @@
                                 
                             </td>
                             <td><?= $data->total ?></td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td><?= $data->total_selection ?></td>
+                            <td><?= $data->total_hired ?></td>
                             <td><?= $data->name_create ?></td>
                             <td><?= $data->name_pic ?? '<span class="badge bg-danger">Belum ada PIC</span>' ?></td>
+                            <td>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/<?= $data->id ?>" class="btn btn-sm btn-dark my-1">Kandidat</a>
+                            </td>
                             <td> 
                                 <?php 
                                     $batas = (new DateTime($data->updated_at))->modify('+3 days');
-                                    if ($data->status == 'DONE' && $batas < $currentDate) {
-                                        echo "Closed by ". $data->name_update . " at " . $data->updated_at;
-                                    }else{
+                                    // if ($data->status == 'DONE' && $batas < $currentDate) {
+                                    //     echo "Closed by ". $data->name_update . " at " . $data->updated_at;
+                                    // }else{
                                 ?>
                                 <?php if($data->interview_question): ?>
-                                    <a href="<?= $data->interview_question ?>" class="btn btn-info my-1">Question</a>
+                                    <a href="<?= $data->interview_question ?>" class="btn btn-sm btn-info my-1">Question</a>
                                 <?php endif; ?>
                                 <?php if($data->job_qualification): ?>
-                                    <a href="<?= $data->job_qualification ?>" class="btn btn-success my-1">Qualification</a>
+                                    <a href="<?= $data->job_qualification ?>" class="btn btn-sm btn-success my-1">Qualification</a>
                                 <?php endif; ?>
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/<?= $data->id ?>" class="btn btn-sm btn-dark my-1">Kandidat</a>
+                                
                                 <a href="<?= BASE_URL ?>/hr/candidate-requests/detail/<?= $data->id ?>" class="btn btn-sm btn-primary my-1">Detail</a>
                                 <a href="<?= BASE_URL ?>/hr/candidate-requests/edit/<?= $data->id ?>" class="btn btn-sm btn-warning my-1">Edit</a>
                                 <!-- <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/add/<?= $data->id ?>" class="btn btn-success my-1">Add Candidate</a> -->
-                                 <?php } ?>
+                                 <?php //} ?>
                             </td>
                         </tr>
                         <?php $no++;} ?>

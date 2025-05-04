@@ -39,6 +39,7 @@
                 <div class="d-flex justify-content-between">
                     <h4>Kandidat <?= $candidateRequest->role_name ?></h4>
                     <div>
+                        <a href="<?= BASE_URL ?>/hr/candidate-requests" class="btn btn-primary my-2">List Request</a>
                         <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/add/<?= $candidateRequest->id ?>" class="btn btn-dark my-2">Tambah</a>
                     </div>
                 </div>
@@ -53,7 +54,9 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
+                            <th>NIK</th>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
                             <th>Phone</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -63,12 +66,14 @@
                         <?php $no = 1; while ($data = $candidates->fetch_object()) { ?>
                         <tr>
                             <td><?= $no ?></td>
+                            <td><?= $data->nik ?></td>
                             <td><?= $data->fullname ?></td>
+                            <td><?= $data->email ?></td>
                             <td><?= $data->phone ?></td>
                             <td><?= $data->status ?></td>
                             <td> 
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/edit/<?= $data->id ?>" class="btn btn-warning my-1">Edit</a>
-                                <a href="<?= BASE_URL ?>/hr/candidate-requests/detail/<?= $data->id ?>" class="btn btn-danger my-1">Delete</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/edit/<?= $data->candidate_request_id ?>/<?= $data->id ?>" class="btn btn-sm btn-warning my-1">Edit</a>
+                                <a href="<?= BASE_URL ?>/hr/candidate-requests/candidate/delete/<?= $data->candidate_request_id ?>/<?= $data->id ?>" class="btn btn-sm btn-danger my-1">Delete</a>
                             </td>
                         </tr>
                         <?php $no++;} ?>
