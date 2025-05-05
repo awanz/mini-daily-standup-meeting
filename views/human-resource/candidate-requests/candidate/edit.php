@@ -77,7 +77,7 @@
                         <option <?php if ($candidate->status == "SCREENING") { ?> selected <?php } ?> value="SCREENING">SCREENING</option>
                         <option <?php if ($candidate->status == "INTERVIEW") { ?> selected <?php } ?> value="INTERVIEW">INTERVIEW</option>
                         <option <?php if ($candidate->status == "HIRED") { ?> selected <?php } ?> value="HIRED">HIRED</option>
-                        <option <?php if ($candidate->status == "HOLD") { ?> selected <?php } ?> value="HOLD">HOLD</option>
+                        <option <?php if ($candidate->status == "MARK") { ?> selected <?php } ?> value="MARK">MARK</option>
                         <option <?php if ($candidate->status == "REJECTED") { ?> selected <?php } ?> value="REJECTED">REJECTED</option>
                     </select>
                 </div>

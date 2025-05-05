@@ -29,7 +29,7 @@
                     <input name="duration" type="number" min="1" class="form-control" id="duration" placeholder="Masukan jumlah bulan (1 - 5)" required>
                 </div>
                 <div class="form-group my-2">
-                    <label for="duration">Deskripsi (Alasan/Hal lainnya)</label><br>
+                    <label for="duration">Catatan (Alasan/Hal lainnya)</label><br>
                     <textarea name="description" id="description" rows="5" cols="100"></textarea>
                 </div>                
                 <button type="submit" class="btn btn-dark my-2">Ajukan</button>

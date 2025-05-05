@@ -78,7 +78,7 @@
                         <option value="SCREENING">SCREENING</option>
                         <option value="INTERVIEW" selected>INTERVIEW</option>
                         <option value="HIRED">HIRED</option>
-                        <option value="HOLD">HOLD</option>
+                        <option value="MARK">MARK</option>
                         <option value="REJECTED">REJECTED</option>
                     </select>
                 </div>
