@@ -15,11 +15,12 @@ class ContractExtend extends EmailController
 
         $contractExtendQuery = "
             SELECT 
-                ce.id, ce.created_at, u.fullname, r.name as role_name, ce.duration, ce.description, ce.status, ce.approval_id, u2.fullname as approval_name
+                ce.id, ce.created_at, u.fullname, r.name as role_name, ce.duration, ce.description, ce.status, ce.approval_id, u2.fullname as approval_name, ce.user_id, vud.join_project
             FROM contract_extend ce
             LEFT JOIN users u2 on ce.approval_id = u2.id
             LEFT JOIN users u on ce.user_id = u.id
             LEFT JOIN roles r on u.role_id = r.id
+            LEFT JOIN view_user_daily vud on vud.id = u.id
             and u.fullname is not null
             ORDER BY ce.created_at DESC
             LIMIT 500
@@ -78,8 +79,8 @@ class ContractExtend extends EmailController
             $dateEnd = new DateTime($user->date_end);
             // $now = new DateTime();
 
-            // if ($originalDateEnd > $now) {
-            //     $dateEnd = $originalDateEnd->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
+            // if ($dateEnd > $now) {
+                $dateEnd = $dateEnd->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
             // } else {
             //     $dateEnd = $now->modify('+' . $contractExtend->duration . ' month')->format('Y-m-d');
             // }
@@ -89,6 +90,7 @@ class ContractExtend extends EmailController
                 "updated_by" => $this->db->escape($this->user->id),
                 "date_end" => $dateEnd
             ];
+            // $this->dd($data);
             $update = $this->db->update("users", $data, 'id', $contractExtend->user_id);
             $user = $this->db->getBy("users", "id", $contractExtend->user_id)->fetch_object();
 

@@ -107,7 +107,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <!-- <li><a class="dropdown-item" href="#">Vacuum Request</a></li> -->
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/contract-extend">Pengajuan Perpanjang Magang</a></li>
+                        <!-- <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/contract-extend">Pengajuan Perpanjang Magang</a></li> -->
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/resign">Pengajuan Resign</a></li>
                         <!-- <li><hr class="dropdown-divider"></li> -->
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/profile/intership-finalization">Pengajuan Sertifikat</a></li>

@@ -169,6 +169,9 @@ class UserController extends EmailController
         unset($user->password);
         $dailys = $this->db->getBy("dailys", "user_id", $user->id, "date_activity DESC")->fetch_all();
         $warnings = $this->db->getBy("warnings", "user_id", $user->id)->fetch_all();
+        $contractExtends = $this->db->getBy("contract_extend", "user_id", $user->id);
+        $employeeIntershipFinalizations = $this->db->getBy("employee_intership_finalizations", "user_id", $user->id);
+        $employeeResigns = $this->db->getBy("employee_resigns", "user_id", $user->id);
         $roles = $this->db->getAllClean("roles")->fetch_all();
         $role = null;
         if (!empty($user->role_id)) {
@@ -213,6 +216,9 @@ class UserController extends EmailController
             'roles' => $roles,
             'meetings' => $meetings,
             'projects' => $projects,
+            'contractExtends' => $contractExtends,
+            'employeeIntershipFinalizations' => $employeeIntershipFinalizations,
+            'employeeResigns' => $employeeResigns,
         ]);
         
     }

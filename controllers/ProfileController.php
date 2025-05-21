@@ -80,12 +80,12 @@ class ProfileController extends BaseController
 
     public function intershipFinalization()
     {
-        $isAdmin = $this->isAdmin();
+        // $isAdmin = $this->isAdmin();
 
-        if ($isAdmin) {
-            $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('home');
-        }
+        // if ($isAdmin) {
+        //     $this->setMessage('Kamu tidak punya hak akses!');
+        //     $this->redirect('home');
+        // }
 
         $finalizationQuery = '
             SELECT 
@@ -110,12 +110,12 @@ class ProfileController extends BaseController
 
     public function intershipFinalizationProcess($data)
     {
-        $isAdmin = $this->isAdmin();
+        // $isAdmin = $this->isAdmin();
 
-        if ($isAdmin) {
-            $this->setMessage('Kamu tidak punya hak akses!');
-            $this->redirect('home');
-        }
+        // if ($isAdmin) {
+        //     $this->setMessage('Kamu tidak punya hak akses!');
+        //     $this->redirect('home');
+        // }
         
         try {
             if ($_POST['survey_status'] == 0) {

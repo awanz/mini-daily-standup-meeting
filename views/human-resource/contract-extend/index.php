@@ -34,6 +34,7 @@
                             <th>No</th>
                             <th>Pengajuan</th>
                             <th>Fullname</th>
+                            <th>Project</th>
                             <th>Role</th>
                             <th>Durasi</th>
                             <th>Catatan</th>
@@ -45,7 +46,8 @@
                         <tr>
                             <td><?= $no ?></td>
                             <td><?= $data->created_at ?></td>
-                            <td><?= $data->fullname ?></td>
+                            <td><a href="<?= BASE_URL ?>/user/detail/<?= $data->user_id ?>"><?= $data->fullname ?></a></td>
+                            <td><?= $data->join_project ?></td>
                             <td><?= $data->role_name ?></td>
                             <td><?= $data->duration ?> Bulan</td>
                             <td><?= $data->description ?></td>
@@ -61,7 +63,7 @@
                                         <button type="submit" class="btn btn-sm btn-warning">Revise</button>
                                     </form>
                                 <?php elseif(!empty($data->approval_id)): ?>
-                                    <a href="<?= BASE_URL ?>/user/detail/<?= $data->approval_id ?>"><?= $data->approval_name ?></a>
+                                    <a href="<?= BASE_URL ?>/user/detail/<?= $data->approval_id ?>"><?= $data->approval_name ?></a>  - <?= $data->status ?>
                                 <?php endif; ?>
                             </td>
                         </tr>

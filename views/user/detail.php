@@ -95,9 +95,146 @@
                             <?= $this->e($user->notes ?? "") ?>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group my-2">
+                            <label for="Role">Status</label>
+                            <p><?= $this->e($user->status ?? "") ?> (<?= $this->e($user->is_active ?? "") ?>)</p>
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="Role">Last login</label>
+                            <p><?= $this->e($user->last_login_at ?? "") ?></p>
+                        </div>
+                    </div>
                 </div>
             </form>
 
+        </div>
+    </div>
+</div>
+
+<div class="xxx">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Contract Extends</h4>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="contractExtendTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Submit Date</th>
+                            <th>Duration</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Approval</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($data = $contractExtends->fetch_object()) { ?>
+                        <tr>
+                            <td><?= $data->created_at ?></td>
+                            <td><?= $data->duration ?> Bulan</td>
+                            <td><?= $data->description ?></td>
+                            <td><?= $data->status ?></td>
+                            <td>
+                                <?= $data->approval_date ?> - <?= $data->approval_id ?>
+                            </td>
+                            
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="xxx">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Resign</h4>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="contractExtendTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Submit Date</th>
+                            <th>File</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Approval</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($data = $employeeResigns->fetch_object()) { ?>
+                        <tr>
+                            <td><?= $data->created_at ?></td>
+                            <td><a href="<?= $data->file_resign ?>" target="_BLANK">File Resign</a></td>
+                            <td><?= $data->reason ?></td>
+                            <td><?= $data->status ?></td>
+                            <td>
+                                <?= $data->approval_date ?> - <?= $data->approval_id ?>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="xxx">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div class="d-flex justify-content-between">
+                    <h4>Sertifikat</h4>
+                </div>
+            </h5>
+            <div class="table-responsive">
+                <table id="contractExtendTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Submit Date</th>
+                            <th>File</th>
+                            <th>Survey</th>
+                            <th>Status</th>
+                            <th>Certificate</th>
+                            <th>Approval</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($data = $employeeIntershipFinalizations->fetch_object()) { ?>
+                        <tr>
+                            <td><?= $data->created_at ?></td>
+                            <td><a href="<?= $data->file ?>" target="_BLANK">File Laporan Magang</a></td>
+                            <td><?= $data->is_survey == 1 ? '<a href="https://docs.google.com/spreadsheets/d/1YheInax1JRz1Ljya3KdWZ5gH_BG18_apLG95o-0oFKc/edit?gid=1420681690#gid=1420681690" target="_BLANK">Sudah</a>' : 'Belum' ?></td>
+                            <td><?= $data->status ?></td>
+                            <td><?= $data->certificate ?></td>
+                            <td>
+                                <?= $data->approval_date ?> - <?= $data->approval_id ?>
+                            </td>
+                            <td>
+                                <?php if (isset($data->certificate)) {  ?>
+                                <form method="POST" action="<?= BASE_URL ?>/hr/certificate-print/print">
+                                    <input type="hidden" name="id" value="<?= $data->id ?>">
+                                    <button type="submit" class="btn btn-outline-dark mx-1 btn-sm">Cetak</button>
+                                </form>
+                                <?php } ?>
+                            </td>
+                            
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

@@ -26,7 +26,7 @@
             <form method="POST" action="<?= BASE_URL ?>/profile/intership-finalization">
                 <div class="form-group my-2">
                     <label for="file">Link File Dokumen Laporan Magang (Cukup Link File GDrive).</label><br>
-                    <label for="file">Pastikan laporan sudah direview dan diberi tanda tangan oleh leader.</label>
+                    <!-- <label for="file">Pastikan laporan sudah direview dan diberi tanda tangan oleh leader.</label> -->
                     <input name="file" type="text" class="form-control" id="file" placeholder="Masukan link file laporan magang" required>
                 </div>
                 <div class="form-group my-2">
